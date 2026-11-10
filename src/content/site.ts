@@ -182,8 +182,6 @@ const groupesProgramme: GroupeProgramme[] = [
       {
         heure: '18h00',
         titre: "Vin d'honneur",
-        // À CONFIRMER — horaire du vin d'honneur.
-        note: 'à confirmer',
         description: 'Coupes, photographies et coucher de soleil sur les vignes.',
       },
       {
@@ -217,9 +215,9 @@ const chateauReperes: Repere[] = [
     attenue: true,
   },
   {
-    // À CONFIRMER — stationnement au château.
+    // Source : fiche du lieu (abcsalles.com). À faire confirmer au domaine.
     label: 'Stationnement',
-    valeur: 'Sur place, allées en gravier — à confirmer.',
+    valeur: '80 places sur place,\n30 autres à une minute à pied.',
     attenue: true,
   },
 ];
@@ -322,8 +320,7 @@ export const tenue = {
 export const rsvp = {
   label: 'Réponse',
   titre: 'Serez-vous des nôtres ?',
-  // À CONFIRMER — date limite du RSVP.
-  dateLimite: 'Merci de nous répondre avant le 15 février 2027.',
+  dateLimite: 'Merci de nous répondre avant le 15 mars 2027.',
   /** Les trois temps du formulaire. L'ordre fait foi. */
   etapes: [
     {
@@ -490,10 +487,9 @@ export const faq = {
   titre: 'Bon à savoir',
   questions: [
     {
-      // À CONFIRMER — liste d'hébergements.
       question: 'Où dormir',
       reponse:
-        "Bize-Minervois, Lézignan-Corbières et Narbonne offrent gîtes, chambres d'hôtes et hôtels. Une sélection d'adresses sera publiée ici.",
+        'L’hôtel La Bastide Cabezac se trouve dans le même hameau que le château, à quelques pas. Bize-Minervois compte aussi plusieurs gîtes et chambres d’hôtes, et vous trouverez un choix plus large à Lézignan-Corbières (20 min) ou à Narbonne (30 min). Le 1er mai étant férié, réservez tôt.',
     },
     {
       question: 'Comment venir',
@@ -501,9 +497,9 @@ export const faq = {
         'Gare de Narbonne à environ 30 minutes ; aéroports de Béziers, Carcassonne et Montpellier à proximité. La voiture reste le plus simple — pensez au covoiturage.',
     },
     {
-      // À CONFIRMER — règle sur les enfants.
       question: 'Les enfants',
-      reponse: 'À préciser par les mariés.',
+      reponse:
+        'La mairie du 27 mars est ouverte à tous, enfants compris. Pour la journée du 1er mai à Cabezac, nous avons choisi de nous retrouver entre adultes, afin de profiter de la soirée jusqu’au bout. Merci de votre compréhension.',
     },
   ],
 };
