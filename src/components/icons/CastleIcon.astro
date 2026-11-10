@@ -1,0 +1,33 @@
+---
+/**
+ * Picto château — SVG repris tel quel du HTML de référence.
+ * Trait #CFA184 2,4px, remplissage #2E1D15, 88×88.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 100 100"
+  width="88"
+  height="88"
+  fill="#2E1D15"
+  stroke="#CFA184"
+  stroke-width="2.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class:list={['block', className]}
+  aria-hidden="true"
+>
+  <path d="M46 24h14v38H46z"></path><path d="M40 24 53 3l13 21z"></path>
+  <path d="M30 34h12v28H30z"></path><path d="M26 34 36 17l10 17z"></path>
+  <path d="M62 40h14v22H62z"></path><path d="M59 40 69 24l10 16z"></path>
+  <path d="M70 64h10v8h7v12H70z"></path>
+  <path d="M44 46h14v16H44z"></path><path d="M40 46 51 32l11 14z"></path>
+  <path d="M22 76V52h5v6h6v-6h5v6h6v-6h5v6h6v-6h5v6h6v-6h5v24z"></path>
+  <path d="M5 88l8-10 9-6 11-3 11 2 12-4 10 6 9-4 10 10 10 9z"></path>
+  <path d="M28 80l9-3M58 79l8 4" fill="none"></path>
+  <path d="M36 42v8M53 32v9M69 46v7" fill="none"></path>
+</svg>

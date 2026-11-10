@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Config locale de l'éditeur : contient un chemin absolu propre à la machine.
+.claude/

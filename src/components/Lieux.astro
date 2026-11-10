@@ -1,0 +1,76 @@
+---
+import { Picture } from 'astro:assets';
+import etreinteImage from '../assets/img/etreinte.jpg';
+import CastleIcon from './icons/CastleIcon.astro';
+import ItineraryPanel from './ItineraryPanel.astro';
+import Repere from './Repere.astro';
+import { chateau, mairie } from '../content/site';
+---
+
+<section id="lieu" class="contenu scroll-mt-[70px] px-gutter py-section-lg">
+  {/* Château de Cabezac */}
+  <div
+    class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] items-center gap-bloc"
+  >
+    <div class="aspect-4/5 overflow-hidden bg-brun">
+      <Picture
+        src={etreinteImage}
+        alt={chateau.photoAlt}
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[400, 560, 760, 1067]}
+        sizes="(min-width: 1180px) 558px, (min-width: 660px) 50vw, 100vw"
+        class="block h-full w-full object-cover [object-position:50%_92%]"
+      />
+    </div>
+
+    <div>
+      <div class="text-caption tracking-label text-accent uppercase">
+        {chateau.label}
+      </div>
+      <CastleIcon class="mt-6 mb-1.5" />
+      <h2 class="mt-2.5 mb-0 text-h2 font-light tracking-[-.025em]">
+        {chateau.titre}
+      </h2>
+      <div class="mt-2 text-body text-accent">{chateau.sousTitre}</div>
+      <p class="mt-[22px] mb-0 max-w-[44ch] text-body text-ivoire/78">
+        {chateau.description}
+      </p>
+
+      <div
+        class="mt-[34px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-[18px] border-t border-ivoire/16 pt-[18px]"
+      >
+        {chateau.infos.map((repere) => <Repere repere={repere} />)}
+      </div>
+
+      <ItineraryPanel liens={chateau.itineraire} class="mt-[34px]" />
+
+      <div
+        class="mt-[26px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[18px]"
+      >
+        {chateau.reperes.map((repere) => <Repere repere={repere} />)}
+      </div>
+    </div>
+  </div>
+
+  {/* Mairie de Pantin */}
+  <div
+    class="mt-mairie grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] items-start gap-bloc-sm border-t border-ivoire/16 pt-mairie-top"
+  >
+    <div>
+      <div class="text-caption tracking-label text-accent uppercase">
+        {mairie.label}
+      </div>
+      <h3 class="mt-4 mb-0 text-h3 font-light tracking-[-.02em]">
+        {mairie.titre}
+      </h3>
+      <div
+        class="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-[18px]"
+      >
+        {mairie.infos.map((repere) => <Repere repere={repere} />)}
+      </div>
+    </div>
+
+    <ItineraryPanel liens={mairie.itineraire} />
+  </div>
+</section>

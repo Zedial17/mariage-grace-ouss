@@ -1,0 +1,15 @@
+---
+import { couple, footer } from '../content/site';
+---
+
+<footer class="contenu px-gutter pt-section pb-16 text-center">
+  <div class="text-signature font-light tracking-[-.03em]">
+    {couple.prenomA} <span class="text-accent">&amp;</span>
+    {couple.prenomB}
+  </div>
+  <div class="mx-auto my-7 h-px w-16 bg-ivoire/30"></div>
+  <p class="m-0 text-caption-lg tracking-logo text-ivoire uppercase">
+    {footer.dates}
+  </p>
+  <p class="mt-6 mb-0 text-body-sm text-ivoire">{footer.credit}</p>
+</footer>

@@ -1,0 +1,335 @@
+---
+export const prerender = false;
+
+import '../../styles/global.css';
+import { admin, meta, livreDor } from '../../content/site';
+import {
+  lireTout,
+  publierMessage,
+  supprimerMessage,
+  supprimerRsvp,
+  sheetsConfigure,
+  viderCache,
+  type LigneMessage,
+} from '../../lib/sheets';
+import { annoter, type RsvpAnnote } from '../../lib/rsvp';
+import {
+  motDePasseConfigure,
+  verifierMotDePasse,
+  ouvrirSession,
+  fermerSession,
+  sessionOuverte,
+} from '../../lib/admin-auth';
+
+const secure = Astro.url.protocol === 'https:';
+let erreurConnexion = false;
+
+/* ---------------------------------------------------------------- */
+/* Actions (POST) — schéma « post / redirect / get »                  */
+/* ---------------------------------------------------------------- */
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = String(form.get('action') ?? '');
+
+  if (action === 'connexion') {
+    if (motDePasseConfigure && verifierMotDePasse(String(form.get('motdepasse') ?? ''))) {
+      ouvrirSession(Astro.cookies, secure);
+      return Astro.redirect('/admin');
+    }
+    erreurConnexion = true;
+  } else if (action === 'deconnexion') {
+    fermerSession(Astro.cookies);
+    return Astro.redirect('/admin');
+  } else if (sessionOuverte(Astro.cookies)) {
+    const id = String(form.get('id') ?? '');
+
+    if (id) {
+      if (action === 'approuver') await publierMessage(id, true);
+      else if (action === 'retirer') await publierMessage(id, false);
+      else if (action === 'supprimer_message') await supprimerMessage(id);
+      else if (action === 'supprimer_rsvp') await supprimerRsvp(id);
+      // La page publique doit refléter la décision tout de suite.
+      viderCache();
+    }
+    return Astro.redirect('/admin');
+  }
+}
+
+const connecte = sessionOuverte(Astro.cookies);
+
+/* ---------------------------------------------------------------- */
+/* Données                                                           */
+/* ---------------------------------------------------------------- */
+let lignes: RsvpAnnote[] = [];
+let stats = { reponses: 0, oui: 0, non: 0, personnes: 0 };
+let enAttente: LigneMessage[] = [];
+let publies: LigneMessage[] = [];
+
+if (connecte && sheetsConfigure) {
+  const tout = await lireTout();
+  const annote = annoter(tout.rsvp);
+  lignes = annote.lignes;
+  stats = annote.stats;
+  enAttente = tout.messages.filter((m) => !m.approuve);
+  publies = tout.messages.filter((m) => m.approuve);
+}
+
+const bouton =
+  'cursor-pointer rounded-btn border border-accent bg-transparent px-4 py-2 text-caption font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun';
+const boutonDanger =
+  'cursor-pointer rounded-btn border border-ivoire/30 bg-transparent px-4 py-2 text-caption font-semibold tracking-bouton text-ivoire/70 uppercase hover:border-ivoire hover:text-ivoire';
+const cellule = 'border-t border-ivoire/14 px-3 py-3 text-left align-top';
+---
+
+<!doctype html>
+<html lang={meta.langue}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{admin.titre} · {admin.sousTitre}</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#2E1D15" />
+  </head>
+  <body class="bg-brun bg-none!">
+    <main class="contenu px-gutter py-16">
+      <header class="flex flex-wrap items-baseline justify-between gap-4">
+        <div>
+          <div class="text-caption tracking-label text-accent uppercase">
+            {admin.sousTitre}
+          </div>
+          <h1 class="mt-3 mb-0 text-h2 font-light tracking-[-.025em]">
+            {admin.titre}
+          </h1>
+        </div>
+        {
+          connecte && (
+            <form method="post">
+              <input type="hidden" name="action" value="deconnexion" />
+              <button type="submit" class={boutonDanger}>
+                {admin.deconnexion}
+              </button>
+            </form>
+          )
+        }
+      </header>
+
+      {
+        !connecte && (
+          <section class="mt-12 max-w-[420px]">
+            {!motDePasseConfigure ? (
+              <p class="text-body text-accent">{admin.connexion.nonConfigure}</p>
+            ) : (
+              <form method="post" class="grid gap-4">
+                <input type="hidden" name="action" value="connexion" />
+                <label class="flex flex-col gap-2">
+                  <span class="text-caption tracking-cap text-accent uppercase">
+                    {admin.connexion.label}
+                  </span>
+                  <input
+                    type="password"
+                    name="motdepasse"
+                    autocomplete="current-password"
+                    required
+                    autofocus
+                    class="border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none"
+                  />
+                </label>
+                {erreurConnexion && (
+                  <p role="alert" class="m-0 text-body-sm text-accent">
+                    {admin.connexion.erreur}
+                  </p>
+                )}
+                <div>
+                  <button type="submit" class={bouton}>
+                    {admin.connexion.bouton}
+                  </button>
+                </div>
+              </form>
+            )}
+          </section>
+        )
+      }
+
+      {
+        connecte && !sheetsConfigure && (
+          <p class="mt-12 text-body text-accent">{admin.sheetsAbsent}</p>
+        )
+      }
+
+      {
+        connecte && sheetsConfigure && (
+          <Fragment>
+            {/* ---------------- RSVP ---------------- */}
+            <section class="mt-16">
+              <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ivoire/14 pb-4">
+                <h2 class="m-0 text-h3 font-light tracking-[-.02em]">
+                  {admin.rsvp.titre}
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                  <a href="/admin/export.csv" class={bouton}>
+                    {admin.rsvp.export}
+                  </a>
+                </div>
+              </div>
+
+              <div class="mt-8 grid grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))] gap-6">
+                {[
+                  { valeur: stats.personnes, libelle: admin.rsvp.personnes },
+                  { valeur: stats.oui, libelle: admin.rsvp.oui },
+                  { valeur: stats.non, libelle: admin.rsvp.non },
+                  { valeur: stats.reponses, libelle: admin.rsvp.reponses },
+                ].map((c) => (
+                  <div>
+                    <div class="text-compte font-light tracking-[-.02em] tabular-nums">
+                      {c.valeur}
+                    </div>
+                    <div class="text-caption tracking-compte text-accent uppercase">
+                      {c.libelle}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {lignes.length === 0 ? (
+                <p class="mt-10 text-body text-ivoire/60">{admin.rsvp.vide}</p>
+              ) : (
+                <div class="mt-10 overflow-x-auto">
+                  <table class="w-full min-w-[760px] border-collapse text-body-sm">
+                    <thead>
+                      <tr class="text-caption tracking-cap text-accent uppercase">
+                        {[
+                          admin.rsvp.colonnes.date,
+                          admin.rsvp.colonnes.nom,
+                          admin.rsvp.colonnes.email,
+                          admin.rsvp.colonnes.reponse,
+                          admin.rsvp.colonnes.accompagnant,
+                          admin.rsvp.colonnes.ville,
+                          admin.rsvp.colonnes.message,
+                          '',
+                        ].map((c) => (
+                          <th class="px-3 pb-3 text-left font-normal">{c}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lignes.map((l) => (
+                        <tr class={l.obsolete ? 'text-ivoire/40' : 'text-ivoire'}>
+                          <td class={`${cellule} whitespace-nowrap tabular-nums`}>
+                            {l.created_at}
+                          </td>
+                          <td class={cellule}>
+                            {l.nom}
+                            {l.doublon && (
+                              <span
+                                title={admin.rsvp.doublonAide}
+                                class="mt-1 block text-caption tracking-note text-accent uppercase"
+                              >
+                                {admin.rsvp.doublon}
+                              </span>
+                            )}
+                          </td>
+                          <td class={cellule}>{l.email}</td>
+                          <td class={cellule}>
+                            {l.reponse === 'oui' ? admin.rsvp.oui : admin.rsvp.non}
+                          </td>
+                          <td class={cellule}>{l.nom_accompagnant ?? '—'}</td>
+                          <td class={cellule}>
+                            {l.ville ?? '—'}
+                            {l.pays && (
+                              <span class="mt-1 block text-caption tracking-note text-ivoire/45 uppercase">
+                                {l.pays}
+                              </span>
+                            )}
+                          </td>
+                          <td class={`${cellule} max-w-[26ch]`}>{l.message ?? '—'}</td>
+                          <td class={cellule}>
+                            <form
+                              method="post"
+                              onsubmit={`return confirm(${JSON.stringify(admin.rsvp.confirmerSuppression)})`}
+                            >
+                              <input type="hidden" name="action" value="supprimer_rsvp" />
+                              <input type="hidden" name="id" value={l.id} />
+                              <button type="submit" class={boutonDanger}>
+                                {admin.rsvp.supprimer}
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+
+            {/* ---------------- Livre d'or ---------------- */}
+            <section class="mt-20">
+              <h2 class="m-0 border-b border-ivoire/14 pb-4 text-h3 font-light tracking-[-.02em]">
+                {admin.messages.titre}
+              </h2>
+
+              {[
+                { titre: admin.messages.enAttente, items: enAttente, publie: false },
+                { titre: admin.messages.publies, items: publies, publie: true },
+              ].map((groupe) => (
+                <div class="mt-10">
+                  <div class="text-caption tracking-label text-accent uppercase">
+                    {groupe.titre} · {groupe.items.length}
+                  </div>
+                  {groupe.items.length === 0 ? (
+                    <p class="mt-4 text-body text-ivoire/60">{admin.messages.vide}</p>
+                  ) : (
+                    <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-4">
+                      {groupe.items.map((m) => (
+                        <article class="border border-ivoire/18 px-6 py-5">
+                          <p class="m-0 text-mot font-light text-ivoire">{m.texte}</p>
+                          <div class="mt-4 text-caption tracking-cap text-ivoire/60 uppercase">
+                            {m.nom || livreDor.nomParDefaut} · {m.created_at}
+                          </div>
+                          <div class="mt-4 flex flex-wrap gap-2">
+                            <form method="post">
+                              <input
+                                type="hidden"
+                                name="action"
+                                value={groupe.publie ? 'retirer' : 'approuver'}
+                              />
+                              <input type="hidden" name="id" value={m.id} />
+                              <button type="submit" class={bouton}>
+                                {groupe.publie
+                                  ? admin.messages.retirer
+                                  : admin.messages.approuver}
+                              </button>
+                            </form>
+                            <form
+                              method="post"
+                              onsubmit={`return confirm(${JSON.stringify(admin.messages.confirmerSuppression)})`}
+                            >
+                              <input
+                                type="hidden"
+                                name="action"
+                                value="supprimer_message"
+                              />
+                              <input type="hidden" name="id" value={m.id} />
+                              <button type="submit" class={boutonDanger}>
+                                {admin.messages.supprimer}
+                              </button>
+                            </form>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </section>
+
+            <p class="mt-16 border-t border-ivoire/14 pt-6 text-body-sm text-ivoire/55">
+              {admin.rappelClasseur}
+            </p>
+          </Fragment>
+        )
+      }
+    </main>
+  </body>
+</html>

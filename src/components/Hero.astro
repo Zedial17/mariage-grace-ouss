@@ -1,0 +1,55 @@
+---
+import { Picture } from 'astro:assets';
+import heroImage from '../assets/img/hero-etreinte.jpg';
+import { couple, hero } from '../content/site';
+---
+
+<section
+  id="home"
+  class="relative flex min-h-[100svh] items-end overflow-hidden"
+>
+  <Picture
+    src={heroImage}
+    alt={hero.alt}
+    formats={['avif', 'webp']}
+    fallbackFormat="jpg"
+    widths={[480, 768, 1200]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 h-full w-full object-cover [object-position:52%_28%]"
+  />
+  <div
+    class="absolute inset-0 bg-[linear-gradient(180deg,rgba(46,29,21,.62)_0%,rgba(46,29,21,.18)_34%,rgba(46,29,21,.86)_82%,#2E1D15_100%)]"
+  >
+  </div>
+
+  <div
+    class="contenu relative w-full animate-fade-up px-gutter pb-hero-b"
+  >
+    <div class="text-caption tracking-label text-accent uppercase">
+      {hero.surtitre}
+    </div>
+    <h1
+      class="mt-[22px] text-display font-semibold tracking-[-.03em] text-ivoire"
+    >
+      {couple.prenomA}
+      <span class="font-light text-accent">&amp;</span>
+      {couple.prenomB}
+    </h1>
+    <div class="mt-8 mb-6 h-px w-16 bg-accent"></div>
+    <p class="m-0 max-w-[38ch] text-subtitle text-ivoire/92">{hero.texte}</p>
+    <div class="mt-9 flex flex-wrap gap-3.5">
+      <a
+        href={hero.ctaPrincipal.href}
+        class="rounded-btn bg-accent px-8 py-4 text-body-sm font-semibold tracking-cta text-brun hover:bg-ivoire hover:text-brun"
+        >{hero.ctaPrincipal.libelle}</a
+      >
+      <a
+        href={hero.ctaSecondaire.href}
+        class="rounded-btn border border-ivoire/40 px-[30px] py-4 text-body-sm text-ivoire hover:border-ivoire hover:text-ivoire"
+        >{hero.ctaSecondaire.libelle}</a
+      >
+    </div>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+---
+import { countdown } from '../content/site';
+
+const unites = [
+  { cle: 'jours', libelle: countdown.unites.jours },
+  { cle: 'heures', libelle: countdown.unites.heures },
+  { cle: 'minutes', libelle: countdown.unites.minutes },
+  { cle: 'secondes', libelle: countdown.unites.secondes },
+];
+
+/* Valeurs rendues au build : le compteur reste lisible sans JavaScript,
+   puis l'îlot ci-dessous le rafraîchit chaque seconde. */
+const reste = Math.max(0, new Date(countdown.cible).getTime() - Date.now());
+const p = (n: number) => String(n).padStart(2, '0');
+const initiales: Record<string, string> = {
+  jours: String(Math.floor(reste / 86400000)),
+  heures: p(Math.floor(reste / 3600000) % 24),
+  minutes: p(Math.floor(reste / 60000) % 60),
+  secondes: p(Math.floor(reste / 1000) % 60),
+};
+---
+
+<div class="border-y border-ivoire/14">
+  <div
+    class="contenu grid grid-cols-[repeat(auto-fit,minmax(min(100%,74px),1fr))] gap-6 px-gutter py-compte text-center"
+    data-compte-a-rebours
+    data-cible={countdown.cible}
+  >
+    {
+      unites.map((u) => (
+        <div>
+          <div
+            class="text-compte font-light tracking-[-.02em] tabular-nums"
+            data-unite={u.cle}
+          >
+            {initiales[u.cle]}
+          </div>
+          <div class="text-caption tracking-compte text-accent uppercase">
+            {u.libelle}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const bloc = document.querySelector<HTMLElement>('[data-compte-a-rebours]');
+
+  if (bloc) {
+    const cible = new Date(bloc.dataset.cible ?? '').getTime();
+    const champ = (cle: string) =>
+      bloc.querySelector<HTMLElement>(`[data-unite="${cle}"]`);
+    const champs = {
+      jours: champ('jours'),
+      heures: champ('heures'),
+      minutes: champ('minutes'),
+      secondes: champ('secondes'),
+    };
+    const p = (n: number) => String(n).padStart(2, '0');
+
+    const ecrire = (el: HTMLElement | null, valeur: string) => {
+      if (el && el.textContent !== valeur) el.textContent = valeur;
+    };
+
+    const tic = () => {
+      const d = Math.max(0, cible - Date.now());
+      ecrire(champs.jours, String(Math.floor(d / 86400000)));
+      ecrire(champs.heures, p(Math.floor(d / 3600000) % 24));
+      ecrire(champs.minutes, p(Math.floor(d / 60000) % 60));
+      ecrire(champs.secondes, p(Math.floor(d / 1000) % 60));
+    };
+
+    tic();
+    setInterval(tic, 1000);
+  }
+</script>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="G&amp;O">
+  <rect width="100" height="100" fill="#2E1D15"/>
+  <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+        font-family="'Segoe UI Variable Display','Segoe UI',Selawik,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif"
+        font-size="42" font-weight="600" letter-spacing="-2" fill="#CFA184">G&amp;O</text>
+</svg>

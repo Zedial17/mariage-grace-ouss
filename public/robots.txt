@@ -1,0 +1,3 @@
+# Site privé : invitation de mariage, non destinée à être indexée.
+User-agent: *
+Disallow: /

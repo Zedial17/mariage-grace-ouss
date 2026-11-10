@@ -1,0 +1,39 @@
+---
+import ItineraireIcon from './icons/ItineraireIcon.astro';
+import { itineraire } from '../content/site';
+import type { LienItineraire } from '../content/site';
+
+interface Props {
+  liens: LienItineraire[];
+  titre?: string;
+  class?: string;
+}
+const { liens, titre = itineraire.titre, class: className } = Astro.props;
+---
+
+<div class:list={['border border-ivoire/18', className]}>
+  <div
+    class="border-b border-ivoire/18 px-[22px] py-[18px] text-caption tracking-cap text-accent uppercase"
+  >
+    {titre}
+  </div>
+  {
+    liens.map((lien, i) => (
+      <a
+        href={lien.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[
+          'flex items-center justify-between gap-4 px-[22px] py-[18px] text-ivoire hover:bg-accent/10 hover:text-ivoire',
+          i < liens.length - 1 && 'border-b border-ivoire/18',
+        ]}
+      >
+        <span class="flex items-center gap-3.5">
+          <ItineraireIcon type={lien.type} />
+          <span class="text-body-tight">{lien.libelle}</span>
+        </span>
+        <span class="text-[16px] text-accent">→</span>
+      </a>
+    ))
+  }
+</div>

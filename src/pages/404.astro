@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import { couple, page404 } from '../content/site';
+---
+
+<Base titre={`${page404.titre} · ${couple.prenomA} & ${couple.prenomB}`} description={page404.texte}>
+  <main
+    class="flex min-h-[100svh] flex-col justify-between px-gutter py-hero-b"
+  >
+    <a
+      href="/"
+      class="contenu -my-3 w-full py-3 text-body-sm font-semibold tracking-logo text-ivoire hover:text-accent"
+      >{couple.logo}</a
+    >
+
+    <div class="contenu w-full animate-fade-up">
+      <div class="text-caption tracking-label text-accent uppercase">
+        {page404.code}
+      </div>
+      <h1
+        class="mt-[22px] mb-0 max-w-[14ch] text-h2-lg font-light tracking-[-.025em] text-ivoire"
+      >
+        {page404.titre}
+      </h1>
+      <div class="mt-8 mb-6 h-px w-16 bg-accent"></div>
+      <p class="m-0 max-w-[44ch] text-subtitle text-ivoire/92">
+        {page404.texte}
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3.5">
+        <a
+          href="/"
+          class="rounded-btn bg-accent px-8 py-4 text-body-sm font-semibold tracking-cta text-brun hover:bg-ivoire hover:text-brun"
+          >{page404.retour}</a
+        >
+      </div>
+    </div>
+
+    <nav
+      class="contenu flex w-full flex-wrap items-baseline gap-x-8 gap-y-3 border-t border-ivoire/14 pt-7"
+    >
+      {
+        page404.liens.map((lien) => (
+          <a
+            href={lien.href}
+            class="-my-3 py-3 text-body-sm text-ivoire hover:text-accent"
+          >
+            {lien.libelle}
+          </a>
+        ))
+      }
+      <span class="ml-auto text-caption tracking-logo text-ivoire/55 uppercase">
+        {couple.prenomA} &amp; {couple.prenomB}
+      </span>
+    </nav>
+  </main>
+</Base>

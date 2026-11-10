@@ -1,0 +1,30 @@
+---
+import type { Repere } from '../content/site';
+
+interface Props {
+  repere: Repere;
+}
+const { repere } = Astro.props;
+const lignes = repere.valeur.split('\n');
+---
+
+<div>
+  <div class="text-caption tracking-cap text-accent uppercase">
+    {repere.label}
+  </div>
+  <div
+    class:list={[
+      'mt-1.5 text-body',
+      repere.attenue ? 'text-ivoire/78' : 'text-ivoire',
+    ]}
+  >
+    {
+      lignes.map((ligne, i) => (
+        <Fragment>
+          {i > 0 && <br />}
+          {ligne}
+        </Fragment>
+      ))
+    }
+  </div>
+</div>

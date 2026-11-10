@@ -1,0 +1,61 @@
+---
+import { programme } from '../content/site';
+---
+
+<section
+  id="jour"
+  class="scroll-mt-[70px] border-t border-ivoire/14 px-gutter py-section"
+>
+  <div class="contenu">
+    <div class="text-caption tracking-label text-accent uppercase">
+      {programme.label}
+    </div>
+    <h2
+      class="mt-[18px] mb-0 max-w-[18ch] text-h2-lg font-light tracking-[-.025em]"
+    >
+      {programme.titre}
+    </h2>
+
+    {
+      programme.groupes.map((groupe, index) => (
+        <Fragment>
+          <div
+            class:list={[
+              'flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1.5 pb-4',
+              index === 0 ? 'mt-groupe-1' : 'mt-groupe',
+            ]}
+          >
+            <div class="text-subtitle font-semibold">{groupe.date}</div>
+            <div class="text-caption tracking-label text-accent uppercase">
+              {groupe.lieu}
+            </div>
+          </div>
+
+          <div>
+            {groupe.moments.map((moment, i) => (
+              <div
+                class:list={[
+                  'grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] items-baseline gap-x-6 gap-y-3 border-t border-ivoire/22 py-[26px]',
+                  i === groupe.moments.length - 1 && 'border-b border-ivoire/22',
+                ]}
+              >
+                <div class="text-heure font-light tracking-[-.02em] text-accent">
+                  {moment.heure}
+                </div>
+                <div class="text-ligne font-normal">
+                  {moment.titre}
+                  {moment.note && (
+                    <span class="mt-1 block text-micro tracking-note text-ivoire/60 uppercase">
+                      {moment.note}
+                    </span>
+                  )}
+                </div>
+                <p class="m-0 text-body text-ivoire/78">{moment.description}</p>
+              </div>
+            ))}
+          </div>
+        </Fragment>
+      ))
+    }
+  </div>
+</section>

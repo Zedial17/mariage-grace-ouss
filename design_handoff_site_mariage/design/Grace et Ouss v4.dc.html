@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grace &amp; Ouss · 27 mars &amp; 1er mai 2027</title>
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background-color:#2E1D15;background-image:linear-gradient(rgba(28,16,10,.62),rgba(28,16,10,.62)),url("img/soie.jpg");background-size:cover,cover;background-position:center top,center top;background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;color:#F2E6DC;font-family:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",system-ui,-apple-system,sans-serif;font-size:16px;line-height:22px;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#CFA184;text-decoration:none}
+a:hover{color:#F2E6DC}
+summary{list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+details[open] .qp{transform:rotate(90deg)}
+input,textarea,button{font-family:inherit}
+input::placeholder,textarea::placeholder{color:rgba(242,230,220,.4)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+img,svg{max-width:100%}
+@media (max-width:820px){body{background-attachment:scroll,scroll;background-size:cover,auto 120vh}}
+</style>
+</helmet>
+
+<div style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(46,29,21,.72);backdrop-filter:blur(14px);border-bottom:1px solid rgba(242,230,220,.12)">
+  <div style="max-width:1180px;margin:0 auto;padding:12px clamp(16px,4vw,26px);display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="#home" style="color:#F2E6DC;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.28em">G &amp; O</a>
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;flex-wrap:wrap;gap:2px;align-items:center;justify-content:flex-end">
+        <a href="#jour" style="color:#F2E6DC;font-size:14px;line-height:20px;padding:8px 14px" style-hover="color:#CFA184">Le jour J</a>
+        <a href="#lieu" style="color:#F2E6DC;font-size:14px;line-height:20px;padding:8px 14px" style-hover="color:#CFA184">Le lieu</a>
+        <a href="#tenue" style="color:#F2E6DC;font-size:14px;line-height:20px;padding:8px 14px" style-hover="color:#CFA184">Tenue</a>
+        <a href="#mots" style="color:#F2E6DC;font-size:14px;line-height:20px;padding:8px 14px" style-hover="color:#CFA184">Livre d'or</a>
+        <a href="#infos" style="color:#F2E6DC;font-size:14px;line-height:20px;padding:8px 14px" style-hover="color:#CFA184">Infos</a>
+        <a href="#rsvp" style="margin-left:10px;border:1px solid #CFA184;color:#CFA184;font-size:14px;line-height:20px;font-weight:600;padding:9px 20px;border-radius:2px" style-hover="background:#CFA184;color:#2E1D15">Répondre</a>
+      </nav>
+    </sc-if>
+    <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="#rsvp" style="border:1px solid #CFA184;color:#CFA184;font-size:13px;line-height:18px;font-weight:600;letter-spacing:.04em;padding:11px 16px;border-radius:2px">Répondre</a>
+        <button onClick="{{ toggleMenu }}" aria-label="Menu" style="width:46px;height:46px;display:grid;place-items:center;gap:5px;background:transparent;border:1px solid rgba(242,230,220,.3);border-radius:2px;cursor:pointer;padding:0">
+          <span style="display:block;width:20px;height:1px;background:#F2E6DC"></span>
+          <span style="display:block;width:20px;height:1px;background:#F2E6DC"></span>
+          <span style="display:block;width:20px;height:1px;background:#F2E6DC"></span>
+        </button>
+      </div>
+    </sc-if>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <nav style="border-top:1px solid rgba(242,230,220,.14);padding:8px clamp(16px,4vw,26px) 18px;display:grid;gap:2px">
+      <a href="#jour" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px;border-bottom:1px solid rgba(242,230,220,.1)">Le jour J</a>
+      <a href="#lieu" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px;border-bottom:1px solid rgba(242,230,220,.1)">Le lieu</a>
+      <a href="#tenue" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px;border-bottom:1px solid rgba(242,230,220,.1)">Tenue</a>
+      <a href="#mots" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px;border-bottom:1px solid rgba(242,230,220,.1)">Livre d'or</a>
+      <a href="#participation" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px;border-bottom:1px solid rgba(242,230,220,.1)">Participation</a>
+      <a href="#infos" onClick="{{ closeMenu }}" style="color:#F2E6DC;font-size:17px;line-height:24px;padding:13px 4px">Infos</a>
+    </nav>
+  </sc-if>
+</div>
+
+<section id="home" style="position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden">
+  <img src="img/hero-etreinte.jpg" alt="Grace et Ouss" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:52% 28%">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,29,21,.62) 0%,rgba(46,29,21,.18) 34%,rgba(46,29,21,.86) 82%,#2E1D15 100%)"></div>
+  <div style="position:relative;width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(18px,5vw,26px) clamp(54px,9vw,88px);animation:fadeUp 1.1s ease both">
+    <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">27 mars 2027 · Pantin — 1er mai 2027 · Château de Cabezac</div>
+    <h1 style="font-size:clamp(52px,10vw,112px);line-height:1;font-weight:600;letter-spacing:-.03em;margin:22px 0 0">Grace <span style="font-weight:300;color:#CFA184">&amp;</span> Ouss</h1>
+    <div style="width:64px;height:1px;background:#CFA184;margin:32px 0 24px"></div>
+    <p style="font-size:20px;line-height:28px;max-width:38ch;margin:0;color:rgba(242,230,220,.92)">Nous vous convions à célébrer notre mariage : à la mairie de Pantin le 27 mars, puis au Château de Cabezac le 1er mai.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:36px">
+      <a href="#rsvp" style="background:#CFA184;color:#2E1D15;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.06em;padding:16px 32px;border-radius:2px" style-hover="background:#F2E6DC;color:#2E1D15">Confirmer ma présence</a>
+      <a href="#jour" style="border:1px solid rgba(242,230,220,.4);color:#F2E6DC;font-size:14px;line-height:20px;padding:16px 30px;border-radius:2px" style-hover="border-color:#F2E6DC;color:#F2E6DC">Le programme</a>
+    </div>
+  </div>
+</section>
+
+<div style="border-top:1px solid rgba(242,230,220,.14);border-bottom:1px solid rgba(242,230,220,.14)">
+  <div style="max-width:1180px;margin:0 auto;padding:clamp(24px,5vw,34px) clamp(18px,5vw,26px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,74px),1fr));gap:24px;text-align:center">
+    <div><div style="font-size:clamp(30px,7vw,40px);line-height:1.2;font-weight:300;letter-spacing:-.02em">{{ cdJ }}</div><div style="font-size:12px;line-height:16px;letter-spacing:.3em;text-transform:uppercase;color:#CFA184">jours</div></div>
+    <div><div style="font-size:clamp(30px,7vw,40px);line-height:1.2;font-weight:300;letter-spacing:-.02em">{{ cdH }}</div><div style="font-size:12px;line-height:16px;letter-spacing:.3em;text-transform:uppercase;color:#CFA184">heures</div></div>
+    <div><div style="font-size:clamp(30px,7vw,40px);line-height:1.2;font-weight:300;letter-spacing:-.02em">{{ cdM }}</div><div style="font-size:12px;line-height:16px;letter-spacing:.3em;text-transform:uppercase;color:#CFA184">minutes</div></div>
+    <div><div style="font-size:clamp(30px,7vw,40px);line-height:1.2;font-weight:300;letter-spacing:-.02em">{{ cdS }}</div><div style="font-size:12px;line-height:16px;letter-spacing:.3em;text-transform:uppercase;color:#CFA184">secondes</div></div>
+  </div>
+</div>
+
+<section style="max-width:1180px;margin:0 auto;padding:clamp(66px,10vw,120px) clamp(18px,5vw,26px);text-align:center">
+  <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">L'invitation</div>
+  <p style="font-size:clamp(24px,3.2vw,32px);line-height:1.35;font-weight:300;max-width:24ch;margin:26px auto 0;letter-spacing:-.01em">Après dix ans à s'aimer en ville, nous partons nous dire oui au soleil.</p>
+  <p style="font-size:16px;line-height:24px;max-width:56ch;margin:26px auto 0;color:rgba(242,230,220,.72)">Texte à personnaliser — deux ou trois phrases sur votre histoire suffisent.</p>
+</section>
+
+<section id="jour" style="border-top:1px solid rgba(242,230,220,.14);padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Le programme</div>
+    <h2 style="font-size:clamp(36px,5vw,68px);line-height:1.06;font-weight:300;letter-spacing:-.025em;margin:18px 0 0;max-width:18ch">Deux dates, un même oui</h2>
+    <div style="margin-top:clamp(40px,6vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px;padding-bottom:16px">
+      <div style="font-size:20px;line-height:28px;font-weight:600">Samedi 27 mars 2027</div>
+      <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Mairie de Pantin</div>
+    </div>
+    <div>
+      <div style="border-top:1px solid rgba(242,230,220,.22);border-bottom:1px solid rgba(242,230,220,.22);padding:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;align-items:baseline">
+        <div style="font-size:clamp(40px,6vw,56px);line-height:1;font-weight:300;letter-spacing:-.02em;color:#CFA184">14h00</div>
+        <div style="font-size:22px;line-height:30px;font-weight:400">Mariage civil</div>
+        <p style="font-size:16px;line-height:24px;margin:0;color:rgba(242,230,220,.78)">À l'hôtel de ville de Pantin. Merci d'arriver un quart d'heure en avance.</p>
+      </div>
+    </div>
+    <div style="margin-top:clamp(44px,6vw,72px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px;padding-bottom:16px">
+      <div style="font-size:20px;line-height:28px;font-weight:600">Samedi 1er mai 2027</div>
+      <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Château de Cabezac</div>
+    </div>
+    <div>
+      <div style="border-top:1px solid rgba(242,230,220,.22);padding:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;align-items:baseline">
+        <div style="font-size:clamp(40px,6vw,56px);line-height:1;font-weight:300;letter-spacing:-.02em;color:#CFA184">16h30</div>
+        <div style="font-size:22px;line-height:30px;font-weight:400">Cérémonie</div>
+        <p style="font-size:16px;line-height:24px;margin:0;color:rgba(242,230,220,.78)">Dans les jardins du château. Merci d'être installés à 16h15.</p>
+      </div>
+      <div style="border-top:1px solid rgba(242,230,220,.22);padding:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;align-items:baseline">
+        <div style="font-size:clamp(40px,6vw,56px);line-height:1;font-weight:300;letter-spacing:-.02em;color:#CFA184">18h00</div>
+        <div style="font-size:22px;line-height:30px;font-weight:400">Vin d'honneur<span style="display:block;font-size:11px;line-height:16px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,230,220,.6);margin-top:4px">à confirmer</span></div>
+        <p style="font-size:16px;line-height:24px;margin:0;color:rgba(242,230,220,.78)">Coupes, photographies et coucher de soleil sur les vignes.</p>
+      </div>
+      <div style="border-top:1px solid rgba(242,230,220,.22);border-bottom:1px solid rgba(242,230,220,.22);padding:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;align-items:baseline">
+        <div style="font-size:clamp(40px,6vw,56px);line-height:1;font-weight:300;letter-spacing:-.02em;color:#CFA184">20h00</div>
+        <div style="font-size:22px;line-height:30px;font-weight:400">Dîner &amp; soirée</div>
+        <p style="font-size:16px;line-height:24px;margin:0;color:rgba(242,230,220,.78)">Dîner assis, quelques mots, puis la piste jusque tard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lieu" style="max-width:1180px;margin:0 auto;padding:clamp(66px,10vw,120px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(34px,5vw,64px);align-items:center">
+    <div style="aspect-ratio:4/5;overflow:hidden;background:#2E1D15"><img src="img/etreinte.jpg" alt="Les mains de Grace et Ouss, la bague de fiançailles" style="width:100%;height:100%;object-fit:cover;object-position:50% 92%;display:block"></div>
+    <div>
+      <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Le lieu</div>
+      <svg viewBox="0 0 100 100" width="88" height="88" fill="#2E1D15" stroke="#CFA184" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:24px 0 6px" aria-hidden="true">
+        <path d="M46 24h14v38H46z"/><path d="M40 24 53 3l13 21z"/>
+        <path d="M30 34h12v28H30z"/><path d="M26 34 36 17l10 17z"/>
+        <path d="M62 40h14v22H62z"/><path d="M59 40 69 24l10 16z"/>
+        <path d="M70 64h10v8h7v12H70z"/>
+        <path d="M44 46h14v16H44z"/><path d="M40 46 51 32l11 14z"/>
+        <path d="M22 76V52h5v6h6v-6h5v6h6v-6h5v6h6v-6h5v6h6v-6h5v24z"/>
+        <path d="M5 88l8-10 9-6 11-3 11 2 12-4 10 6 9-4 10 10 10 9z"/>
+        <path d="M28 80l9-3M58 79l8 4" fill="none"/>
+        <path d="M36 42v8M53 32v9M69 46v7" fill="none"/>
+      </svg>
+      <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:10px 0 0">Château de Cabezac</h2>
+      <div style="font-size:16px;line-height:24px;color:#CFA184;margin-top:8px">Cérémonie &amp; soirée · 1er mai 2027</div>
+      <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin:22px 0 0;max-width:44ch">Un domaine viticole du Minervois, entre garrigue, pins et rangs de vigne, à quarante minutes de Narbonne. Tout se déroule sur place, de la cérémonie à la dernière danse.</p>
+      <div style="margin-top:34px;border-top:1px solid rgba(242,230,220,.16);padding-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:18px">
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Adresse</div><div style="font-size:16px;line-height:24px;margin-top:6px">23 Hameau de Cabezac<br>11120 Bize-Minervois</div></div>
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Accueil</div><div style="font-size:16px;line-height:24px;margin-top:6px">Samedi 1er mai 2027<br>à partir de 16h00</div></div>
+      </div>
+      <div style="margin-top:34px;border:1px solid rgba(242,230,220,.18)">
+        <div style="padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Y aller</div>
+        <a href="https://maps.google.com/?q=23+Hameau+de+Cabezac+11120+Bize-Minervois" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+          <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span style="font-size:16px;line-height:22px">Google Maps</span></span>
+          <span style="color:#CFA184;font-size:16px">→</span>
+        </a>
+        <a href="https://waze.com/ul?q=23%20Hameau%20de%20Cabezac%2011120%20Bize-Minervois&navigate=yes" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+          <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M20.5 3.5 3.5 10.2l7.1 2.9 2.4 7.4 7.5-17Z"/></svg><span style="font-size:16px;line-height:22px">Waze</span></span>
+          <span style="color:#CFA184;font-size:16px">→</span>
+        </a>
+        <a href="https://maps.apple.com/?q=23%20Hameau%20de%20Cabezac%2011120%20Bize-Minervois" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+          <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20V6.5Z"/><path d="M9 4v13.5M15 6.5V20"/></svg><span style="font-size:16px;line-height:22px">Plans (Apple)</span></span>
+          <span style="color:#CFA184;font-size:16px">→</span>
+        </a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px;margin-top:26px">
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Depuis Narbonne</div><div style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin-top:6px">≈ 30 min en voiture par la D607 puis la D5.</div></div>
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Stationnement</div><div style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin-top:6px">Sur place, allées en gravier — à confirmer.</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:clamp(56px,8vw,96px);border-top:1px solid rgba(242,230,220,.16);padding-top:clamp(34px,5vw,52px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,5vw,64px);align-items:start">
+    <div>
+      <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Mariage civil</div>
+      <h3 style="font-size:clamp(28px,3.4vw,40px);line-height:1.1;font-weight:300;letter-spacing:-.02em;margin:16px 0 0">Mairie de Pantin</h3>
+      <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:18px">
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Adresse</div><div style="font-size:16px;line-height:24px;margin-top:6px">84-88 avenue du Général Leclerc<br>93500 Pantin</div></div>
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Rendez-vous</div><div style="font-size:16px;line-height:24px;margin-top:6px">Samedi 27 mars 2027<br>14h00</div></div>
+        <div><div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Transports</div><div style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin-top:6px">Métro 5, station Église de Pantin.</div></div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(242,230,220,.18)">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Y aller</div>
+          <a href="https://maps.google.com/?q=Mairie+de+Pantin+84+avenue+du+G%C3%A9n%C3%A9ral+Leclerc+93500+Pantin" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+            <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span style="font-size:16px;line-height:22px">Google Maps</span></span>
+            <span style="color:#CFA184;font-size:16px">→</span>
+          </a>
+          <a href="https://waze.com/ul?q=Mairie%20de%20Pantin%2093500%20Pantin&navigate=yes" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid rgba(242,230,220,.18);color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+            <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M20.5 3.5 3.5 10.2l7.1 2.9 2.4 7.4 7.5-17Z"/></svg><span style="font-size:16px;line-height:22px">Waze</span></span>
+            <span style="color:#CFA184;font-size:16px">→</span>
+          </a>
+          <a href="https://maps.apple.com/?q=Mairie%20de%20Pantin%2084%20avenue%20du%20G%C3%A9n%C3%A9ral%20Leclerc%2093500%20Pantin" target="_blank" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;color:#F2E6DC" style-hover="background:rgba(207,161,132,.1);color:#F2E6DC">
+            <span style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#CFA184" stroke-width="1.5" stroke-linejoin="round"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20V6.5Z"/><path d="M9 4v13.5M15 6.5V20"/></svg><span style="font-size:16px;line-height:22px">Plans (Apple)</span></span>
+            <span style="color:#CFA184;font-size:16px">→</span>
+          </a>
+    </div>
+  </div>
+</section>
+
+<section id="tenue" style="border-top:1px solid rgba(242,230,220,.14);padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(34px,5vw,64px);align-items:start">
+      <div>
+        <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">La tenue</div>
+        <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:18px 0 0">Pastel &amp; coloré</h2>
+        <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin:22px 0 0;max-width:46ch">Nous rêvons d'une assemblée en couleurs : rose dragée, jaune soleil, vert amande, corail, bleu ciel, framboise. Costume clair, ensemble fluide, robe longue ou courte — la coupe est libre, la couleur fait la fête.</p>
+        <div style="margin-top:28px;border:1px solid #CFA184;padding:18px 22px;display:inline-block">
+          <div style="font-size:16px;line-height:22px;font-weight:600;letter-spacing:.04em">Ni blanc, ni noir.</div>
+          <div style="font-size:14px;line-height:20px;color:rgba(242,230,220,.7);margin-top:4px">L'écru et le beige comptent comme du blanc.</div>
+        </div>
+        <p style="font-size:14px;line-height:20px;color:rgba(242,230,220,.6);margin:22px 0 0;max-width:46ch">Les allées sont en gravier : prévoyez des talons adaptés, et une veste pour la fraîcheur du soir.</p>
+      </div>
+      <div>
+        <div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:rgba(242,230,220,.6)">La palette</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:16px;background:rgba(242,230,220,.14);border:1px solid rgba(242,230,220,.14)">
+          <div style="background:#FF98AE;aspect-ratio:1"></div>
+          <div style="background:#FDCC60;aspect-ratio:1"></div>
+          <div style="background:#BAC563;aspect-ratio:1"></div>
+          <div style="background:#FF9A3D;aspect-ratio:1"></div>
+          <div style="background:#C0CFE0;aspect-ratio:1"></div>
+          <div style="background:#FFA090;aspect-ratio:1"></div>
+          <div style="background:#DE3466;aspect-ratio:1"></div>
+          <div style="background:#72892C;aspect-ratio:1"></div>
+          <div style="background:#F2AF5F;aspect-ratio:1"></div>
+        </div>
+        <div style="font-size:12px;line-height:18px;letter-spacing:.14em;color:rgba(242,230,220,.55);margin-top:14px">FF98AE · FDCC60 · BAC563 · FF9A3D · C0CFE0<br>FFA090 · DE3466 · 72892C · F2AF5F</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rsvp" style="background:#F2E6DC;color:#2E1D15;padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="max-width:760px;margin:0 auto">
+    <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#8E5A3C">Réponse</div>
+    <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:18px 0 0">Serez-vous des nôtres ?</h2>
+    <p style="font-size:16px;line-height:24px;color:rgba(46,29,21,.72);margin:18px 0 0">Merci de nous répondre avant le 15 février 2027.</p>
+
+    <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:48px;border-top:1px solid rgba(46,29,21,.2);padding-top:48px">
+        <div style="font-size:40px;line-height:48px;font-weight:300;letter-spacing:-.02em">Merci.</div>
+        <p style="font-size:16px;line-height:24px;color:rgba(46,29,21,.72);margin:12px 0 0">Votre réponse est enregistrée. Nous avons hâte de vous retrouver à Cabezac.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:48px;display:grid;gap:30px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:30px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">Prénom et nom</span>
+            <input value="{{ nom }}" onChange="{{ onNom }}" style="border:none;border-bottom:1px solid rgba(46,29,21,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#2E1D15;outline:none">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">E-mail</span>
+            <input value="{{ email }}" onChange="{{ onEmail }}" style="border:none;border-bottom:1px solid rgba(46,29,21,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#2E1D15;outline:none">
+          </label>
+        </div>
+        <div>
+          <div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">Votre réponse</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">
+            <button onClick="{{ setYes }}" style="{{ yesStyle }}">Avec joie</button>
+            <button onClick="{{ setNo }}" style="{{ noStyle }}">Empêché(e)</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">Accompagnant(e)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">
+            <button onClick="{{ setSolo }}" style="{{ soloStyle }}">Je viens seul(e)</button>
+            <button onClick="{{ setPlus }}" style="{{ plusStyle }}">Avec un(e) accompagnant(e)</button>
+          </div>
+          <div style="font-size:14px;line-height:20px;color:rgba(46,29,21,.65);margin-top:10px">Une personne supplémentaire maximum par invité.</div>
+          <sc-if value="{{ hasPlus }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex;flex-direction:column;gap:8px;margin-top:20px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">Nom de votre accompagnant(e)</span>
+              <input value="{{ plusNom }}" onChange="{{ onPlusNom }}" style="border:none;border-bottom:1px solid rgba(46,29,21,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#2E1D15;outline:none">
+            </label>
+          </sc-if>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#8E5A3C">Allergies, régime, un mot pour nous</span>
+          <textarea value="{{ mot }}" onChange="{{ onMot }}" rows="2" style="border:none;border-bottom:1px solid rgba(46,29,21,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#2E1D15;outline:none;resize:vertical"></textarea>
+        </label>
+        <div>
+          <button onClick="{{ submit }}" style="background:#2E1D15;color:#F2E6DC;border:none;padding:17px 36px;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px" style-hover="background:#8E5A3C;color:#F2E6DC">Envoyer</button>
+          <p style="font-size:12px;line-height:16px;color:rgba(46,29,21,.55);margin:14px 0 0">Formulaire de démonstration — à relier à votre outil de collecte.</p>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<section id="mots" style="border-top:1px solid rgba(242,230,220,.14);padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(34px,5vw,56px);align-items:start">
+      <div>
+        <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Livre d'or</div>
+        <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:18px 0 0">Les mots du cœur</h2>
+        <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.78);margin:22px 0 0;max-width:44ch">Un vœu, un souvenir, une phrase : laissez-nous quelques mots. Ils se déposent ici et nous les relirons longtemps après la fête.</p>
+        <div style="margin-top:30px;display:grid;gap:18px;max-width:420px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Votre nom</span>
+            <input value="{{ motNom }}" onChange="{{ onMotNom }}" style="border:none;border-bottom:1px solid rgba(242,230,220,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#F2E6DC;outline:none">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:#CFA184">Votre message</span>
+            <textarea value="{{ motTexte }}" onChange="{{ onMotTexte }}" rows="2" style="border:none;border-bottom:1px solid rgba(242,230,220,.3);background:transparent;padding:10px 0;font-size:18px;line-height:26px;color:#F2E6DC;outline:none;resize:vertical"></textarea>
+          </label>
+          <div><button onClick="{{ addMot }}" style="border:1px solid #CFA184;background:transparent;color:#CFA184;padding:15px 30px;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px" style-hover="background:#CFA184;color:#2E1D15">Déposer mes mots</button></div>
+        </div>
+      </div>
+      <div style="display:grid;gap:16px">
+        <sc-for list="{{ mots }}" as="m" hint-placeholder-count="3">
+          <div style="border:1px solid rgba(242,230,220,.18);padding:26px 28px">
+            <div style="font-size:32px;line-height:1;color:#CFA184">“</div>
+            <p style="font-size:18px;line-height:28px;font-weight:300;margin:8px 0 0;color:#F2E6DC">{{ m.texte }}</p>
+            <div style="font-size:12px;line-height:16px;letter-spacing:.24em;text-transform:uppercase;color:rgba(242,230,220,.6);margin-top:16px">{{ m.nom }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="participation" style="border-top:1px solid rgba(242,230,220,.14);padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px);scroll-margin-top:70px">
+  <div style="max-width:820px;margin:0 auto;text-align:center">
+    <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Participation</div>
+    <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:18px 0 0">Votre présence, d'abord</h2>
+    <p style="font-size:20px;line-height:30px;font-weight:300;color:rgba(242,230,220,.9);margin:26px 0 0">Vous voir à Cabezac est déjà le plus beau des cadeaux. Si vous souhaitez néanmoins nous accompagner dans cette nouvelle étape, une enveloppe reste le geste le plus simple : une urne vous attendra le soir du dîner.</p>
+    <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.7);margin:20px 0 0">Ce sera surtout l'occasion de vous remercier de vive voix — et de garder une photo du moment.</p>
+    <div style="margin-top:36px;display:inline-flex;flex-wrap:wrap;gap:14px;justify-content:center">
+      <a href="#" style="border:1px solid #CFA184;color:#CFA184;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:15px 30px;border-radius:2px" style-hover="background:#CFA184;color:#2E1D15">Cagnotte en ligne</a>
+      <span style="align-self:center;font-size:12px;line-height:16px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,230,220,.5)">Lien à ajouter</span>
+    </div>
+  </div>
+</section>
+
+<section id="infos" style="border-top:1px solid rgba(242,230,220,.14);max-width:1180px;margin:0 auto;padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px) 0;scroll-margin-top:70px">
+  <div style="font-size:12px;line-height:16px;letter-spacing:.34em;text-transform:uppercase;color:#CFA184">Informations</div>
+  <h2 style="font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:300;letter-spacing:-.025em;margin:18px 0 44px">Bon à savoir</h2>
+  <div style="border-top:1px solid rgba(242,230,220,.16)">
+    <details style="border-bottom:1px solid rgba(242,230,220,.16);padding:22px 0">
+      <summary style="display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:20px;line-height:28px;font-weight:400;color:#F2E6DC">Où dormir<span class="qp" style="font-size:18px;color:#CFA184;transition:transform .25s">→</span></summary>
+      <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.75);margin:14px 0 0;max-width:64ch">Bize-Minervois, Lézignan-Corbières et Narbonne offrent gîtes, chambres d'hôtes et hôtels. Une sélection d'adresses sera publiée ici.</p>
+    </details>
+    <details style="border-bottom:1px solid rgba(242,230,220,.16);padding:22px 0">
+      <summary style="display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:20px;line-height:28px;font-weight:400;color:#F2E6DC">Comment venir<span class="qp" style="font-size:18px;color:#CFA184;transition:transform .25s">→</span></summary>
+      <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.75);margin:14px 0 0;max-width:64ch">Gare de Narbonne à environ 30 minutes ; aéroports de Béziers, Carcassonne et Montpellier à proximité. La voiture reste le plus simple — pensez au covoiturage.</p>
+    </details>
+    <details style="border-bottom:1px solid rgba(242,230,220,.16);padding:22px 0">
+      <summary style="display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:20px;line-height:28px;font-weight:400;color:#F2E6DC">Les enfants<span class="qp" style="font-size:18px;color:#CFA184;transition:transform .25s">→</span></summary>
+      <p style="font-size:16px;line-height:24px;color:rgba(242,230,220,.75);margin:14px 0 0;max-width:64ch">À préciser par les mariés.</p>
+    </details>
+  </div>
+</section>
+
+<footer style="max-width:1180px;margin:0 auto;padding:clamp(60px,10vw,110px) clamp(18px,5vw,26px) 64px;text-align:center">
+  <div style="font-size:clamp(36px,6vw,72px);line-height:1.05;font-weight:300;letter-spacing:-.03em">Grace <span style="color:#CFA184">&amp;</span> Ouss</div>
+  <div style="width:64px;height:1px;background:rgba(242,230,220,.3);margin:28px auto"></div>
+  <p style="font-size:12px;line-height:18px;letter-spacing:.28em;text-transform:uppercase;color:#F2E6DC;margin:0">27 · 03 · 2027 — Pantin &nbsp;·&nbsp; 01 · 05 · 2027 — Bize-Minervois</p>
+  <p style="font-size:14px;line-height:20px;color:#F2E6DC;margin:24px 0 0">Photographies : Diana Le Photography</p>
+</footer>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#2E1D15"/><text x="50" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="#CFA184">G&amp;O</text></svg>
+</template>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = {
+    now: Date.now(), nom: '', email: '', mot: '', going: null, plus: false, plusNom: '', sent: false,
+    motNom: '', motTexte: '', vw: (typeof window !== 'undefined' ? window.innerWidth : 1200), menuOpen: false,
+    mots: [
+      { nom: 'Exemple · Léa', texte: 'Dix ans que je vous vois vous choisir tous les jours. Vivement le 27 mars.' },
+      { nom: 'Exemple · Karim', texte: 'Prévoyez de la place sur la piste, on arrive en couleurs.' },
+      { nom: 'Exemple · Famille Diallo', texte: 'Tout notre amour pour cette nouvelle étape.' }
+    ]
+  };
+  componentDidMount() {
+    this.t = setInterval(() => this.setState({ now: Date.now() }), 1000);
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+    requestAnimationFrame(this.onResize);
+  }
+  componentWillUnmount() { clearInterval(this.t); window.removeEventListener('resize', this.onResize); }
+  renderVals() {
+    const target = new Date('2027-03-27T14:00:00+01:00').getTime();
+    const d = Math.max(0, target - this.state.now);
+    const p = (n) => String(n).padStart(2, '0');
+    const pill = (on) => `padding:15px 30px;border:1px solid ${on ? '#2E1D15' : 'rgba(46,29,21,.3)'};background:${on ? '#2E1D15' : 'transparent'};color:${on ? '#F2E6DC' : '#2E1D15'};font-size:14px;line-height:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px`;
+    return {
+      wide: this.state.vw >= 860,
+      narrow: this.state.vw < 860,
+      menuOpen: this.state.vw < 860 && this.state.menuOpen,
+      toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      cdJ: String(Math.floor(d / 86400000)),
+      cdH: p(Math.floor(d / 3600000) % 24),
+      cdM: p(Math.floor(d / 60000) % 60),
+      cdS: p(Math.floor(d / 1000) % 60),
+      sent: this.state.sent, notSent: !this.state.sent,
+      nom: this.state.nom, email: this.state.email, mot: this.state.mot,
+      hasPlus: this.state.plus,
+      plusNom: this.state.plusNom,
+      onPlusNom: (e) => this.setState({ plusNom: e.target.value }),
+      setSolo: () => this.setState({ plus: false, plusNom: '' }),
+      setPlus: () => this.setState({ plus: true }),
+      soloStyle: pill(!this.state.plus),
+      plusStyle: pill(this.state.plus),
+      onNom: (e) => this.setState({ nom: e.target.value }),
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onMot: (e) => this.setState({ mot: e.target.value }),
+      setYes: () => this.setState({ going: true }),
+      setNo: () => this.setState({ going: false }),
+      yesStyle: pill(this.state.going === true),
+      noStyle: pill(this.state.going === false),
+      submit: () => this.setState({ sent: true }),
+      mots: this.state.mots,
+      motNom: this.state.motNom,
+      motTexte: this.state.motTexte,
+      onMotNom: (e) => this.setState({ motNom: e.target.value }),
+      onMotTexte: (e) => this.setState({ motTexte: e.target.value }),
+      addMot: () => {
+        const t = this.state.motTexte.trim();
+        if (!t) return;
+        this.setState(s => ({
+          mots: [{ nom: s.motNom.trim() || 'Un invité', texte: t }].concat(s.mots),
+          motNom: '', motTexte: ''
+        }));
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

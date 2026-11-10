@@ -1,0 +1,177 @@
+---
+import { couple, nav, navMobile, ctaRepondre } from '../content/site';
+/* `?url` : Vite sert le fichier tel quel, sans ré-encodage — l'animation
+   survit, et l'URL porte une empreinte (cache d'un an). */
+import coupleWebp from '../assets/img/couple.webp?url';
+import coupleGif from '../assets/img/couple.gif?url';
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-50 border-b border-ivoire/12 bg-brun/72 backdrop-blur-[14px]"
+>
+  <div
+    class="contenu flex items-center justify-between gap-6 px-gutter-nav py-3"
+  >
+    {/* Les paires py-* / -my-* portent la cible tactile à 44px
+        sans changer d'un pixel la hauteur occupée dans le flux. */}
+    <a
+      href="#home"
+      id="logo"
+      class="group relative -my-3 grid h-[44px] place-items-center"
+    >
+      <span
+        data-logo-texte
+        class="text-body-sm font-semibold tracking-logo text-ivoire transition-opacity duration-300"
+        >{couple.logo}</span
+      >
+      {/* Le couple remplace le logo dès qu'on a quitté le hero.
+          Chargé seulement à ce moment-là (voir le script). */}
+      <picture
+        data-logo-gif
+        hidden
+        class="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300"
+      >
+        <source data-src-webp={coupleWebp} type="image/webp" />
+        <img
+          data-src-gif={coupleGif}
+          width="240"
+          height="120"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+          class="h-[40px] w-auto max-w-none"
+        />
+      </picture>
+    </a>
+
+    {/* Nav complète — à partir de 860px */}
+    <nav class="hidden flex-wrap items-center justify-end gap-0.5 nav:flex">
+      {
+        nav.map((lien) => (
+          <a
+            href={lien.href}
+            class="-my-1 px-3.5 py-3 text-body-sm text-ivoire hover:text-accent"
+          >
+            {lien.libelle}
+          </a>
+        ))
+      }
+      <a
+        href={ctaRepondre.href}
+        class="relative ml-2.5 rounded-btn border border-accent px-5 py-[9px] text-body-sm font-semibold text-accent after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-[''] hover:bg-accent hover:text-brun"
+        >{ctaRepondre.libelle}</a
+      >
+    </nav>
+
+    {/* Répondre + burger — sous 860px */}
+    <div class="flex items-center gap-2.5 nav:hidden">
+      <a
+        href={ctaRepondre.href}
+        class="relative rounded-btn border border-accent px-4 py-[11px] text-[13px]/[18px] font-semibold tracking-[.04em] text-accent after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-[''] hover:bg-accent hover:text-brun"
+        >{ctaRepondre.libelle}</a
+      >
+      <button
+        type="button"
+        id="burger"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        class="grid h-[46px] w-[46px] cursor-pointer place-items-center gap-[5px] rounded-btn border border-ivoire/30 bg-transparent p-0"
+      >
+        <span class="block h-px w-5 bg-ivoire"></span>
+        <span class="block h-px w-5 bg-ivoire"></span>
+        <span class="block h-px w-5 bg-ivoire"></span>
+      </button>
+    </div>
+  </div>
+
+  {/* Panneau déroulant */}
+  <nav
+    id="menu-mobile"
+    hidden
+    class="grid gap-0.5 border-t border-ivoire/14 px-gutter-nav pt-2 pb-[18px] nav:hidden"
+  >
+    {
+      navMobile.map((lien, i) => (
+        <a
+          href={lien.href}
+          data-ferme-menu
+          class:list={[
+            'px-1 py-[13px] text-nav text-ivoire hover:text-accent',
+            i < navMobile.length - 1 && 'border-b border-ivoire/10',
+          ]}
+        >
+          {lien.libelle}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<script>
+  /* ───────── Le couple apparaît une fois le hero passé ─────────
+     Repris du site Emma. Le GIF n'est téléchargé qu'au premier
+     basculement, et jamais si le visiteur demande moins d'animations. */
+  const logo = document.getElementById('logo');
+  const texte = logo?.querySelector<HTMLElement>('[data-logo-texte]');
+  const gif = logo?.querySelector<HTMLElement>('[data-logo-gif]');
+
+  if (logo && texte && gif && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const source = gif.querySelector('source')!;
+    const image = gif.querySelector('img')!;
+    let charge = false;
+    let affiche = false;
+
+    const basculer = () => {
+      const passe = scrollY > 60;
+      if (passe === affiche) return;
+      affiche = passe;
+
+      if (passe && !charge) {
+        charge = true;
+        source.srcset = source.dataset.srcWebp!;
+        image.src = image.dataset.srcGif!;
+      }
+
+      gif.hidden = !passe;
+      // Le navigateur doit voir l'élément affiché avant de pouvoir animer.
+      requestAnimationFrame(() => {
+        gif.style.opacity = passe ? '1' : '0';
+        texte.style.opacity = passe ? '0' : '1';
+      });
+    };
+
+    addEventListener('scroll', basculer, { passive: true });
+    basculer();
+  }
+
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('menu-mobile');
+
+  if (burger && menu) {
+    const ferme = () => {
+      menu.hidden = true;
+      burger.setAttribute('aria-expanded', 'false');
+    };
+
+    burger.addEventListener('click', () => {
+      const ouvert = menu.hidden;
+      menu.hidden = !ouvert;
+      burger.setAttribute('aria-expanded', String(ouvert));
+    });
+
+    menu.querySelectorAll('[data-ferme-menu]').forEach((lien) => {
+      lien.addEventListener('click', ferme);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') ferme();
+    });
+
+    // Au-dessus de 860px la nav complète reprend la main.
+    const mq = window.matchMedia('(min-width: 860px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) ferme();
+    });
+  }
+</script>

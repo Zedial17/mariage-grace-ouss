@@ -1,0 +1,301 @@
+---
+import { participation } from '../content/site';
+
+const { coffret, paypal, virement } = participation;
+
+const champ =
+  'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none';
+const label = 'text-caption tracking-cap text-accent uppercase';
+---
+
+<section
+  id="participation"
+  class="scroll-mt-[70px] border-t border-ivoire/14 px-gutter py-section"
+>
+  <div class="mx-auto max-w-[820px] text-center">
+    <div class="text-caption tracking-label text-accent uppercase">
+      {participation.label}
+    </div>
+    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+      {participation.titre}
+    </h2>
+    <p class="mt-[26px] mb-0 text-lead font-light text-ivoire/90">
+      {participation.texte}
+    </p>
+    <p class="mt-5 mb-0 text-body text-ivoire/70">{participation.precision}</p>
+  </div>
+
+  {/* ───────── Le coffret ───────── */}
+  <div class="mx-auto mt-12 max-w-[640px]">
+    <button
+      type="button"
+      id="coffret-ouvrir"
+      class="group mx-auto flex w-full cursor-pointer flex-col items-center gap-5 border border-ivoire/18 bg-transparent px-6 py-10 text-center hover:bg-accent/5"
+      aria-expanded="false"
+      aria-controls="coffret-contenu"
+    >
+      {/* Picto coffret, au trait, dans la même famille que le picto château */}
+      <svg
+        viewBox="0 0 80 72"
+        width="72"
+        height="65"
+        fill="none"
+        stroke="#CFA184"
+        stroke-width="1.4"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="transition-transform duration-300 group-hover:-translate-y-0.5"
+      >
+        <g id="coffret-couvercle" class="origin-[40px_36px] transition-transform duration-[380ms]">
+          <rect x="8" y="22" width="64" height="14" rx="1.5"></rect>
+          <line x1="37" y1="22" x2="37" y2="36"></line>
+          <line x1="43" y1="22" x2="43" y2="36"></line>
+          <path d="M40 22 C38 18 26 6 29 3 C32 1 38 12 40 22Z" stroke-linecap="round"
+          ></path>
+          <path d="M40 22 C42 18 54 6 51 3 C48 1 42 12 40 22Z" stroke-linecap="round"
+          ></path>
+        </g>
+        <rect x="8" y="36" width="64" height="30" rx="1.5"></rect>
+        <line x1="37" y1="36" x2="37" y2="66"></line>
+        <line x1="43" y1="43" x2="43" y2="66"></line>
+      </svg>
+      <span>
+        <span class="block text-ligne font-light text-ivoire">{coffret.titre}</span>
+        <span class="mt-2 block text-body text-ivoire/70">{coffret.sousTitre}</span>
+      </span>
+      <span
+        class="mt-1 text-caption tracking-bouton text-accent uppercase group-hover:text-ivoire"
+        >{coffret.ouvrir}</span
+      >
+    </button>
+
+    {/* ───────── Les deux moyens ───────── */}
+    <div id="coffret-contenu" hidden class="border border-ivoire/18">
+      {/* PayPal */}
+      <div class="border-b border-ivoire/18">
+        <div class="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
+          <span class="text-ligne font-light text-ivoire">{paypal.titre}</span>
+          <span class="text-caption tracking-cap text-accent uppercase">
+            {paypal.sousTitre}
+          </span>
+        </div>
+        <div
+          class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3 px-[22px] pb-[22px]"
+        >
+          <span class={label}>{paypal.lienLabel}</span>
+          <code
+            id="paypal-lien"
+            class="font-sans text-body-tight text-ivoire">{paypal.lien}</code
+          >
+          <button
+            type="button"
+            id="paypal-copier"
+            data-copier="paypal-lien"
+            data-libelle={paypal.copier}
+            data-copie={paypal.copie}
+            class="cursor-pointer rounded-btn border border-ivoire/30 bg-transparent px-3.5 py-1.5 text-caption tracking-cap text-ivoire/70 uppercase hover:border-ivoire hover:text-ivoire"
+            >{paypal.copier}</button
+          >
+          <a
+            href={paypal.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ml-auto rounded-btn border border-accent px-[22px] py-2.5 text-caption font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun"
+            >{paypal.bouton}</a
+          >
+        </div>
+      </div>
+
+      {/* Virement */}
+      <div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
+          <span class="text-ligne font-light text-ivoire">{virement.titre}</span>
+          <span class="text-caption tracking-cap text-accent uppercase">
+            {virement.sousTitre}
+          </span>
+        </div>
+        <p class="mt-3 mb-0 max-w-[52ch] px-[22px] text-body text-ivoire/70">
+          {virement.texte}
+        </p>
+
+        <div id="virement-merci" hidden class="px-[22px] py-[22px]">
+          <p class="m-0 text-body text-accent">{virement.confirmation}</p>
+        </div>
+
+        <form id="virement-form" novalidate class="grid gap-[18px] px-[22px] py-[22px]">
+          <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label>
+              Ne pas remplir
+              <input type="text" name="site_web" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[18px]">
+            <label class="flex flex-col gap-2">
+              <span class={label}>{virement.champs.nom}</span>
+              <input
+                type="text"
+                name="nom"
+                autocomplete="name"
+                maxlength="120"
+                required
+                class={champ}
+              />
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class={label}>{virement.champs.contact}</span>
+              <input
+                type="text"
+                name="contact"
+                maxlength="160"
+                required
+                class={champ}
+              />
+            </label>
+          </div>
+
+          <p id="virement-erreur" hidden role="alert" class="m-0 text-body-sm text-accent">
+          </p>
+
+          <div>
+            <button
+              type="submit"
+              class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun disabled:cursor-wait disabled:opacity-60"
+              >{virement.champs.envoyer}</button
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-6 text-center">
+      <button
+        type="button"
+        id="coffret-refermer"
+        hidden
+        class="cursor-pointer border-0 bg-transparent text-caption tracking-cap text-ivoire/50 uppercase hover:text-ivoire"
+        >{coffret.refermer}</button
+      >
+    </div>
+  </div>
+</section>
+
+<script>
+  import { participation, reseau } from '../content/site';
+
+  /* ───────── Le coffret s'ouvre ───────── */
+  const ouvrir = document.getElementById('coffret-ouvrir');
+  const contenu = document.getElementById('coffret-contenu');
+  const refermer = document.getElementById('coffret-refermer');
+
+  if (ouvrir && contenu && refermer) {
+    const couvercle = ouvrir.querySelector<SVGGElement>('#coffret-couvercle');
+    const anime = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    ouvrir.addEventListener('click', () => {
+      // Le couvercle se soulève, puis le coffret cède la place au contenu.
+      if (couvercle && anime) couvercle.style.transform = 'translateY(-14px) rotate(-8deg)';
+      setTimeout(
+        () => {
+          ouvrir.hidden = true;
+          contenu.hidden = false;
+          refermer.hidden = false;
+          ouvrir.setAttribute('aria-expanded', 'true');
+          contenu.querySelector<HTMLElement>('a, button, input')?.focus();
+        },
+        anime ? 380 : 0,
+      );
+    });
+
+    refermer.addEventListener('click', () => {
+      contenu.hidden = true;
+      refermer.hidden = true;
+      ouvrir.hidden = false;
+      ouvrir.setAttribute('aria-expanded', 'false');
+      if (couvercle) couvercle.style.transform = '';
+      ouvrir.focus();
+    });
+  }
+
+  /* ───────── Copier le lien PayPal ───────── */
+  document.querySelectorAll<HTMLButtonElement>('[data-copier]').forEach((bouton) => {
+    bouton.addEventListener('click', async () => {
+      const source = document.getElementById(bouton.dataset.copier!);
+      if (!source) return;
+      const texte = source.textContent?.trim() ?? '';
+
+      const confirme = () => {
+        bouton.textContent = bouton.dataset.copie!;
+        bouton.classList.add('border-accent', 'text-accent');
+        setTimeout(() => {
+          bouton.textContent = bouton.dataset.libelle!;
+          bouton.classList.remove('border-accent', 'text-accent');
+        }, 2000);
+      };
+
+      try {
+        await navigator.clipboard.writeText(texte);
+        confirme();
+      } catch {
+        // Contexte non sécurisé ou permission refusée : on sélectionne le
+        // texte pour que la copie manuelle reste possible.
+        const plage = document.createRange();
+        plage.selectNodeContents(source);
+        const selection = window.getSelection();
+        selection?.removeAllRanges();
+        selection?.addRange(plage);
+      }
+    });
+  });
+
+  /* ───────── Demande de RIB ───────── */
+  const form = document.getElementById('virement-form') as HTMLFormElement | null;
+  const merci = document.getElementById('virement-merci');
+  const erreur = document.getElementById('virement-erreur');
+
+  if (form && merci && erreur) {
+    const bouton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    const direErreur = (message: string) => {
+      erreur.textContent = message;
+      erreur.hidden = false;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      erreur.hidden = true;
+
+      const brut = Object.fromEntries(new FormData(form).entries());
+      const nom = String(brut.nom ?? '').trim();
+      const contact = String(brut.contact ?? '').trim();
+
+      if (nom.length < 2) return direErreur(participation.virement.erreurs.nom);
+      if (contact.length < 4) return direErreur(participation.virement.erreurs.contact);
+
+      bouton.disabled = true;
+      const libelle = bouton.textContent;
+      bouton.textContent = reseau.enCours;
+
+      try {
+        const reponse = await fetch('/api/virement', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ...brut, nom, contact }),
+        });
+        const corps = await reponse.json().catch(() => ({}));
+
+        if (reponse.ok && corps.ok) {
+          form.hidden = true;
+          merci.hidden = false;
+          return;
+        }
+        direErreur(corps.message ?? reseau.echec);
+      } catch {
+        direErreur(reseau.echec);
+      } finally {
+        bouton.disabled = false;
+        bouton.textContent = libelle;
+      }
+    });
+  }
+</script>

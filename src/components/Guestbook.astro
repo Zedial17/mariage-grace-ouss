@@ -1,0 +1,302 @@
+---
+import { livreDor } from '../content/site';
+import { messagesApprouves } from '../lib/sheets';
+
+const champ =
+  'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none';
+const label = 'text-caption tracking-cap text-accent uppercase';
+
+/* Instantané pris à la compilation : la liste est lisible sans JavaScript.
+   Le script ci-dessous la rafraîchit au chargement et pendant la visite. */
+const messages = await messagesApprouves();
+const numero = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+<section
+  id="mots"
+  class="scroll-mt-[70px] border-t border-ivoire/14 py-section"
+>
+  <div class="contenu px-gutter">
+    <div
+      class="flex flex-wrap items-end justify-between gap-x-10 gap-y-6"
+    >
+      <div>
+        <div class="text-caption tracking-label text-accent uppercase">
+          {livreDor.label}
+        </div>
+        <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+          {livreDor.titre}
+        </h2>
+        <p class="mt-[22px] mb-0 max-w-[44ch] text-body text-ivoire/78">
+          {livreDor.texte}
+        </p>
+      </div>
+
+      {/* Compteur + flèches du rail */}
+      <div class="flex items-center gap-4">
+        <span
+          id="mots-compteur"
+          aria-live="polite"
+          class="text-caption tracking-cap text-ivoire/55 uppercase tabular-nums"
+        ></span>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-rail="-1"
+            aria-label={livreDor.rail.precedent}
+            class="grid h-11 w-11 cursor-pointer place-items-center rounded-btn border border-ivoire/25 bg-transparent text-accent hover:border-accent disabled:opacity-30"
+            >←</button
+          >
+          <button
+            type="button"
+            data-rail="1"
+            aria-label={livreDor.rail.suivant}
+            class="grid h-11 w-11 cursor-pointer place-items-center rounded-btn border border-ivoire/25 bg-transparent text-accent hover:border-accent disabled:opacity-30"
+            >→</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* ───────── Le rail de cartes ─────────
+      Défilement horizontal avec accrochage, en CSS pur : pas de
+      bibliothèque d'animation, et la molette comme le doigt fonctionnent. */}
+  <div
+    id="mots-rail"
+    tabindex="0"
+    class="mt-bloc-mots flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-gutter pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+  >
+    {
+      messages.map((message, i) => (
+        <article class="flex w-[min(100%,340px)] shrink-0 snap-start flex-col border border-ivoire/18 px-7 py-[26px]">
+          <div class="flex items-baseline justify-between gap-4">
+            <span class="text-caption tracking-cap text-ivoire/45 tabular-nums">
+              {numero(i)}
+            </span>
+            <span class="text-[18px] text-accent" aria-hidden="true">
+              ◇
+            </span>
+          </div>
+          <p class="mt-5 mb-0 grow text-mot font-light text-ivoire">
+            {message.texte}
+          </p>
+          <div class="mt-6 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-t border-ivoire/14 pt-4">
+            <span class="text-caption tracking-cap text-ivoire/60 uppercase">
+              {message.nom}
+            </span>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <p
+    id="mots-vide"
+    hidden={messages.length > 0}
+    class="contenu mt-bloc-mots mb-0 px-gutter text-body text-ivoire/55"
+  >
+    {livreDor.vide}
+  </p>
+
+  {/* ───────── Déposer un mot ───────── */}
+  <div class="contenu mt-bloc-mots px-gutter">
+    <form
+      id="mots-form"
+      novalidate
+      class="grid max-w-[560px] grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-x-6 gap-y-[18px] border-t border-ivoire/16 pt-8"
+    >
+      <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Ne pas remplir
+          <input type="text" name="site_web" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
+
+      <label class="flex flex-col gap-2">
+        <span class={label}>{livreDor.champs.nom}</span>
+        <input type="text" name="nom" autocomplete="name" maxlength="120" class={champ} />
+      </label>
+
+      <label class="col-span-full flex flex-col gap-2">
+        <span class={label}>{livreDor.champs.message}</span>
+        <textarea
+          name="texte"
+          rows="2"
+          maxlength="2000"
+          required
+          aria-describedby="err-mot"
+          class:list={[champ, 'resize-y']}></textarea>
+        <span id="err-mot" hidden role="alert" class="text-body-sm text-accent"></span>
+      </label>
+
+      <div class="col-span-full">
+        <button
+          type="submit"
+          class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun disabled:cursor-wait disabled:opacity-60"
+          >{livreDor.champs.envoyer}</button
+        >
+      </div>
+    </form>
+  </div>
+</section>
+
+<template id="mots-gabarit">
+  <article
+    class="flex w-[min(100%,340px)] shrink-0 snap-start flex-col border border-ivoire/18 px-7 py-[26px]"
+  >
+    <div class="flex items-baseline justify-between gap-4">
+      <span
+        class="text-caption tracking-cap text-ivoire/45 tabular-nums"
+        data-numero></span>
+      <span class="text-[18px] text-accent" aria-hidden="true">◇</span>
+    </div>
+    <p class="mt-5 mb-0 grow text-mot font-light text-ivoire" data-texte></p>
+    <div
+      class="mt-6 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-t border-ivoire/14 pt-4"
+    >
+      <span class="text-caption tracking-cap text-ivoire/60 uppercase" data-nom></span>
+      <span
+        class="text-caption tracking-note text-accent/80 uppercase"
+        data-attente
+        hidden></span>
+    </div>
+  </article>
+</template>
+
+<script>
+  import { lireMessage, validerMessage, aDesErreurs } from '../lib/validation';
+  import { livreDor, reseau } from '../content/site';
+
+  const form = document.getElementById('mots-form') as HTMLFormElement | null;
+  const rail = document.getElementById('mots-rail');
+  const vide = document.getElementById('mots-vide');
+  const compteur = document.getElementById('mots-compteur');
+  const gabarit = document.getElementById('mots-gabarit') as HTMLTemplateElement | null;
+  const erreur = document.getElementById('err-mot');
+
+  if (form && rail && vide && compteur && gabarit && erreur) {
+    const bouton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const fleches = [...document.querySelectorAll<HTMLButtonElement>('[data-rail]')];
+
+    const numero = (i: number) => String(i + 1).padStart(2, '0');
+
+    const carte = (nom: string, texte: string, index: number, enAttente: boolean) => {
+      const noeud = gabarit.content.cloneNode(true) as DocumentFragment;
+      noeud.querySelector<HTMLElement>('[data-numero]')!.textContent = numero(index);
+      noeud.querySelector<HTMLElement>('[data-texte]')!.textContent = texte;
+      noeud.querySelector<HTMLElement>('[data-nom]')!.textContent = nom;
+      const attente = noeud.querySelector<HTMLElement>('[data-attente]')!;
+      attente.hidden = !enAttente;
+      if (enAttente) attente.textContent = `· ${livreDor.mentionAttente}`;
+      return noeud;
+    };
+
+    /** Compteur, état vide et flèches, d'après le contenu du rail. */
+    const majEtat = () => {
+      const cartes = rail.querySelectorAll('article');
+      const n = cartes.length;
+      vide.hidden = n > 0;
+      compteur.textContent = n
+        ? `${n} ${n > 1 ? livreDor.rail.plusieurs : livreDor.rail.un}`
+        : '';
+
+      // Les flèches ne servent que si le rail déborde réellement.
+      const deborde = rail.scrollWidth > rail.clientWidth + 4;
+      fleches.forEach((f) => {
+        f.disabled = !deborde;
+        f.hidden = n === 0;
+      });
+    };
+
+    fleches.forEach((fleche) =>
+      fleche.addEventListener('click', () => {
+        const premiere = rail.querySelector('article');
+        const pas = premiere ? premiere.getBoundingClientRect().width + 16 : 320;
+        rail.scrollBy({ left: pas * Number(fleche.dataset.rail), behavior: 'smooth' });
+      }),
+    );
+
+    /** Recharge les messages publiés sans toucher à ceux en attente. */
+    const rafraichir = async () => {
+      try {
+        const reponse = await fetch('/api/messages', {
+          headers: { accept: 'application/json' },
+        });
+        if (!reponse.ok) return;
+        const corps = await reponse.json();
+        if (!corps.ok || !Array.isArray(corps.messages)) return;
+
+        const enAttente = [...rail.querySelectorAll('article')].filter(
+          (el) => el.querySelector('[data-attente]')?.hasAttribute('hidden') === false,
+        );
+
+        rail.replaceChildren();
+        enAttente.forEach((el) => rail.append(el));
+        corps.messages.forEach((m: { nom: string; texte: string }, i: number) =>
+          rail.append(carte(m.nom, m.texte, enAttente.length + i, false)),
+        );
+        majEtat();
+      } catch {
+        /* Hors ligne : on garde l'instantané rendu à la compilation. */
+      }
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      erreur.hidden = true;
+
+      const brut = Object.fromEntries(new FormData(form).entries());
+      const donnees = lireMessage(brut);
+
+      const erreurs = validerMessage(donnees);
+      if (aDesErreurs(erreurs)) {
+        erreur.textContent = erreurs.texte!;
+        erreur.hidden = false;
+        (form.elements.namedItem('texte') as HTMLTextAreaElement).focus();
+        return;
+      }
+
+      bouton.disabled = true;
+      const libelle = bouton.textContent;
+      bouton.textContent = reseau.enCours;
+
+      try {
+        const reponse = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ...brut, ...donnees }),
+        });
+        const corps = await reponse.json().catch(() => ({}));
+
+        if (reponse.ok && corps.ok) {
+          // Affichage local : le message n'est pas encore publié.
+          rail.prepend(carte(donnees.nom, donnees.texte, 0, true));
+          majEtat();
+          rail.scrollTo({ left: 0, behavior: 'smooth' });
+          form.reset();
+          return;
+        }
+
+        erreur.textContent = corps.erreurs?.texte ?? corps.message ?? reseau.echec;
+        erreur.hidden = false;
+      } catch {
+        erreur.textContent = reseau.echec;
+        erreur.hidden = false;
+      } finally {
+        bouton.disabled = false;
+        bouton.textContent = libelle;
+      }
+    });
+
+    let minuteur = 0;
+    const majPlusTard = () => {
+      clearTimeout(minuteur);
+      minuteur = window.setTimeout(majEtat, 150);
+    };
+
+    requestAnimationFrame(majEtat);
+    addEventListener('resize', majPlusTard, { passive: true });
+    rafraichir();
+  }
+</script>

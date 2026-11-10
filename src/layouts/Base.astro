@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+import soieAvif from '../assets/img/soie.avif';
+import { meta, couple } from '../content/site';
+
+interface Props {
+  /** Titre de la page ; celui du site par défaut. */
+  titre?: string;
+  description?: string;
+}
+
+const { titre = meta.titre, description = meta.description } = Astro.props;
+
+/* URLs absolues : les réseaux et messageries ne lisent pas les chemins
+   relatifs. Le domaine vient de `site` dans astro.config.mjs. */
+const base = Astro.site ?? new URL('http://localhost:4321');
+const canonique = new URL(Astro.url.pathname, base);
+const imagePartage = new URL(meta.partage.image, base);
+---
+
+<!doctype html>
+<html lang={meta.langue}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{titre}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonique} />
+
+    {/* Site privé : hors des moteurs de recherche. N'empêche pas les
+        aperçus de partage dans les messageries. */}
+    {meta.noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Open Graph — WhatsApp, Messenger, LinkedIn, Signal… */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${couple.prenomA} & ${couple.prenomB}`} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={titre} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonique} />
+    <meta property="og:image" content={imagePartage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content={String(meta.partage.largeur)} />
+    <meta property="og:image:height" content={String(meta.partage.hauteur)} />
+    <meta property="og:image:alt" content={meta.partage.alt} />
+
+    {/* Twitter / X — reprend la grande carte */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titre} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagePartage} />
+    <meta name="twitter:image:alt" content={meta.partage.alt} />
+
+    {/* Icônes */}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2E1D15" />
+    <meta name="apple-mobile-web-app-title" content={couple.logo} />
+
+    {/* La texture de fond passe par le pipeline d'assets : son URL porte une
+        empreinte, donc un cache d'un an. */}
+    <link rel="preload" as="image" href={soieAvif.src} type="image/avif" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
