@@ -1,5 +1,6 @@
 ---
 import { participation } from '../content/site';
+import PaypalIcon from './icons/PaypalIcon.astro';
 
 const { coffret, paypal, virement } = participation;
 
@@ -73,8 +74,16 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     <div id="coffret-contenu" hidden class="border border-ivoire/18">
       {/* PayPal */}
       <div class="border-b border-ivoire/18">
-        <div class="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
-          <span class="text-ligne font-light text-ivoire">{paypal.titre}</span>
+        <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
+          <span class="flex items-center gap-3">
+            {/* Le bleu nuit du logo disparaît sur le brun : on le pose sur
+                une pastille ivoire, comme le veulent les chartes de marque
+                sur fond sombre. */}
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-btn bg-ivoire">
+              <PaypalIcon class="h-5 w-auto" />
+            </span>
+            <span class="text-ligne font-light text-ivoire">{paypal.titre}</span>
+          </span>
           <span class="text-caption tracking-cap text-accent uppercase">
             {paypal.sousTitre}
           </span>
