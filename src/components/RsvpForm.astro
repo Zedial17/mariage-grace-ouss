@@ -266,6 +266,7 @@ const aide = 'text-body-sm text-brun/72';
 
 <script>
   import { validerRsvp, validerEtape, lireRsvp, aDesErreurs } from '../lib/validation';
+  import { appeler, classeurConfigure } from '../lib/classeur';
   import { reseau, rsvp as texte } from '../content/site';
 
   const form = document.getElementById('rsvp-form') as HTMLFormElement | null;
@@ -397,23 +398,34 @@ const aide = 'text-body-sm text-brun/72';
       const libelle = suivant.textContent;
       suivant.textContent = reseau.enCours;
 
-      try {
-        const reponse = await fetch('/api/rsvp', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ ...brut, ...donnees }),
-        });
-        const corps = await reponse.json().catch(() => ({}));
+      // Piège à robots : on fait comme si, sans rien envoyer.
+      if (String(brut.site_web ?? '')) {
+        bloc.hidden = true;
+        merci.hidden = false;
+        return;
+      }
 
-        if (reponse.ok && corps.ok) {
+      try {
+        const corps = await appeler('rsvp', {
+          nom: donnees.nom,
+          email: donnees.email,
+          ville: donnees.ville,
+          reponse: donnees.reponse,
+          accompagnant: donnees.accompagnant,
+          nom_accompagnant: donnees.accompagnant ? donnees.nom_accompagnant : '',
+          message: donnees.message,
+        });
+
+        if (corps.ok) {
           bloc.hidden = true;
           merci.hidden = false;
           merci.focus();
           return;
         }
-        if (corps.erreurs && afficheErreurs(corps.erreurs)) return;
 
-        echec.textContent = corps.message ?? reseau.echec;
+        echec.textContent = classeurConfigure
+          ? ((corps as { message?: string }).message ?? reseau.echec)
+          : reseau.indisponible;
         echec.hidden = false;
       } catch {
         echec.textContent = reseau.echec;

@@ -11,11 +11,17 @@ interface Props {
 
 const { titre = meta.titre, description = meta.description } = Astro.props;
 
+/* Sur GitHub Pages le site est servi depuis un sous-dossier : tous les
+   chemins absolus doivent le porter. BASE_URL n'a pas toujours de barre
+   oblique finale, d'où la normalisation. */
+const racine = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const chemin = (fichier: string) => racine + fichier.replace(/^\//, '');
+
 /* URLs absolues : les réseaux et messageries ne lisent pas les chemins
    relatifs. Le domaine vient de `site` dans astro.config.mjs. */
-const base = Astro.site ?? new URL('http://localhost:4321');
-const canonique = new URL(Astro.url.pathname, base);
-const imagePartage = new URL(meta.partage.image, base);
+const origine = Astro.site ?? new URL('http://localhost:4321');
+const canonique = new URL(Astro.url.pathname, origine);
+const imagePartage = new URL(chemin(meta.partage.image), origine);
 ---
 
 <!doctype html>
@@ -53,8 +59,8 @@ const imagePartage = new URL(meta.partage.image, base);
     <meta name="twitter:image:alt" content={meta.partage.alt} />
 
     {/* Icônes */}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href={chemin("favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={chemin("apple-touch-icon.png")} />
     <meta name="theme-color" content="#2E1D15" />
     <meta name="apple-mobile-web-app-title" content={couple.logo} />
 

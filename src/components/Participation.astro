@@ -182,6 +182,7 @@ const label = 'text-caption tracking-cap text-accent uppercase';
 
 <script>
   import { participation, reseau } from '../content/site';
+  import { appeler, classeurConfigure } from '../lib/classeur';
 
   /* ───────── Le coffret s'ouvre ───────── */
   const ouvrir = document.getElementById('coffret-ouvrir');
@@ -276,20 +277,25 @@ const label = 'text-caption tracking-cap text-accent uppercase';
       const libelle = bouton.textContent;
       bouton.textContent = reseau.enCours;
 
-      try {
-        const reponse = await fetch('/api/virement', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ ...brut, nom, contact }),
-        });
-        const corps = await reponse.json().catch(() => ({}));
+      if (String(brut.site_web ?? '')) {
+        form.hidden = true;
+        merci.hidden = false;
+        return;
+      }
 
-        if (reponse.ok && corps.ok) {
+      try {
+        const corps = await appeler('virement', { nom, contact });
+
+        if (corps.ok) {
           form.hidden = true;
           merci.hidden = false;
           return;
         }
-        direErreur(corps.message ?? reseau.echec);
+        direErreur(
+          classeurConfigure
+            ? ((corps as { message?: string }).message ?? reseau.echec)
+            : reseau.indisponible,
+        );
       } catch {
         direErreur(reseau.echec);
       } finally {

@@ -1,12 +1,9 @@
 ---
 import { convives as texte } from '../content/site';
 import { CARTE, TERRES, projeter } from '../content/monde';
-import { convives } from '../lib/convives';
 
-/* Instantané pris à la compilation : la carte est visible sans JavaScript.
-   Le script la rafraîchit ensuite depuis /api/convives. */
-const donnees = await convives();
-
+/* Site statique : la carte part vide et se remplit au chargement, depuis
+   le classeur (voir le script en bas de ce fichier). */
 const arrivee = projeter(texte.destination.lng, texte.destination.lat);
 
 /* Le tracé n'occupe pas tout le viewBox : on recadre sur la bande utile
@@ -15,13 +12,10 @@ const HAUT = 30;
 const BAS = 470;
 const viewBox = `0 ${HAUT} ${CARTE.largeur} ${BAS - HAUT}`;
 
-/** Rayon d'un point : croît avec le nombre, sans jamais écraser la carte. */
-const rayon = (personnes: number) => Math.min(4 + Math.sqrt(personnes) * 2.6, 14);
-
 const compteurs = [
-  { valeur: donnees.personnes, libelle: texte.compteurs.personnes },
-  { valeur: donnees.villes.length, libelle: texte.compteurs.villes },
-  { valeur: donnees.pays, libelle: texte.compteurs.pays },
+  texte.compteurs.personnes,
+  texte.compteurs.villes,
+  texte.compteurs.pays,
 ];
 ---
 
@@ -45,16 +39,16 @@ const compteurs = [
       class="mt-bloc grid grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))] gap-6 border-y border-ivoire/14 py-compte"
     >
       {
-        compteurs.map((c, i) => (
+        compteurs.map((libelle, i) => (
           <div>
             <div
               class="text-compte font-light tracking-[-.02em] tabular-nums"
               data-compteur={i}
             >
-              {c.valeur}
+              0
             </div>
             <div class="text-caption tracking-compte text-accent uppercase">
-              {c.libelle}
+              {libelle}
             </div>
           </div>
         ))
@@ -70,7 +64,7 @@ const compteurs = [
         viewBox={viewBox}
         class="block w-full"
         role="img"
-        aria-label={`${texte.titre} — ${donnees.personnes} ${texte.compteurs.personnes}`}
+        aria-label={texte.titre}
         data-arrivee-x={arrivee[0]}
         data-arrivee-y={arrivee[1]}
       >
@@ -84,39 +78,15 @@ const compteurs = [
         ></path>
 
         {/* Les traits de convergence, puis les villes */}
-        <g id="carte-traits" stroke="#CFA184" stroke-opacity="0.3" stroke-width="0.7" fill="none">
-          {
-            donnees.villes.map((v) => {
-              const [x, y] = projeter(v.lng, v.lat);
-              return <line x1={x} y1={y} x2={arrivee[0]} y2={arrivee[1]} />;
-            })
-          }
-        </g>
+        <g
+          id="carte-traits"
+          stroke="#CFA184"
+          stroke-opacity="0.3"
+          stroke-width="0.7"
+          fill="none"
+        ></g>
 
-        <g id="carte-villes">
-          {
-            donnees.villes.map((v) => {
-              const [x, y] = projeter(v.lng, v.lat);
-              const libelle = `${v.nom} · ${v.personnes} ${
-                v.personnes > 1 ? texte.unite.plusieurs : texte.unite.un
-              }`;
-              return (
-                <g>
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={rayon(v.personnes)}
-                    fill="#CFA184"
-                    fill-opacity="0.16"
-                  />
-                  <circle cx={x} cy={y} r="2.2" fill="#CFA184">
-                    <title>{libelle}</title>
-                  </circle>
-                </g>
-              );
-            })
-          }
-        </g>
+        <g id="carte-villes"></g>
 
         {/* Cabezac — le losange de la charte */}
         <g id="carte-arrivee" transform={`translate(${arrivee[0]} ${arrivee[1]})`}>
@@ -135,7 +105,7 @@ const compteurs = [
         class="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-caption tracking-cap text-ivoire/55 uppercase"
       >
         <span>{texte.legende}</span>
-        <span id="carte-vide" hidden={donnees.villes.length > 0} class="text-accent">
+        <span id="carte-vide" class="text-accent">
           {texte.vide}
         </span>
       </figcaption>
@@ -146,6 +116,7 @@ const compteurs = [
 <script>
   import { projeter } from '../content/monde';
   import { convives as texte } from '../content/site';
+  import { appeler, type Ville } from '../lib/classeur';
 
   const svg = document.getElementById('carte-convives');
   const traits = document.getElementById('carte-traits');
@@ -157,8 +128,6 @@ const compteurs = [
     const ax = Number(svg.dataset.arriveeX);
     const ay = Number(svg.dataset.arriveeY);
     const rayon = (n: number) => Math.min(4 + Math.sqrt(n) * 2.6, 14);
-
-    type Ville = { nom: string; pays: string | null; lat: number; lng: number; personnes: number };
 
     const dessiner = (liste: Ville[]) => {
       traits.replaceChildren();
@@ -210,18 +179,12 @@ const compteurs = [
     /* Rafraîchit la carte quand la section approche, pas avant : inutile
        de solliciter le classeur pour un visiteur qui n'ira pas jusque-là. */
     const charger = async () => {
-      try {
-        const reponse = await fetch('/api/convives', {
-          headers: { accept: 'application/json' },
-        });
-        if (!reponse.ok) return;
-        const corps = await reponse.json();
-        if (!corps.ok || !Array.isArray(corps.villes)) return;
-        dessiner(corps.villes);
-        majCompteurs([corps.personnes, corps.villes.length, corps.pays]);
-      } catch {
-        /* Hors ligne : l'instantané de la compilation reste affiché. */
-      }
+      const corps = await appeler<{ villes: Ville[]; personnes: number; pays: number }>(
+        'convives',
+      );
+      if (!corps.ok || !Array.isArray(corps.villes)) return;
+      dessiner(corps.villes);
+      majCompteurs([corps.personnes, corps.villes.length, corps.pays]);
     };
 
     const section = document.getElementById('convives')!;

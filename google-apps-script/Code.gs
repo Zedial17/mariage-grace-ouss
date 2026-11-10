@@ -57,6 +57,19 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
+    // Le site est entièrement statique : il appelle ce script depuis le
+    // navigateur, donc l'URL est publique. Les actions ci-dessous sont
+    // celles qu'un invité a le droit de déclencher ; elles n'exposent
+    // aucune donnée nominative et ne peuvent rien effacer.
+    switch (data.action) {
+      case 'rsvp':     return ajouterRsvp(data);
+      case 'message':  return ajouterMessage(data);
+      case 'messages': return listerMessagesPublies();
+      case 'convives': return listerConvives();
+      case 'virement': return demandeVirement(data);
+    }
+
+    // Tout le reste touche aux données brutes : jeton obligatoire.
     if (!JETON || JETON.indexOf('REMPLACER') === 0) {
       return json({ ok: false, message: 'JETON non configuré dans Apps Script.' });
     }
@@ -65,10 +78,6 @@ function doPost(e) {
     }
 
     switch (data.action) {
-      case 'rsvp':              return ajouterRsvp(data);
-      case 'message':           return ajouterMessage(data);
-      case 'messages':          return listerMessagesPublies();
-      case 'virement':          return demandeVirement(data);
       case 'tout':              return listerTout();
       case 'approuver':         return publier(data.id, true);
       case 'retirer':           return publier(data.id, false);
@@ -180,7 +189,66 @@ function publier(id, etat) {
 }
 
 // ────────────────────────────────────────────────────────────
-//  Lecture complète (page /admin du site)
+//  Carte des invités — agrégat public
+// ────────────────────────────────────────────────────────────
+
+/**
+ * Villes d'origine, regroupées et comptées.
+ *
+ * Ne sort ni nom, ni e-mail, ni message : seulement une ville, un pays et
+ * un nombre. Seules les réponses positives et géocodées comptent, et deux
+ * réponses d'une même adresse ne comptent qu'une fois (la plus récente).
+ */
+function listerConvives() {
+  var lignes = lire(ONGLET_RSVP, COLONNES_RSVP);
+
+  // Dernière réponse par adresse e-mail.
+  var derniere = {};
+  for (var i = 0; i < lignes.length; i++) {
+    var email = texte(lignes[i]['E-mail']).toLowerCase();
+    if (email) derniere[email] = lignes[i];
+  }
+
+  var parVille = {};
+  var total = 0;
+  var pays = {};
+
+  for (var cle in derniere) {
+    var l = derniere[cle];
+    if (!vrai(l['Réponse'])) continue;
+
+    var ville = texte(l['Ville']);
+    var lat = parseFloat(l['Latitude']);
+    var lng = parseFloat(l['Longitude']);
+    if (!ville || ville === '—' || isNaN(lat) || isNaN(lng)) continue;
+
+    var personnes = vrai(l['Accompagnant']) ? 2 : 1;
+    var k = ville.toLowerCase();
+
+    if (parVille[k]) {
+      parVille[k].personnes += personnes;
+    } else {
+      parVille[k] = {
+        nom: ville,
+        pays: propre(l['Pays']),
+        lat: lat,
+        lng: lng,
+        personnes: personnes,
+      };
+    }
+    total += personnes;
+    if (propre(l['Pays'])) pays[propre(l['Pays'])] = true;
+  }
+
+  var villes = [];
+  for (var v in parVille) villes.push(parVille[v]);
+  villes.sort(function (a, b) { return b.personnes - a.personnes; });
+
+  return json({ ok: true, villes: villes, personnes: total, pays: Object.keys(pays).length });
+}
+
+// ────────────────────────────────────────────────────────────
+//  Lecture complète — jeton obligatoire
 // ────────────────────────────────────────────────────────────
 
 function listerTout() {

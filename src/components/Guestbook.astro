@@ -1,15 +1,12 @@
 ---
 import { livreDor } from '../content/site';
-import { messagesApprouves } from '../lib/sheets';
 
 const champ =
   'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none';
 const label = 'text-caption tracking-cap text-accent uppercase';
 
-/* Instantané pris à la compilation : la liste est lisible sans JavaScript.
-   Le script ci-dessous la rafraîchit au chargement et pendant la visite. */
-const messages = await messagesApprouves();
-const numero = (i: number) => String(i + 1).padStart(2, '0');
+/* Site statique : la liste arrive du classeur au chargement de la page,
+   par le script en bas de ce fichier. */
 ---
 
 <section
@@ -67,33 +64,11 @@ const numero = (i: number) => String(i + 1).padStart(2, '0');
     tabindex="0"
     class="mt-bloc-mots flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-gutter pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
   >
-    {
-      messages.map((message, i) => (
-        <article class="flex w-[min(100%,340px)] shrink-0 snap-start flex-col border border-ivoire/18 px-7 py-[26px]">
-          <div class="flex items-baseline justify-between gap-4">
-            <span class="text-caption tracking-cap text-ivoire/45 tabular-nums">
-              {numero(i)}
-            </span>
-            <span class="text-[18px] text-accent" aria-hidden="true">
-              ◇
-            </span>
-          </div>
-          <p class="mt-5 mb-0 grow text-mot font-light text-ivoire">
-            {message.texte}
-          </p>
-          <div class="mt-6 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-t border-ivoire/14 pt-4">
-            <span class="text-caption tracking-cap text-ivoire/60 uppercase">
-              {message.nom}
-            </span>
-          </div>
-        </article>
-      ))
-    }
   </div>
 
   <p
     id="mots-vide"
-    hidden={messages.length > 0}
+    hidden
     class="contenu mt-bloc-mots mb-0 px-gutter text-body text-ivoire/55"
   >
     {livreDor.vide}
@@ -166,6 +141,7 @@ const numero = (i: number) => String(i + 1).padStart(2, '0');
 
 <script>
   import { lireMessage, validerMessage, aDesErreurs } from '../lib/validation';
+  import { appeler, classeurConfigure, type MessagePublie } from '../lib/classeur';
   import { livreDor, reseau } from '../content/site';
 
   const form = document.getElementById('mots-form') as HTMLFormElement | null;
@@ -219,27 +195,23 @@ const numero = (i: number) => String(i + 1).padStart(2, '0');
 
     /** Recharge les messages publiés sans toucher à ceux en attente. */
     const rafraichir = async () => {
-      try {
-        const reponse = await fetch('/api/messages', {
-          headers: { accept: 'application/json' },
-        });
-        if (!reponse.ok) return;
-        const corps = await reponse.json();
-        if (!corps.ok || !Array.isArray(corps.messages)) return;
-
-        const enAttente = [...rail.querySelectorAll('article')].filter(
-          (el) => el.querySelector('[data-attente]')?.hasAttribute('hidden') === false,
-        );
-
-        rail.replaceChildren();
-        enAttente.forEach((el) => rail.append(el));
-        corps.messages.forEach((m: { nom: string; texte: string }, i: number) =>
-          rail.append(carte(m.nom, m.texte, enAttente.length + i, false)),
-        );
+      const corps = await appeler<{ messages: MessagePublie[] }>('messages');
+      if (!corps.ok || !Array.isArray(corps.messages)) {
         majEtat();
-      } catch {
-        /* Hors ligne : on garde l'instantané rendu à la compilation. */
+        return;
       }
+
+      // On garde les mots déposés pendant la visite, pas encore publiés.
+      const enAttente = [...rail.querySelectorAll('article')].filter(
+        (el) => el.querySelector('[data-attente]')?.hasAttribute('hidden') === false,
+      );
+
+      rail.replaceChildren();
+      enAttente.forEach((el) => rail.append(el));
+      corps.messages.forEach((m, i) =>
+        rail.append(carte(m.nom, m.texte, enAttente.length + i, false)),
+      );
+      majEtat();
     };
 
     form.addEventListener('submit', async (e) => {
@@ -261,15 +233,15 @@ const numero = (i: number) => String(i + 1).padStart(2, '0');
       const libelle = bouton.textContent;
       bouton.textContent = reseau.enCours;
 
-      try {
-        const reponse = await fetch('/api/messages', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ ...brut, ...donnees }),
-        });
-        const corps = await reponse.json().catch(() => ({}));
+      if (String(brut.site_web ?? '')) {
+        form.reset();
+        return;
+      }
 
-        if (reponse.ok && corps.ok) {
+      try {
+        const corps = await appeler('message', { nom: donnees.nom, texte: donnees.texte });
+
+        if (corps.ok) {
           // Affichage local : le message n'est pas encore publié.
           rail.prepend(carte(donnees.nom, donnees.texte, 0, true));
           majEtat();
@@ -278,7 +250,9 @@ const numero = (i: number) => String(i + 1).padStart(2, '0');
           return;
         }
 
-        erreur.textContent = corps.erreurs?.texte ?? corps.message ?? reseau.echec;
+        erreur.textContent = classeurConfigure
+          ? ((corps as { message?: string }).message ?? reseau.echec)
+          : reseau.indisponible;
         erreur.hidden = false;
       } catch {
         erreur.textContent = reseau.echec;
