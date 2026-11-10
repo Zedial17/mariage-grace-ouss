@@ -90,9 +90,9 @@ const aide = 'text-body-sm text-brun/72';
           <legend class="sr-only">{rsvp.etapes[0].titre}</legend>
           <div>
             <p class="m-0 text-ligne font-light">{rsvp.etapes[0].titre}</p>
-            <p class="mt-1.5 mb-0 text-body text-brun/72">
-              {rsvp.etapes[0].sousTitre}
-            </p>
+            {rsvp.etapes[0].sousTitre && (
+              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[0].sousTitre}</p>
+            )}
           </div>
 
           <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-[30px]">
@@ -144,9 +144,9 @@ const aide = 'text-body-sm text-brun/72';
           <legend class="sr-only">{rsvp.etapes[1].titre}</legend>
           <div>
             <p class="m-0 text-ligne font-light">{rsvp.etapes[1].titre}</p>
-            <p class="mt-1.5 mb-0 text-body text-brun/72">
-              {rsvp.etapes[1].sousTitre}
-            </p>
+            {rsvp.etapes[1].sousTitre && (
+              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[1].sousTitre}</p>
+            )}
           </div>
 
           <div>
@@ -212,9 +212,9 @@ const aide = 'text-body-sm text-brun/72';
           <legend class="sr-only">{rsvp.etapes[2].titre}</legend>
           <div>
             <p class="m-0 text-ligne font-light">{rsvp.etapes[2].titre}</p>
-            <p class="mt-1.5 mb-0 text-body text-brun/72">
-              {rsvp.etapes[2].sousTitre}
-            </p>
+            {rsvp.etapes[2].sousTitre && (
+              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[2].sousTitre}</p>
+            )}
           </div>
 
           <label class="flex flex-col gap-2">

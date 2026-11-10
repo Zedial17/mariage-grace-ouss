@@ -150,7 +150,8 @@ export const invitation = {
   label: "L'invitation",
   // À CONFIRMER — texte d'invitation définitif à fournir par les mariés.
   citation: "Après dix ans à s'aimer en ville, nous partons nous dire oui au soleil.",
-  texte: 'Texte à personnaliser — deux ou trois phrases sur votre histoire suffisent.',
+  /** Laisser vide : la citation se suffit. */
+  texte: '',
 };
 
 /* ------------------------------------------------------------------ */
@@ -245,7 +246,7 @@ export const chateau = {
   titre: 'Château de Cabezac',
   sousTitre: 'Cérémonie & soirée · 1er mai 2027',
   description:
-    'Un domaine viticole du Minervois, entre garrigue, pins et rangs de vigne, à quarante minutes de Narbonne. Tout se déroule sur place, de la cérémonie à la dernière danse.',
+    'Un domaine viticole du Minervois, entre garrigue et rangs de vigne. Tout s’y passe, de la cérémonie à la dernière danse.',
   photoAlt: 'Les mains de Grace et Ouss, la bague de fiançailles',
   infos: chateauInfos,
   reperes: chateauReperes,
@@ -293,12 +294,12 @@ export const tenue = {
   label: 'La tenue',
   titre: 'Pastel & coloré',
   texte:
-    "Nous rêvons d'une assemblée en couleurs : rose dragée, jaune soleil, vert amande, corail, bleu ciel, framboise. Costume clair, ensemble fluide, robe longue ou courte — la coupe est libre, la couleur fait la fête.",
+    'Rose dragée, jaune soleil, vert amande, corail, bleu ciel, framboise. La coupe est libre — la couleur fait la fête.',
   regle: {
     titre: 'Ni blanc, ni noir.',
     precision: "L'écru et le beige comptent comme du blanc.",
   },
-  note: 'Les allées sont en gravier : prévoyez des talons adaptés, et une veste pour la fraîcheur du soir.',
+  note: 'Allées en gravier, et de la fraîcheur le soir.',
   paletteLabel: 'La palette',
   palette: [
     '#FF98AE',
@@ -327,19 +328,19 @@ export const rsvp = {
       numero: '01',
       onglet: 'Vous',
       titre: 'Qui êtes-vous ?',
-      sousTitre: 'Commençons par faire connaissance.',
+      sousTitre: '',
     },
     {
       numero: '02',
       onglet: 'Présence',
       titre: 'Votre présence',
-      sousTitre: 'Le 1er mai, au Château de Cabezac.',
+      sousTitre: '',
     },
     {
       numero: '03',
       onglet: 'Détails',
       titre: 'Derniers détails',
-      sousTitre: 'Pour que tout soit parfait pour vous.',
+      sousTitre: '',
     },
   ],
   navigation: {
@@ -352,14 +353,14 @@ export const rsvp = {
     nom: 'Prénom et nom',
     email: 'E-mail',
     ville: 'Votre ville de départ',
-    villeAide: 'Facultatif — pour la carte des invités.',
+    villeAide: 'Pour la carte des invités.',
     reponse: 'Votre réponse',
     oui: 'Avec joie',
     non: 'Empêché(e)',
     accompagnant: 'Accompagnant(e)',
     seul: 'Je viens seul(e)',
     avecUn: 'Avec un(e) accompagnant(e)',
-    limite: 'Une personne supplémentaire maximum par invité.',
+    limite: 'Une personne supplémentaire au maximum.',
     nomAccompagnant: 'Nom de votre accompagnant(e)',
     mot: 'Allergies, régime, un mot pour nous',
     envoyer: 'Envoyer',
@@ -390,8 +391,7 @@ export const livreDor = {
     precedent: 'Mot précédent',
     suivant: 'Mot suivant',
   },
-  texte:
-    'Un vœu, un souvenir, une phrase : laissez-nous quelques mots. Ils se déposent ici et nous les relirons longtemps après la fête.',
+  texte: 'Un vœu, un souvenir, une phrase. Nous les relirons longtemps après la fête.',
   champs: {
     nom: 'Votre nom',
     message: 'Votre message',
@@ -415,12 +415,13 @@ export const participation = {
   titre: "Votre présence, d'abord",
   // À CONFIRMER — texte à relire par les mariés.
   texte:
-    'Vous voir à Cabezac est déjà le plus beau des cadeaux. Si vous souhaitez néanmoins nous accompagner dans cette nouvelle étape, une enveloppe reste le geste le plus simple : une urne vous attendra le soir du dîner.',
-  precision:
-    "Ce sera surtout l'occasion de vous remercier de vive voix — et de garder une photo du moment.",
+    'Vous voir à Cabezac est déjà le plus beau des cadeaux. Si le cœur vous en dit, une urne vous attendra le soir du dîner.',
+  /** Laisser vide : le paragraphe ci-dessus se suffit. */
+  precision: '',
   coffret: {
     titre: 'Un geste du cœur',
-    sousTitre: 'Deux façons de contribuer, si le cœur vous en dit.',
+    /** Laisser vide : le titre et le bouton suffisent. */
+    sousTitre: '',
     ouvrir: 'Découvrir comment contribuer',
     refermer: 'Refermer',
   },
@@ -438,7 +439,7 @@ export const participation = {
     titre: 'Virement bancaire',
     sousTitre: 'Nous vous envoyons le RIB en main propre',
     texte:
-      'Nos coordonnées bancaires ne sont pas affichées sur cette page. Laissez-nous un moyen de vous joindre, nous vous les transmettons directement.',
+      'Nos coordonnées ne sont pas sur cette page. Laissez-nous un moyen de vous joindre.',
     champs: {
       nom: 'Votre nom',
       contact: 'E-mail ou téléphone',
@@ -459,8 +460,7 @@ export const participation = {
 export const convives = {
   label: 'Les convives',
   titre: "D'où vous venez",
-  texte:
-    'Chacun indique sa ville en répondant, et la carte se remplit toute seule. Aucun nom n’y figure — seulement des villes et des nombres.',
+  texte: 'Chaque réponse ajoute une ville. Aucun nom n’y figure.',
   compteurs: {
     personnes: 'convives attendus',
     villes: 'villes de départ',
@@ -473,7 +473,7 @@ export const convives = {
     lng: 2.8706,
   },
   vide: 'La carte se dessinera à mesure des réponses.',
-  legende: 'Le losange marque Cabezac ; chaque point, une ville de départ.',
+  legende: 'Le losange marque Cabezac.',
   /** Libellé au survol d'un point : « Paris · 4 convives ». */
   unite: { un: 'convive', plusieurs: 'convives' },
 };
@@ -489,17 +489,17 @@ export const faq = {
     {
       question: 'Où dormir',
       reponse:
-        'L’hôtel La Bastide Cabezac se trouve dans le même hameau que le château, à quelques pas. Bize-Minervois compte aussi plusieurs gîtes et chambres d’hôtes, et vous trouverez un choix plus large à Lézignan-Corbières (20 min) ou à Narbonne (30 min). Le 1er mai étant férié, réservez tôt.',
+        'L’hôtel La Bastide Cabezac est à quelques pas, dans le même hameau. Le village compte gîtes et chambres d’hôtes ; Narbonne est à trente minutes. Le 1er mai est férié : réservez tôt.',
     },
     {
       question: 'Comment venir',
       reponse:
-        'Gare de Narbonne à environ 30 minutes ; aéroports de Béziers, Carcassonne et Montpellier à proximité. La voiture reste le plus simple — pensez au covoiturage.',
+        'Gare de Narbonne à trente minutes, aéroports de Béziers, Carcassonne et Montpellier. La voiture reste le plus simple — pensez au covoiturage.',
     },
     {
       question: 'Les enfants',
       reponse:
-        'La mairie du 27 mars est ouverte à tous, enfants compris. Pour la journée du 1er mai à Cabezac, nous avons choisi de nous retrouver entre adultes, afin de profiter de la soirée jusqu’au bout. Merci de votre compréhension.',
+        'La mairie est ouverte à tous. À Cabezac, nous nous retrouvons entre adultes, pour profiter de la soirée jusqu’au bout.',
     },
   ],
 };

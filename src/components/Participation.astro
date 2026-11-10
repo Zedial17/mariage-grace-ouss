@@ -20,10 +20,14 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
       {participation.titre}
     </h2>
-    <p class="mt-[26px] mb-0 text-lead font-light text-ivoire/90">
+    <p class="mx-auto mt-10 mb-0 max-w-[40ch] text-lead font-light text-ivoire/90">
       {participation.texte}
     </p>
-    <p class="mt-5 mb-0 text-body text-ivoire/70">{participation.precision}</p>
+    {
+      participation.precision && (
+        <p class="mt-5 mb-0 text-body text-ivoire/70">{participation.precision}</p>
+      )
+    }
   </div>
 
   {/* ───────── Le coffret ───────── */}
@@ -62,7 +66,9 @@ const label = 'text-caption tracking-cap text-accent uppercase';
       </svg>
       <span>
         <span class="block text-ligne font-light text-ivoire">{coffret.titre}</span>
-        <span class="mt-2 block text-body text-ivoire/70">{coffret.sousTitre}</span>
+        {coffret.sousTitre && (
+          <span class="mt-2 block text-body text-ivoire/70">{coffret.sousTitre}</span>
+        )}
       </span>
       <span
         class="mt-1 text-caption tracking-bouton text-accent uppercase group-hover:text-ivoire"
