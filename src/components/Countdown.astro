@@ -22,7 +22,7 @@ const initiales: Record<string, string> = {
 
 <div class="border-y border-ivoire/14">
   <div
-    class="contenu grid grid-cols-[repeat(auto-fit,minmax(min(100%,74px),1fr))] gap-6 px-gutter py-compte text-center"
+    class="contenu grid grid-cols-4 gap-2 px-gutter py-compte text-center sm:gap-6"
     data-compte-a-rebours
     data-cible={countdown.cible}
   >
@@ -35,7 +35,9 @@ const initiales: Record<string, string> = {
           >
             {initiales[u.cle]}
           </div>
-          <div class="text-caption tracking-compte text-accent uppercase">
+          {/* Sur mobile, « SECONDES » ne tient dans un quart de l'écran
+              qu'avec un corps et un interlettrage réduits. */}
+          <div class="text-[10px]/[14px] tracking-[.06em] text-accent uppercase sm:text-caption sm:tracking-compte">
             {u.libelle}
           </div>
         </div>
