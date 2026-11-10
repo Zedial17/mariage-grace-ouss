@@ -55,10 +55,16 @@ Nouveau Google Sheet → **Partage → inviter la mariée en Éditeur**.
 **Extensions → Apps Script**. Remplacez le contenu de `Code.gs` par celui de
 [`google-apps-script/Code.gs`](google-apps-script/Code.gs), puis renseignez :
 
-| Constante  | Valeur                                                                           |
-| ---------- | -------------------------------------------------------------------------------- |
-| `JETON`    | Une longue chaîne au hasard. Elle protège les actions sensibles (voir plus bas). |
-| `NOTIFIER` | L'adresse prévenue à chaque réponse. `''` pour désactiver.                       |
+| Constante     | Valeur                                                                           |
+| ------------- | -------------------------------------------------------------------------------- |
+| `JETON`       | Une longue chaîne au hasard. Elle protège les actions sensibles (voir plus bas). |
+| `NOTIFIER`    | L'adresse prévenue à chaque réponse. `''` pour désactiver.                       |
+| `CLASSEUR_ID` | À laisser vide si le script a été ouvert depuis le classeur. Sinon, l'identifiant du classeur, dans son URL entre `/d/` et `/edit`. |
+
+> Le plus simple est d'ouvrir le script **depuis le classeur**
+> (Extensions → Apps Script) : il le trouve alors tout seul. Si vous avez
+> créé le script depuis `script.google.com`, il est indépendant et ne voit
+> aucune feuille — c'est à ça que sert `CLASSEUR_ID`.
 
 Enregistrez, puis exécutez une fois **`initialiser`** et acceptez l'autorisation.
 Deux onglets apparaissent.

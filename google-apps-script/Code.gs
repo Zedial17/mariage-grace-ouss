@@ -22,6 +22,19 @@ var JETON = 'REMPLACER_PAR_UN_JETON_LONG_ET_UNIQUE';
 /** Adresse prévenue à chaque réponse. Laisser '' pour ne rien envoyer. */
 var NOTIFIER = '';
 
+/**
+ * Identifiant du classeur.
+ *
+ * Laisser vide si ce script a été ouvert depuis le classeur
+ * (Extensions → Apps Script) : il le trouve alors tout seul.
+ *
+ * Si le script est un projet indépendant (créé depuis script.google.com),
+ * coller ici l'identifiant du classeur — dans son URL, entre /d/ et /edit :
+ *   docs.google.com/spreadsheets/d/XXXXXXXXXXXX/edit
+ *                                   └── celui-ci ──┘
+ */
+var CLASSEUR_ID = '';
+
 var ONGLET_RSVP = 'RSVP';
 var ONGLET_MOTS = "Livre d'or";
 var FUSEAU = 'Europe/Paris';
@@ -379,8 +392,22 @@ function horodatage() {
   return Utilities.formatDate(new Date(), FUSEAU, 'dd/MM/yyyy HH:mm:ss');
 }
 
+/** Le classeur, qu'il soit attaché au script ou désigné par son ID. */
+function leClasseur() {
+  if (CLASSEUR_ID) return SpreadsheetApp.openById(CLASSEUR_ID);
+
+  var actif = SpreadsheetApp.getActiveSpreadsheet();
+  if (!actif) {
+    throw new Error(
+      'Aucun classeur trouvé. Ce script n’est pas attaché à une feuille : ' +
+        'renseignez CLASSEUR_ID en haut du fichier.',
+    );
+  }
+  return actif;
+}
+
 function onglet(nom, colonnes) {
-  var classeur = SpreadsheetApp.getActiveSpreadsheet();
+  var classeur = leClasseur();
   var feuille = classeur.getSheetByName(nom) || classeur.insertSheet(nom);
   enTetes(feuille, colonnes);
   return feuille;
@@ -417,7 +444,7 @@ function caseACocher(feuille) {
 
 /** Renvoie toutes les lignes sous forme d'objets { 'En-tête': valeur }. */
 function lire(nomOnglet, colonnes) {
-  var classeur = SpreadsheetApp.getActiveSpreadsheet();
+  var classeur = leClasseur();
   var feuille = classeur.getSheetByName(nomOnglet);
   if (!feuille || feuille.getLastRow() <= 1) return [];
 
@@ -460,7 +487,7 @@ function notifier(nom, email, reponse, accompagnant, nomAccompagnant, message) {
         'Accompagnant  : ' + (accompagnant ? nomAccompagnant : 'non') + '\n' +
         'Personnes     : ' + (vient ? (accompagnant ? 2 : 1) : 0) + '\n' +
         'Message       : ' + (message || '—') + '\n\n' +
-        SpreadsheetApp.getActiveSpreadsheet().getUrl() + '\n\n' +
+        leClasseur().getUrl() + '\n\n' +
         'Grace & Ouss · 27 mars & 1er mai 2027',
     );
   } catch (err) {
@@ -485,7 +512,7 @@ function toutEffacer() {
     [ONGLET_RSVP, COLONNES_RSVP],
     [ONGLET_MOTS, COLONNES_MOTS],
   ].forEach(function (paire) {
-    var feuille = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(paire[0]);
+    var feuille = leClasseur().getSheetByName(paire[0]);
     if (feuille && feuille.getLastRow() > 1) {
       feuille.deleteRows(2, feuille.getLastRow() - 1);
     }
