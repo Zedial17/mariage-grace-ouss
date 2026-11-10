@@ -71,8 +71,22 @@ Deux onglets apparaissent.
 
 ### 3. Déployer en application web
 
-**Déployer → Nouveau déploiement → Application web**, *Exécuter en tant que :
-moi*, *Qui a accès : tout le monde*. Copiez l'URL qui se termine par `/exec`.
+**Déployer → Nouveau déploiement**, puis — c'est l'étape qu'on rate — cliquez
+l'**engrenage ⚙** à gauche de « Sélectionner le type » et choisissez
+**Application web**. Réglez *Exécuter en tant que* sur **Moi** et *Qui a accès*
+sur **Tout le monde**, puis déployez.
+
+Copiez l'**URL de l'application web** :
+
+| | |
+| --- | --- |
+| ✅ celle qu'il faut | `https://script.google.com/macros/`**`s`**`/AKfycb…/`**`exec`** |
+| ❌ l'URL de bibliothèque | `https://script.google.com/macros/`**`library/d`**`/…/1` |
+
+Apps Script affiche les deux. Seule la première répond aux requêtes du site ;
+la seconde sert à importer le projet comme bibliothèque dans un autre script.
+Si vous vous trompez, le site affiche « L'envoi a échoué » et la console du
+navigateur explique précisément lequel des deux a été collé.
 
 ### 4. Renseigner la variable
 

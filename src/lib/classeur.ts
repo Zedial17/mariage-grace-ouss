@@ -21,8 +21,30 @@ export type MessagePublie = { id: string; nom: string; texte: string };
 
 export type Reponse<T> = ({ ok: true } & T) | { ok: false; message?: string };
 
-/** Vrai quand l'URL du script est renseignée au moment de la compilation. */
+/**
+ * Vrai quand l'URL du script est renseignée au moment de la compilation.
+ *
+ * Seule une URL d'**application web** fonctionne : elle contient `/macros/s/`
+ * et se termine par `/exec`. Apps Script affiche aussi une URL de
+ * bibliothèque (`/macros/library/d/…`), qui ressemble beaucoup mais n'est
+ * pas appelable — c'est la confusion la plus courante.
+ */
+const EXEC = /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec\/?$/;
+
 export const classeurConfigure = Boolean(PUBLIC_SHEETS_ENDPOINT);
+
+if (classeurConfigure && !EXEC.test(PUBLIC_SHEETS_ENDPOINT)) {
+  console.error(
+    '[classeur] PUBLIC_SHEETS_ENDPOINT ne ressemble pas à une URL ' +
+      'd’application web Apps Script.\n' +
+      '  Reçu   : ' + PUBLIC_SHEETS_ENDPOINT + '\n' +
+      '  Attendu : https://script.google.com/macros/s/…/exec\n' +
+      'Dans Apps Script : Déployer → Nouveau déploiement → type ' +
+      '« Application web », puis copier l’URL qui finit par /exec. ' +
+      'L’URL en /macros/library/d/… est celle de la bibliothèque : elle ne ' +
+      'répond pas aux requêtes du site.',
+  );
+}
 
 /** Apps Script met parfois quelques secondes à démarrer. */
 const DELAI_MS = 20_000;
