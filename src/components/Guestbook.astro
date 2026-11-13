@@ -1,6 +1,8 @@
 ---
 import { livreDor } from '../content/site';
 
+const { verrou } = livreDor;
+
 const champ =
   'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none';
 const label = 'text-caption tracking-cap text-accent uppercase';
@@ -17,20 +19,22 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     <div
       class="flex flex-wrap items-end justify-between gap-x-10 gap-y-6"
     >
-      <div>
-        <div class="text-caption tracking-label text-accent uppercase">
-          {livreDor.label}
+      <div class="grow">
+        <div data-filigrane={livreDor.filigrane}>
+          <div class="text-caption tracking-label text-accent uppercase">
+            {livreDor.label}
+          </div>
+          <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+            {livreDor.titre}
+          </h2>
         </div>
-        <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
-          {livreDor.titre}
-        </h2>
         <p class="mt-[22px] mb-0 max-w-[38ch] text-body text-ivoire/78">
           {livreDor.texte}
         </p>
       </div>
 
-      {/* Compteur + flèches du rail */}
-      <div class="flex items-center gap-4">
+      {/* Compteur + flèches du rail — avec le reste, sous clé */}
+      <div id="mots-nav" hidden class="flex items-center gap-4">
         <span
           id="mots-compteur"
           aria-live="polite"
@@ -56,6 +60,62 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     </div>
   </div>
 
+  {/* ───────── Le verrou ─────────
+      Les mots des invités ne s'affichent qu'avec le code du faire-part.
+      Rien de bien gardé — le code vit dans la page — mais la section
+      reste entre nous, et le classeur n'est appelé qu'une fois ouverte. */}
+  <div id="mots-verrou" class="contenu mt-bloc-mots px-gutter">
+    <div
+      class="mx-auto flex max-w-[440px] flex-col items-center gap-6 border border-ivoire/18 px-6 py-11 text-center"
+    >
+      <svg
+        viewBox="0 0 56 64"
+        width="40"
+        height="46"
+        fill="none"
+        stroke="#CFA184"
+        stroke-width="1.6"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="shrink-0"
+      >
+        <path
+          id="mots-anse"
+          d="M16 28 V18 a12 12 0 0 1 24 0 v10"
+          stroke-linecap="round"
+          class="origin-[40px_28px] transition-transform duration-500 [transform-box:view-box]"
+        ></path>
+        <rect x="8" y="28" width="40" height="30" rx="2"></rect>
+        <circle cx="28" cy="40" r="3.5"></circle>
+        <path d="M28 43.5 V49" stroke-linecap="round"></path>
+      </svg>
+
+      <p class="m-0 text-body text-ivoire/78">{verrou.texte}</p>
+
+      <form id="mots-verrou-form" novalidate class="flex w-full max-w-[300px] gap-3">
+        <input
+          id="mots-code"
+          type="password"
+          autocomplete="off"
+          maxlength="40"
+          placeholder={verrou.champ}
+          aria-label={verrou.champ}
+          class="min-w-0 flex-1 border-b border-ivoire/30 bg-transparent py-2 text-center text-body tracking-[.08em] text-ivoire outline-none transition-colors duration-200 focus:border-ivoire"
+        />
+        <button
+          type="submit"
+          class="shrink-0 cursor-pointer rounded-btn border border-accent bg-transparent px-5 py-2.5 text-caption font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun active:translate-y-px"
+          >{verrou.bouton}</button
+        >
+      </form>
+
+      <p id="mots-verrou-erreur" hidden role="alert" class="m-0 text-body-sm text-accent">
+        {verrou.erreur}
+      </p>
+    </div>
+  </div>
+
+  <div id="mots-contenu" hidden>
   {/* ───────── Le rail de cartes ─────────
       Défilement horizontal avec accrochage, en CSS pur : pas de
       bibliothèque d'animation, et la molette comme le doigt fonctionnent. */}
@@ -108,11 +168,12 @@ const label = 'text-caption tracking-cap text-accent uppercase';
       <div class="col-span-full">
         <button
           type="submit"
-          class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun disabled:cursor-wait disabled:opacity-60"
+          class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun active:translate-y-px disabled:cursor-wait disabled:opacity-60"
           >{livreDor.champs.envoyer}</button
         >
       </div>
     </form>
+  </div>
   </div>
 </section>
 
@@ -271,6 +332,89 @@ const label = 'text-caption tracking-cap text-accent uppercase';
 
     requestAnimationFrame(majEtat);
     addEventListener('resize', majPlusTard, { passive: true });
-    rafraichir();
+
+    /* ───────── Le verrou ─────────
+       La comparaison ignore la casse et les espaces, et confond le zéro
+       avec la lettre O : « G&O2027 » et « g&02027 » ouvrent la même
+       porte. Le classeur n'est appelé qu'une fois la section ouverte. */
+    const normalise = (valeur: string) =>
+      valeur.trim().toUpperCase().replace(/\s+/g, '').replace(/0/g, 'O');
+
+    const attendu = normalise(livreDor.verrou.code);
+    const CLE = 'mots-ouvert';
+
+    const verrou = document.getElementById('mots-verrou');
+    const verrouForm = document.getElementById('mots-verrou-form') as HTMLFormElement | null;
+    const code = document.getElementById('mots-code') as HTMLInputElement | null;
+    const verrouErreur = document.getElementById('mots-verrou-erreur');
+    const contenu = document.getElementById('mots-contenu');
+    const nav = document.getElementById('mots-nav');
+
+    if (verrou && verrouForm && code && verrouErreur && contenu && nav) {
+      const carte = verrou.firstElementChild as HTMLElement | null;
+      const anse = document.getElementById('mots-anse');
+      const anime = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // La navigation privée interdit sessionStorage : on s'en passe.
+      const dejaOuvert = () => {
+        try {
+          return sessionStorage.getItem(CLE) === '1';
+        } catch {
+          return false;
+        }
+      };
+      const retenir = () => {
+        try {
+          sessionStorage.setItem(CLE, '1');
+        } catch {
+          /* tant pis, le code sera redemandé */
+        }
+      };
+
+      const reveler = () => {
+        verrou.hidden = true;
+        contenu.hidden = false;
+        nav.hidden = false;
+        majEtat();
+        rafraichir();
+      };
+
+      const ouvrir = () => {
+        retenir();
+        if (!anime) return reveler();
+
+        // L'anse s'écarte, puis le verrou s'efface.
+        if (anse) anse.style.transform = 'translateY(-5px) rotate(16deg)';
+        verrou.style.transition = 'opacity .35s ease';
+        setTimeout(() => {
+          verrou.style.opacity = '0';
+          setTimeout(reveler, 350);
+        }, 450);
+      };
+
+      verrouForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (normalise(code.value) === attendu) return ouvrir();
+
+        verrouErreur.hidden = false;
+        code.value = '';
+        code.focus();
+        // Relancer l'animation, même au deuxième refus.
+        carte?.classList.remove('animate-secousse');
+        void carte?.offsetWidth;
+        carte?.classList.add('animate-secousse');
+      });
+
+      carte?.addEventListener('animationend', () =>
+        carte.classList.remove('animate-secousse'),
+      );
+      code.addEventListener('input', () => {
+        verrouErreur.hidden = true;
+      });
+
+      if (dejaOuvert()) reveler();
+    } else {
+      rafraichir();
+    }
   }
 </script>

@@ -6,12 +6,14 @@ import { faq } from '../content/site';
   id="infos"
   class="contenu scroll-mt-[70px] border-t border-ivoire/14 px-gutter pt-section"
 >
-  <div class="text-caption tracking-label text-accent uppercase">
-    {faq.label}
+  <div data-filigrane={faq.filigrane} class="mb-11">
+    <div class="text-caption tracking-label text-accent uppercase">
+      {faq.label}
+    </div>
+    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+      {faq.titre}
+    </h2>
   </div>
-  <h2 class="mt-[18px] mb-11 text-h2 font-light tracking-[-.025em]">
-    {faq.titre}
-  </h2>
   <div class="border-t border-ivoire/16">
     {
       faq.questions.map((item) => (

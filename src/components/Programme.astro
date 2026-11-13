@@ -7,14 +7,16 @@ import { programme } from '../content/site';
   class="scroll-mt-[70px] border-t border-ivoire/14 px-gutter py-section"
 >
   <div class="contenu">
-    <div class="text-caption tracking-label text-accent uppercase">
-      {programme.label}
+    <div data-filigrane={programme.filigrane}>
+      <div class="text-caption tracking-label text-accent uppercase">
+        {programme.label}
+      </div>
+      <h2
+        class="mt-[18px] mb-0 max-w-[18ch] text-h2-lg font-light tracking-[-.025em]"
+      >
+        {programme.titre}
+      </h2>
     </div>
-    <h2
-      class="mt-[18px] mb-0 max-w-[18ch] text-h2-lg font-light tracking-[-.025em]"
-    >
-      {programme.titre}
-    </h2>
 
     {
       programme.groupes.map((groupe, index) => (

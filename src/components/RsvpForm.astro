@@ -18,15 +18,17 @@ const duo = 'grid max-w-[460px] grid-cols-2 gap-2.5';
   class="scroll-mt-[70px] bg-ivoire px-gutter py-section text-brun"
 >
   <div class="mx-auto max-w-[680px]">
-    <div class="text-caption tracking-label text-cuivre uppercase">
-      {rsvp.label}
+    <div data-filigrane={rsvp.filigrane} data-filigrane-clair>
+      <div class="text-caption tracking-label text-cuivre uppercase">
+        {rsvp.label}
+      </div>
+      <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em] text-balance">
+        {rsvp.titre}
+      </h2>
+      <p class="mt-4 mb-0 text-caption tracking-cap text-brun/55 uppercase">
+        {rsvp.dateLimite}
+      </p>
     </div>
-    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em] text-balance">
-      {rsvp.titre}
-    </h2>
-    <p class="mt-4 mb-0 text-caption tracking-cap text-brun/55 uppercase">
-      {rsvp.dateLimite}
-    </p>
 
     {/* État envoyé */}
     <div

@@ -196,6 +196,7 @@ const groupesProgramme: GroupeProgramme[] = [
 export const programme = {
   label: 'Le programme',
   titre: 'Deux dates, un même oui',
+  filigrane: 'Le jour J',
   groupes: groupesProgramme,
 };
 
@@ -242,6 +243,7 @@ const chateauItineraire: LienItineraire[] = [
 export const chateau = {
   label: 'Le lieu',
   titre: 'Château de Cabezac',
+  filigrane: 'Cabezac',
   sousTitre: 'Cérémonie & soirée · 1er mai 2027',
   description:
     'Un domaine viticole du Minervois. De la cérémonie à la dernière danse.',
@@ -291,6 +293,7 @@ export const itineraire = { titre: 'Y aller' };
 export const tenue = {
   label: 'La tenue',
   titre: 'Pastel & coloré',
+  filigrane: 'Dress code',
   texte: 'La coupe est libre. La couleur fait la fête.',
   regle: {
     titre: 'Ni blanc, ni noir.',
@@ -318,6 +321,7 @@ export const tenue = {
 export const rsvp = {
   label: 'Réponse',
   titre: 'Serez-vous des nôtres ?',
+  filigrane: 'RSVP',
   dateLimite: 'Avant le 15 mars 2027.',
   champs: {
     reponse: 'Votre réponse',
@@ -356,6 +360,19 @@ export const rsvp = {
 export const livreDor = {
   label: "Livre d'or",
   titre: 'Les mots du cœur',
+  filigrane: "Livre d'or",
+  /**
+   * Les mots restent entre invités. Le code voyage avec le faire-part.
+   * La saisie est tolérante : casse, espaces, et le zéro vaut la lettre O
+   * — « G&O2027 » comme « g&02027 » ouvrent la section.
+   */
+  verrou: {
+    code: 'G&O2027',
+    texte: 'Les mots restent entre nous.',
+    champ: "Code d'accès",
+    bouton: 'Ouvrir',
+    erreur: 'Code incorrect.',
+  },
   /** Compteur et navigation du rail de cartes. */
   rail: {
     un: 'mot déposé',
@@ -385,6 +402,7 @@ export const livreDor = {
 export const participation = {
   label: 'Participation',
   titre: "Votre présence, d'abord",
+  filigrane: 'Participation',
   texte:
     'Vous voir à Cabezac est déjà le plus beau des cadeaux. Une urne attendra le soir du dîner.',
   coffret: {
@@ -420,6 +438,7 @@ export const participation = {
 export const convives = {
   label: 'Les convives',
   titre: "D'où vous venez",
+  filigrane: 'Invités',
   texte: 'Chaque réponse ajoute une ville, jamais un nom.',
   compteurs: {
     personnes: 'convives',
@@ -445,6 +464,7 @@ export const convives = {
 export const faq = {
   label: 'Informations',
   titre: 'Bon à savoir',
+  filigrane: 'Infos',
   questions: [
     {
       question: 'Où dormir',

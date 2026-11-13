@@ -25,14 +25,16 @@ import { chateau, mairie } from '../content/site';
     </div>
 
     <div>
-      <div class="text-caption tracking-label text-accent uppercase">
-        {chateau.label}
+      <div data-filigrane={chateau.filigrane}>
+        <div class="text-caption tracking-label text-accent uppercase">
+          {chateau.label}
+        </div>
+        <CastleIcon class="mt-6 mb-1.5" />
+        <h2 class="mt-2.5 mb-0 text-h2 font-light tracking-[-.025em]">
+          {chateau.titre}
+        </h2>
+        <div class="mt-2 text-body text-accent">{chateau.sousTitre}</div>
       </div>
-      <CastleIcon class="mt-6 mb-1.5" />
-      <h2 class="mt-2.5 mb-0 text-h2 font-light tracking-[-.025em]">
-        {chateau.titre}
-      </h2>
-      <div class="mt-2 text-body text-accent">{chateau.sousTitre}</div>
       <p class="mt-[22px] mb-0 max-w-[38ch] text-body text-ivoire/78">
         {chateau.description}
       </p>

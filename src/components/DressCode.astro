@@ -11,12 +11,14 @@ import { tenue } from '../content/site';
       class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] items-start gap-bloc"
     >
       <div>
-        <div class="text-caption tracking-label text-accent uppercase">
-          {tenue.label}
+        <div data-filigrane={tenue.filigrane}>
+          <div class="text-caption tracking-label text-accent uppercase">
+            {tenue.label}
+          </div>
+          <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+            {tenue.titre}
+          </h2>
         </div>
-        <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
-          {tenue.titre}
-        </h2>
         <p class="mt-[22px] mb-0 max-w-[38ch] text-body text-ivoire/78">
           {tenue.texte}
         </p>

@@ -15,12 +15,14 @@ const moyen = 'text-ligne font-light text-ivoire';
   class="scroll-mt-[70px] border-t border-ivoire/14 px-gutter py-section"
 >
   <div class="mx-auto max-w-[820px] text-center">
-    <div class="text-caption tracking-label text-accent uppercase">
-      {participation.label}
+    <div data-filigrane={participation.filigrane} data-filigrane-centre>
+      <div class="text-caption tracking-label text-accent uppercase">
+        {participation.label}
+      </div>
+      <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+        {participation.titre}
+      </h2>
     </div>
-    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
-      {participation.titre}
-    </h2>
     <p class="mx-auto mt-10 mb-0 max-w-[40ch] text-lead font-light text-ivoire/90">
       {participation.texte}
     </p>
@@ -69,12 +71,10 @@ const moyen = 'text-ligne font-light text-ivoire';
       <div class="border-b border-ivoire/18 p-[22px]">
         <div class="flex items-center justify-between gap-4">
           <span class="flex items-center gap-3">
-            {/* Le bleu nuit du logo disparaît sur le brun : on le pose sur
-                une pastille ivoire, comme le veulent les chartes de marque
-                sur fond sombre. */}
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-btn bg-ivoire">
-              <PaypalIcon class="h-5 w-auto" />
-            </span>
+            {/* Version renversée, sans pastille : le logo prend la couleur
+                du texte, comme les chartes de marque le prévoient sur
+                fond sombre. */}
+            <PaypalIcon mono class="h-6 w-auto text-ivoire" />
             <span class={moyen}>{paypal.titre}</span>
           </span>
           <button
