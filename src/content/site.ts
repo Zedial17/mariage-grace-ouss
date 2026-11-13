@@ -387,29 +387,19 @@ export const participation = {
   titre: "Votre présence, d'abord",
   texte:
     'Vous voir à Cabezac est déjà le plus beau des cadeaux. Une urne attendra le soir du dîner.',
-  /** Laisser vide : le paragraphe ci-dessus se suffit. */
-  precision: '',
   coffret: {
-    titre: 'Un geste du cœur',
-    /** Laisser vide : le titre et le bouton suffisent. */
-    sousTitre: '',
     ouvrir: 'Contribuer',
     refermer: 'Refermer',
   },
   paypal: {
     titre: 'PayPal',
-    sousTitre: '',
-    lienLabel: 'Lien',
     lien: 'paypal.me/GraceONGALLA',
     href: 'https://paypal.me/GraceONGALLA',
-    bouton: 'Ouvrir PayPal',
     copier: 'Copier',
     copie: 'Copié',
   },
   virement: {
-    titre: 'Virement bancaire',
-    sousTitre: 'Le RIB vous arrive en main propre',
-    texte: 'Laissez-nous un moyen de vous joindre.',
+    titre: 'Virement',
     champs: {
       nom: 'Votre nom',
       contact: 'E-mail ou téléphone',

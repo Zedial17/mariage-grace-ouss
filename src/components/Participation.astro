@@ -5,8 +5,9 @@ import PaypalIcon from './icons/PaypalIcon.astro';
 const { coffret, paypal, virement } = participation;
 
 const champ =
-  'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none';
+  'border-b border-ivoire/30 bg-transparent py-2.5 text-field text-ivoire outline-none transition-colors duration-200 focus:border-ivoire';
 const label = 'text-caption tracking-cap text-accent uppercase';
+const moyen = 'text-ligne font-light text-ivoire';
 ---
 
 <section
@@ -23,33 +24,28 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     <p class="mx-auto mt-10 mb-0 max-w-[40ch] text-lead font-light text-ivoire/90">
       {participation.texte}
     </p>
-    {
-      participation.precision && (
-        <p class="mt-5 mb-0 text-body text-ivoire/70">{participation.precision}</p>
-      )
-    }
   </div>
 
-  {/* ───────── Le coffret ───────── */}
-  <div class="mx-auto mt-12 max-w-[640px]">
+  <div class="mx-auto mt-12 max-w-[560px]">
+    {/* Le coffret : une seule ligne, un seul geste. */}
     <button
       type="button"
       id="coffret-ouvrir"
-      class="group mx-auto flex w-full cursor-pointer flex-col items-center gap-5 border border-ivoire/18 bg-transparent px-6 py-10 text-center hover:bg-accent/5"
+      class="group mx-auto flex w-full cursor-pointer items-center justify-center gap-4 border border-ivoire/18 bg-transparent px-6 py-7 hover:bg-accent/5"
       aria-expanded="false"
       aria-controls="coffret-contenu"
     >
       {/* Picto coffret, au trait, dans la même famille que le picto château */}
       <svg
         viewBox="0 0 80 72"
-        width="72"
-        height="65"
+        width="40"
+        height="36"
         fill="none"
         stroke="#CFA184"
-        stroke-width="1.4"
+        stroke-width="1.6"
         stroke-linejoin="round"
         aria-hidden="true"
-        class="transition-transform duration-300 group-hover:-translate-y-0.5"
+        class="shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
       >
         <g id="coffret-couvercle" class="origin-[40px_36px] transition-transform duration-[380ms]">
           <rect x="8" y="22" width="64" height="14" rx="1.5"></rect>
@@ -64,23 +60,14 @@ const label = 'text-caption tracking-cap text-accent uppercase';
         <line x1="37" y1="36" x2="37" y2="66"></line>
         <line x1="43" y1="43" x2="43" y2="66"></line>
       </svg>
-      <span>
-        <span class="block text-ligne font-light text-ivoire">{coffret.titre}</span>
-        {coffret.sousTitre && (
-          <span class="mt-2 block text-body text-ivoire/70">{coffret.sousTitre}</span>
-        )}
-      </span>
-      <span
-        class="mt-1 text-caption tracking-bouton text-accent uppercase group-hover:text-ivoire"
-        >{coffret.ouvrir}</span
-      >
+      <span class:list={[moyen, 'group-hover:text-accent']}>{coffret.ouvrir}</span>
     </button>
 
-    {/* ───────── Les deux moyens ───────── */}
+    {/* ───────── Les deux moyens, même rythme ───────── */}
     <div id="coffret-contenu" hidden class="border border-ivoire/18">
       {/* PayPal */}
-      <div class="border-b border-ivoire/18">
-        <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
+      <div class="border-b border-ivoire/18 p-[22px]">
+        <div class="flex items-center justify-between gap-4">
           <span class="flex items-center gap-3">
             {/* Le bleu nuit du logo disparaît sur le brun : on le pose sur
                 une pastille ivoire, comme le veulent les chartes de marque
@@ -88,56 +75,38 @@ const label = 'text-caption tracking-cap text-accent uppercase';
             <span class="grid h-9 w-9 shrink-0 place-items-center rounded-btn bg-ivoire">
               <PaypalIcon class="h-5 w-auto" />
             </span>
-            <span class="text-ligne font-light text-ivoire">{paypal.titre}</span>
+            <span class={moyen}>{paypal.titre}</span>
           </span>
-          <span class="text-caption tracking-cap text-accent uppercase">
-            {paypal.sousTitre}
-          </span>
-        </div>
-        <div
-          class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3 px-[22px] pb-[22px]"
-        >
-          <span class={label}>{paypal.lienLabel}</span>
-          <code
-            id="paypal-lien"
-            class="font-sans text-body-tight text-ivoire">{paypal.lien}</code
-          >
           <button
             type="button"
             id="paypal-copier"
             data-copier="paypal-lien"
             data-libelle={paypal.copier}
             data-copie={paypal.copie}
-            class="cursor-pointer rounded-btn border border-ivoire/30 bg-transparent px-3.5 py-1.5 text-caption tracking-cap text-ivoire/70 uppercase hover:border-ivoire hover:text-ivoire"
+            class="shrink-0 cursor-pointer rounded-btn border border-ivoire/25 bg-transparent px-3.5 py-1.5 text-caption tracking-cap text-ivoire/70 uppercase hover:border-ivoire hover:text-ivoire"
             >{paypal.copier}</button
           >
-          <a
-            href={paypal.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="ml-auto rounded-btn border border-accent px-[22px] py-2.5 text-caption font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun"
-            >{paypal.bouton}</a
-          >
         </div>
+        {/* Le lien est l'action : plus besoin d'un bouton pour l'ouvrir. */}
+        <a
+          id="paypal-lien"
+          href={paypal.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-4 inline-block text-body-tight tracking-[.01em] text-accent hover:text-ivoire"
+          >{paypal.lien} <span aria-hidden="true">↗</span></a
+        >
       </div>
 
       {/* Virement */}
-      <div>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1 px-[22px] pt-[22px]">
-          <span class="text-ligne font-light text-ivoire">{virement.titre}</span>
-          <span class="text-caption tracking-cap text-accent uppercase">
-            {virement.sousTitre}
-          </span>
-        </div>
-        <p class="mt-3 mb-0 max-w-[52ch] px-[22px] text-body text-ivoire/70">
-          {virement.texte}
-        </p>
+      <div class="p-[22px]">
+        <div class={moyen}>{virement.titre}</div>
 
-        <div id="virement-merci" hidden class="px-[22px] py-[22px]">
+        <div id="virement-merci" hidden class="mt-4">
           <p class="m-0 text-body text-accent">{virement.confirmation}</p>
         </div>
 
-        <form id="virement-form" novalidate class="grid gap-[18px] px-[22px] py-[22px]">
+        <form id="virement-form" novalidate class="mt-5 grid gap-[22px]">
           <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
             <label>
               Ne pas remplir
@@ -145,7 +114,7 @@ const label = 'text-caption tracking-cap text-accent uppercase';
             </label>
           </div>
 
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[18px]">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[22px]">
             <label class="flex flex-col gap-2">
               <span class={label}>{virement.champs.nom}</span>
               <input
@@ -175,7 +144,7 @@ const label = 'text-caption tracking-cap text-accent uppercase';
           <div>
             <button
               type="submit"
-              class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun disabled:cursor-wait disabled:opacity-60"
+              class="cursor-pointer rounded-btn border border-accent bg-transparent px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton text-accent uppercase hover:bg-accent hover:text-brun active:translate-y-px disabled:cursor-wait disabled:opacity-60"
               >{virement.champs.envoyer}</button
             >
           </div>
@@ -210,7 +179,7 @@ const label = 'text-caption tracking-cap text-accent uppercase';
 
     ouvrir.addEventListener('click', () => {
       // Le couvercle se soulève, puis le coffret cède la place au contenu.
-      if (couvercle && anime) couvercle.style.transform = 'translateY(-14px) rotate(-8deg)';
+      if (couvercle && anime) couvercle.style.transform = 'translateY(-12px) rotate(-8deg)';
       setTimeout(
         () => {
           ouvrir.hidden = true;
@@ -238,7 +207,8 @@ const label = 'text-caption tracking-cap text-accent uppercase';
     bouton.addEventListener('click', async () => {
       const source = document.getElementById(bouton.dataset.copier!);
       if (!source) return;
-      const texte = source.textContent?.trim() ?? '';
+      // Le lien porte une flèche à la fin : elle ne doit pas être copiée.
+      const texte = (source.firstChild?.textContent ?? source.textContent ?? '').trim();
 
       const confirme = () => {
         bouton.textContent = bouton.dataset.copie!;
