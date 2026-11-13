@@ -148,8 +148,10 @@ export const countdown = {
 
 export const invitation = {
   label: "L'invitation",
-  // À CONFIRMER — texte d'invitation définitif à fournir par les mariés.
-  citation: "Après dix ans à s'aimer en ville, nous partons nous dire oui au soleil.",
+  citation:
+    "Aimer, ce n'est pas se regarder l'un l'autre, c'est regarder ensemble dans la même direction.",
+  /** Laisser vide pour masquer la ligne d'attribution. */
+  auteur: 'Antoine de Saint-Exupéry',
   /** Laisser vide : la citation se suffit. */
   texte: '',
 };
@@ -178,7 +180,7 @@ const groupesProgramme: GroupeProgramme[] = [
       {
         heure: '16h30',
         titre: 'Cérémonie',
-        description: "Dans les jardins du château. Merci d'être installés à 16h15.",
+        description: "Dans les vignes du château. Merci d'être installés à 16h15.",
       },
       {
         heure: '18h00',
@@ -216,9 +218,8 @@ const chateauReperes: Repere[] = [
     attenue: true,
   },
   {
-    // Source : fiche du lieu (abcsalles.com). À faire confirmer au domaine.
     label: 'Stationnement',
-    valeur: '80 places sur place,\n30 autres à une minute à pied.',
+    valeur: '25 places sur place,\n30 autres à une minute à pied.',
     attenue: true,
   },
 ];
@@ -247,7 +248,7 @@ export const chateau = {
   sousTitre: 'Cérémonie & soirée · 1er mai 2027',
   description:
     'Un domaine viticole du Minervois, entre garrigue et rangs de vigne. Tout s’y passe, de la cérémonie à la dernière danse.',
-  photoAlt: 'Les mains de Grace et Ouss, la bague de fiançailles',
+  photoAlt: 'Grace rit, la joue contre celle d’Ouss',
   infos: chateauInfos,
   reperes: chateauReperes,
   itineraire: chateauItineraire,

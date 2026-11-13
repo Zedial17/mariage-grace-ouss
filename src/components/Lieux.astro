@@ -1,6 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
-import etreinteImage from '../assets/img/etreinte.jpg';
+import rireImage from '../assets/img/rire.jpg';
 import CastleIcon from './icons/CastleIcon.astro';
 import ItineraryPanel from './ItineraryPanel.astro';
 import Repere from './Repere.astro';
@@ -14,13 +14,13 @@ import { chateau, mairie } from '../content/site';
   >
     <div class="aspect-4/5 overflow-hidden bg-brun">
       <Picture
-        src={etreinteImage}
+        src={rireImage}
         alt={chateau.photoAlt}
         formats={['avif', 'webp']}
         fallbackFormat="jpg"
-        widths={[400, 560, 760, 1067]}
+        widths={[400, 560, 760, 1120]}
         sizes="(min-width: 1180px) 558px, (min-width: 660px) 50vw, 100vw"
-        class="block h-full w-full object-cover [object-position:50%_92%]"
+        class="block h-full w-full object-cover [object-position:52%_50%]"
       />
     </div>
 

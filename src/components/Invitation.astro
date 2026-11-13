@@ -7,10 +7,17 @@ import { invitation } from '../content/site';
     {invitation.label}
   </div>
   <p
-    class="mx-auto mt-10 mb-0 max-w-[22ch] text-citation font-light tracking-[-.01em]"
+    class="mx-auto mt-10 mb-0 max-w-[24ch] text-citation font-light tracking-[-.01em]"
   >
     {invitation.citation}
   </p>
+  {
+    invitation.auteur && (
+      <p class="text-caption tracking-label text-ivoire/56 mt-8 mb-0 uppercase">
+        {invitation.auteur}
+      </p>
+    )
+  }
   {
     invitation.texte && (
       <p class="mx-auto mt-[26px] mb-0 max-w-[48ch] text-body text-ivoire/72">
