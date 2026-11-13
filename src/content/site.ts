@@ -373,12 +373,10 @@ export const livreDor = {
     bouton: 'Ouvrir',
     erreur: 'Code incorrect.',
   },
-  /** Compteur et navigation du rail de cartes. */
+  /** Compteur des cartes. */
   rail: {
     un: 'mot déposé',
     plusieurs: 'mots déposés',
-    precedent: 'Mot précédent',
-    suivant: 'Mot suivant',
   },
   texte: 'Un vœu, un souvenir, une phrase.',
   champs: {

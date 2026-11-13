@@ -226,6 +226,14 @@
       border-color 0.2s ease;
   }
 
+  /* Un seul bouton de réponse à la fois : quand le flottant monte,
+     celui de la barre haute se retire. */
+  @media (max-width: 859.98px) {
+    .cta-flottant [data-cta-entete] {
+      display: none;
+    }
+  }
+
   /* ───────── Filigrane des titres ─────────
      Le mot de la section, posé en grand derrière son titre. Il déborde
      volontiers : « clip » le coupe au bord du bloc, sinon un mot long
@@ -336,4 +344,37 @@
 @utility contenu {
   max-width: 1180px;
   margin-inline: auto;
+}
+
+/* ------------------------------------------------------------------
+   Roue du livre d'or
+
+   Hors couche, à dessein : ces règles doivent l'emporter sur les
+   utilitaires. Par défaut les cartes restent en liste — c'est l'état
+   sans JavaScript, et celui des visiteurs qui demandent moins
+   d'animations. Le script les bascule ensuite sur le cercle.
+   ------------------------------------------------------------------ */
+.mots-roue {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0 var(--spacing-gutter);
+  list-style: none;
+}
+
+.mots-roue.est-roue {
+  display: block;
+  position: absolute;
+  left: 50%;
+  padding: 0;
+  translate: -50% 0;
+  will-change: transform;
+}
+
+.mots-roue.est-roue > li {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }

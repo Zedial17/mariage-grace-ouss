@@ -1,0 +1,48 @@
+---
+import { hero } from '../content/site';
+
+/* Le bouton de réponse quitte la barre haute pour le bas de l'écran dès
+   qu'on a dépassé le hero, et s'efface quand le formulaire est à l'écran.
+   Mobile seulement : au-delà de 860px, la barre suffit. */
+---
+
+<a
+  id="cta-flottant"
+  href={hero.ctaPrincipal.href}
+  class="fixed inset-x-gutter z-40 mx-auto block max-w-[420px] translate-y-[160%] rounded-btn bg-accent px-6 py-[17px] text-center text-body-sm font-semibold tracking-cta text-brun uppercase transition-[translate] duration-500 nav:hidden"
+  style="bottom: calc(16px + env(safe-area-inset-bottom))"
+  >{hero.ctaPrincipal.libelle}</a
+>
+
+<script>
+  const cta = document.getElementById('cta-flottant');
+  const hero = document.getElementById('home');
+  const rsvp = document.getElementById('rsvp');
+
+  if (cta && hero && rsvp) {
+    /* Deux guetteurs, un seul verdict : on montre le bouton une fois le
+       hero passé, tant que le formulaire n'est pas à l'écran. */
+    const vu = new Map<Element, boolean>([
+      [hero, true],
+      [rsvp, false],
+    ]);
+
+    const juger = () => {
+      const montre = !vu.get(hero) && !vu.get(rsvp);
+      cta.style.translate = montre ? '0' : '';
+      // La barre haute garde son bouton tant que celui-ci est caché.
+      document.documentElement.classList.toggle('cta-flottant', montre);
+    };
+
+    const guetteur = new IntersectionObserver(
+      (entrees) => {
+        for (const e of entrees) vu.set(e.target, e.isIntersecting);
+        juger();
+      },
+      { threshold: 0 },
+    );
+
+    guetteur.observe(hero);
+    guetteur.observe(rsvp);
+  }
+</script>
