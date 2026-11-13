@@ -364,10 +364,10 @@ export const livreDor = {
   /**
    * Les mots restent entre invités. Le code voyage avec le faire-part.
    * La saisie est tolérante : casse, espaces, et le zéro vaut la lettre O
-   * — « G&O2027 » comme « g&02027 » ouvrent la section.
+   * — « grace » comme « GRACE » ouvrent la section.
    */
   verrou: {
-    code: 'G&O2027',
+    code: 'GRACE',
     texte: 'Les mots restent entre nous.',
     champ: "Code d'accès",
     bouton: 'Ouvrir',
