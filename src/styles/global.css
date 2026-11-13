@@ -177,9 +177,46 @@
     }
   }
 
+  /* Les titres se répartissent sur leurs lignes, les paragraphes évitent
+     le mot orphelin : deux réglages que le navigateur fait mieux que nous. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   a {
     color: var(--color-accent);
     text-decoration: none;
+  }
+
+  /* Aucun changement d'état brutal : tout glisse en 200 ms. */
+  a,
+  button,
+  summary {
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  /* Entrée des blocs au défilement — voir Base.astro pour la classe
+     « anim », posée seulement quand l'animation est permise. */
+  .anim main > *:not(#home) {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .anim main > *:not(#home).est-visible {
+    opacity: 1;
+    transform: none;
   }
 
   a:hover {

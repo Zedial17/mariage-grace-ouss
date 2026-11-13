@@ -67,8 +67,38 @@ const imagePartage = new URL(chemin(meta.partage.image), origine);
     {/* La texture de fond passe par le pipeline d'assets : son URL porte une
         empreinte, donc un cache d'un an. */}
     <link rel="preload" as="image" href={soieAvif.src} type="image/avif" />
+
+    {/* Posé avant le premier rendu, sinon les blocs apparaîtraient puis
+        disparaîtraient. Sans JavaScript, ou si le visiteur demande moins
+        d'animations, la classe n'arrive jamais et tout reste visible. */}
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('anim');
+      }
+    </script>
   </head>
   <body>
     <slot />
+
+    <script>
+      /* Les blocs se lèvent une fois, quand ils entrent dans le champ. */
+      const cibles = document.querySelectorAll('main > *:not(#home)');
+
+      if ('IntersectionObserver' in window) {
+        const guetteur = new IntersectionObserver(
+          (entrees) => {
+            for (const e of entrees) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('est-visible');
+              guetteur.unobserve(e.target);
+            }
+          },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.03 },
+        );
+        cibles.forEach((c) => guetteur.observe(c));
+      } else {
+        document.documentElement.classList.remove('anim');
+      }
+    </script>
   </body>
 </html>

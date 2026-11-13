@@ -92,24 +92,6 @@ export function validerMessage(donnees: DonneesMessage): ErreursMessage {
   return erreurs;
 }
 
-/**
- * Champs contrôlés à chaque étape du formulaire, dans l'ordre des étapes.
- * Sert à bloquer le passage à l'étape suivante tant qu'elle est incomplète.
- */
-export const CHAMPS_PAR_ETAPE: ChampRsvp[][] = [
-  ['nom', 'email'],
-  ['reponse', 'nom_accompagnant'],
-  [],
-];
-
-/** Erreurs de la seule étape demandée (0 = la première). */
-export function validerEtape(donnees: DonneesRsvp, etape: number): ErreursRsvp {
-  const toutes = validerRsvp(donnees);
-  const champs = CHAMPS_PAR_ETAPE[etape] ?? [];
-  return Object.fromEntries(
-    Object.entries(toutes).filter(([champ]) => champs.includes(champ as ChampRsvp)),
-  );
-}
 
 export const aDesErreurs = (erreurs: object): boolean =>
   Object.keys(erreurs).length > 0;

@@ -1,7 +1,8 @@
 ---
 import { countdown } from '../content/site';
+import { valeursCompte, type Unite } from '../lib/compte';
 
-const unites = [
+const unites: { cle: Unite; libelle: string }[] = [
   { cle: 'jours', libelle: countdown.unites.jours },
   { cle: 'heures', libelle: countdown.unites.heures },
   { cle: 'minutes', libelle: countdown.unites.minutes },
@@ -10,14 +11,7 @@ const unites = [
 
 /* Valeurs rendues au build : le compteur reste lisible sans JavaScript,
    puis l'îlot ci-dessous le rafraîchit chaque seconde. */
-const reste = Math.max(0, new Date(countdown.cible).getTime() - Date.now());
-const p = (n: number) => String(n).padStart(2, '0');
-const initiales: Record<string, string> = {
-  jours: String(Math.floor(reste / 86400000)),
-  heures: p(Math.floor(reste / 3600000) % 24),
-  minutes: p(Math.floor(reste / 60000) % 60),
-  secondes: p(Math.floor(reste / 1000) % 60),
-};
+const initiales = valeursCompte();
 ---
 
 <div class="border-y border-ivoire/14">
@@ -51,8 +45,9 @@ const initiales: Record<string, string> = {
 
   if (bloc) {
     const cible = new Date(bloc.dataset.cible ?? '').getTime();
-    const champ = (cle: string) =>
-      bloc.querySelector<HTMLElement>(`[data-unite="${cle}"]`);
+    const champ = (cle: string) => [
+      ...document.querySelectorAll<HTMLElement>(`[data-unite="${cle}"]`),
+    ];
     const champs = {
       jours: champ('jours'),
       heures: champ('heures'),
@@ -61,8 +56,8 @@ const initiales: Record<string, string> = {
     };
     const p = (n: number) => String(n).padStart(2, '0');
 
-    const ecrire = (el: HTMLElement | null, valeur: string) => {
-      if (el && el.textContent !== valeur) el.textContent = valeur;
+    const ecrire = (liste: HTMLElement[], valeur: string) => {
+      for (const el of liste) if (el.textContent !== valeur) el.textContent = valeur;
     };
 
     const tic = () => {

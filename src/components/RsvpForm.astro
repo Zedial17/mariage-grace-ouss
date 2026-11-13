@@ -4,79 +4,45 @@ import { rsvp } from '../content/site';
 /* Pastilles de choix : la bordure et le fond basculent avec la radio
    masquée (peer), sans JavaScript. */
 const pill =
-  'cursor-pointer rounded-btn border px-[30px] py-[15px] text-body-sm font-semibold tracking-bouton uppercase transition-colors border-brun/30 bg-transparent text-brun peer-checked:border-brun peer-checked:bg-brun peer-checked:text-ivoire peer-focus-visible:outline-2 peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-cuivre';
+  'block cursor-pointer rounded-btn border px-6 py-[15px] text-center text-body-sm font-semibold tracking-bouton uppercase transition-colors duration-200 border-brun/25 bg-transparent text-brun hover:border-brun/60 peer-checked:border-brun peer-checked:bg-brun peer-checked:text-ivoire peer-focus-visible:outline-2 peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-cuivre';
 const champ =
-  'border-b border-brun/30 bg-transparent py-2.5 text-field text-brun outline-none';
+  'border-b border-brun/25 bg-transparent py-2.5 text-field text-brun outline-none transition-colors duration-200 placeholder:text-brun/35 focus:border-brun';
 const label = 'text-caption tracking-cap text-cuivre uppercase';
 const erreur = 'hidden text-body-sm text-cuivre';
-const aide = 'text-body-sm text-brun/72';
+const aide = 'text-body-sm text-brun/60';
+const duo = 'grid max-w-[460px] grid-cols-2 gap-2.5';
 ---
 
 <section
   id="rsvp"
   class="scroll-mt-[70px] bg-ivoire px-gutter py-section text-brun"
 >
-  <div class="mx-auto max-w-[760px]">
+  <div class="mx-auto max-w-[680px]">
     <div class="text-caption tracking-label text-cuivre uppercase">
       {rsvp.label}
     </div>
-    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em]">
+    <h2 class="mt-[18px] mb-0 text-h2 font-light tracking-[-.025em] text-balance">
       {rsvp.titre}
     </h2>
-    <p class="mt-[18px] mb-0 text-body text-brun/72">{rsvp.dateLimite}</p>
+    <p class="mt-4 mb-0 text-caption tracking-cap text-brun/55 uppercase">
+      {rsvp.dateLimite}
+    </p>
 
     {/* État envoyé */}
     <div
       id="rsvp-merci"
       hidden
       tabindex="-1"
-      class="mt-12 border-t border-brun/20 pt-12"
+      class="mt-14 border-t border-brun/15 pt-14"
     >
-      <div class="text-[40px]/[48px] font-light tracking-[-.02em]">
+      <div class="text-h3 font-light tracking-[-.02em]">
         {rsvp.confirmation.titre}
       </div>
-      <p class="mt-3 mb-0 text-body text-brun/72">{rsvp.confirmation.texte}</p>
+      <p class="mt-3 mb-0 text-body text-brun/70">{rsvp.confirmation.texte}</p>
     </div>
 
-    <div id="rsvp-bloc" class="mt-12">
-      {/* Fil des étapes */}
-      <ol
-        id="rsvp-etapes"
-        class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,160px),1fr))] gap-px border-y border-brun/20 bg-brun/20 p-0"
-      >
-        {
-          rsvp.etapes.map((etape, i) => (
-            <li
-              data-etape={i}
-              aria-current={i === 0 ? 'step' : undefined}
-              class="flex items-center gap-3 bg-ivoire px-4 py-4 transition-colors"
-            >
-              {/* L'état rendu au serveur est déjà celui de l'étape 1 :
-                  le script n'a rien à repeindre au chargement. */}
-              <span
-                data-numero
-                class:list={[
-                  'grid h-8 w-8 shrink-0 place-items-center rounded-btn border text-caption font-semibold tabular-nums',
-                  i === 0 ? 'border-brun bg-brun text-ivoire' : 'border-brun/40 text-brun/65',
-                ]}
-              >
-                {etape.numero}
-              </span>
-              <span
-                data-onglet
-                class:list={[
-                  'text-caption tracking-cap uppercase',
-                  i === 0 ? 'text-brun' : 'text-brun/65',
-                ]}
-              >
-                {etape.onglet}
-              </span>
-            </li>
-          ))
-        }
-      </ol>
-
-      <form id="rsvp-form" novalidate class="mt-10">
+    <div id="rsvp-bloc" class="mt-12 border-t border-brun/15 pt-12">
+      <form id="rsvp-form" novalidate class="grid gap-[38px]">
         {/* Anti-spam : piège à robots, invisible et hors du flux de tabulation. */}
         <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
           <label>
@@ -85,90 +51,64 @@ const aide = 'text-body-sm text-brun/72';
           </label>
         </div>
 
-        {/* ───────────── Étape 1 — Vous ───────────── */}
-        <fieldset data-panneau="0" class="m-0 grid gap-[30px] border-0 p-0">
-          <legend class="sr-only">{rsvp.etapes[0].titre}</legend>
-          <div>
-            <p class="m-0 text-ligne font-light">{rsvp.etapes[0].titre}</p>
-            {rsvp.etapes[0].sousTitre && (
-              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[0].sousTitre}</p>
-            )}
-          </div>
-
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-[30px]">
-            <label class="flex flex-col gap-2">
-              <span class={label}>{rsvp.champs.nom}</span>
-              <input
-                type="text"
-                name="nom"
-                autocomplete="name"
-                maxlength="120"
-                required
-                aria-describedby="err-nom"
-                class={champ}
-              />
-              <span id="err-nom" class={erreur}>{rsvp.erreurs.nom}</span>
+        {/* ───────────── La réponse d'abord ───────────── */}
+        <fieldset class="m-0 border-0 p-0">
+          <legend class={label}>{rsvp.champs.reponse}</legend>
+          <div class:list={['mt-3.5', duo]}>
+            <label>
+              <input type="radio" name="reponse" value="oui" class="peer sr-only" />
+              <span class={pill}>{rsvp.champs.oui}</span>
             </label>
-
-            <label class="flex flex-col gap-2">
-              <span class={label}>{rsvp.champs.email}</span>
-              <input
-                type="email"
-                name="email"
-                autocomplete="email"
-                maxlength="160"
-                required
-                aria-describedby="err-email"
-                class={champ}
-              />
-              <span id="err-email" class={erreur}>{rsvp.erreurs.email}</span>
+            <label>
+              <input type="radio" name="reponse" value="non" class="peer sr-only" />
+              <span class={pill}>{rsvp.champs.non}</span>
             </label>
           </div>
-
-          <label class="flex flex-col gap-2">
-            <span class={label}>{rsvp.champs.ville}</span>
-            <input
-              type="text"
-              name="ville"
-              autocomplete="address-level2"
-              maxlength="120"
-              placeholder="Paris, Narbonne, Bruxelles…"
-              class={champ}
-            />
-            <span class={aide}>{rsvp.champs.villeAide}</span>
-          </label>
+          <span id="err-reponse" class:list={['mt-3 block', erreur]}>
+            {rsvp.erreurs.reponse}
+          </span>
         </fieldset>
 
-        {/* ───────────── Étape 2 — Présence ───────────── */}
-        <fieldset data-panneau="1" hidden class="m-0 grid gap-[30px] border-0 p-0">
-          <legend class="sr-only">{rsvp.etapes[1].titre}</legend>
-          <div>
-            <p class="m-0 text-ligne font-light">{rsvp.etapes[1].titre}</p>
-            {rsvp.etapes[1].sousTitre && (
-              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[1].sousTitre}</p>
-            )}
-          </div>
+        {/* ───────────── Qui répond ───────────── */}
+        <div
+          class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-[38px]"
+        >
+          <label class="flex flex-col gap-2">
+            <span class={label}>{rsvp.champs.nom}</span>
+            <input
+              type="text"
+              name="nom"
+              autocomplete="name"
+              maxlength="120"
+              required
+              aria-describedby="err-nom"
+              class={champ}
+            />
+            <span id="err-nom" class={erreur}>{rsvp.erreurs.nom}</span>
+          </label>
 
-          <div>
-            <div class={label}>{rsvp.champs.reponse}</div>
-            <div class="mt-3 flex flex-wrap gap-3">
-              <label>
-                <input type="radio" name="reponse" value="oui" class="peer sr-only" />
-                <span class:list={['block', pill]}>{rsvp.champs.oui}</span>
-              </label>
-              <label>
-                <input type="radio" name="reponse" value="non" class="peer sr-only" />
-                <span class:list={['block', pill]}>{rsvp.champs.non}</span>
-              </label>
-            </div>
-            <span id="err-reponse" class:list={['mt-2.5', erreur]}>
-              {rsvp.erreurs.reponse}
-            </span>
-          </div>
+          <label class="flex flex-col gap-2">
+            <span class={label}>{rsvp.champs.email}</span>
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              maxlength="160"
+              required
+              aria-describedby="err-email"
+              class={champ}
+            />
+            <span id="err-email" class={erreur}>{rsvp.erreurs.email}</span>
+          </label>
+        </div>
 
-          <div>
-            <div class={label}>{rsvp.champs.accompagnant}</div>
-            <div class="mt-3 flex flex-wrap gap-3">
+        {/* ───────────── Réservé à ceux qui viennent ─────────────
+            Inutile de demander un accompagnant ou une ville de départ
+            à quelqu'un qui vient de nous dire qu'il ne pourra pas. */}
+        <div id="rsvp-presence" class="grid gap-[38px]">
+          <fieldset class="m-0 border-0 p-0">
+            <legend class={label}>{rsvp.champs.accompagnant}</legend>
+            <div class:list={['mt-3.5', duo]}>
               <label>
                 <input
                   type="radio"
@@ -177,7 +117,7 @@ const aide = 'text-body-sm text-brun/72';
                   checked
                   class="peer sr-only"
                 />
-                <span class:list={['block', pill]}>{rsvp.champs.seul}</span>
+                <span class={pill}>{rsvp.champs.seul}</span>
               </label>
               <label>
                 <input
@@ -186,12 +126,12 @@ const aide = 'text-body-sm text-brun/72';
                   value="plus"
                   class="peer sr-only"
                 />
-                <span class:list={['block', pill]}>{rsvp.champs.avecUn}</span>
+                <span class={pill}>{rsvp.champs.avecUn}</span>
               </label>
             </div>
-            <div class:list={['mt-2.5', aide]}>{rsvp.champs.limite}</div>
+            <p class:list={['mt-3 mb-0', aide]}>{rsvp.champs.limite}</p>
 
-            <label id="bloc-accompagnant" hidden class="mt-5 flex flex-col gap-2">
+            <label id="bloc-accompagnant" hidden class="mt-7 flex flex-col gap-2">
               <span class={label}>{rsvp.champs.nomAccompagnant}</span>
               <input
                 type="text"
@@ -204,86 +144,72 @@ const aide = 'text-body-sm text-brun/72';
                 {rsvp.erreurs.nomAccompagnant}
               </span>
             </label>
-          </div>
-        </fieldset>
-
-        {/* ───────────── Étape 3 — Détails ───────────── */}
-        <fieldset data-panneau="2" hidden class="m-0 grid gap-[30px] border-0 p-0">
-          <legend class="sr-only">{rsvp.etapes[2].titre}</legend>
-          <div>
-            <p class="m-0 text-ligne font-light">{rsvp.etapes[2].titre}</p>
-            {rsvp.etapes[2].sousTitre && (
-              <p class="mt-1.5 mb-0 text-body text-brun/72">{rsvp.etapes[2].sousTitre}</p>
-            )}
-          </div>
+          </fieldset>
 
           <label class="flex flex-col gap-2">
-            <span class={label}>{rsvp.champs.mot}</span>
-            <textarea
-              name="message"
-              rows="3"
-              maxlength="2000"
-              class:list={[champ, 'resize-y']}></textarea>
+            <span class={label}>
+              {rsvp.champs.ville}
+              <span class="text-brun/40"> · {rsvp.champs.facultatif}</span>
+            </span>
+            <input
+              type="text"
+              name="ville"
+              autocomplete="address-level2"
+              maxlength="120"
+              placeholder={rsvp.champs.villeExemple}
+              class={champ}
+            />
           </label>
-        </fieldset>
-
-        {/* Navigation */}
-        <div
-          class="mt-10 flex flex-wrap items-center gap-4 border-t border-brun/20 pt-8"
-        >
-          <button
-            type="button"
-            id="rsvp-precedent"
-            hidden
-            class="cursor-pointer rounded-btn border border-brun/30 bg-transparent px-7 py-[15px] text-body-sm font-semibold tracking-bouton text-brun uppercase hover:border-brun"
-            >{rsvp.navigation.precedent}</button
-          >
-          <button
-            type="submit"
-            id="rsvp-suivant"
-            class="cursor-pointer rounded-btn bg-brun px-9 py-[17px] text-body-sm font-semibold tracking-bouton text-ivoire uppercase hover:bg-cuivre disabled:cursor-wait disabled:opacity-60"
-            >{rsvp.navigation.suivant}</button
-          >
-          <span
-            id="rsvp-compteur"
-            aria-live="polite"
-            class="ml-auto text-caption tracking-cap text-brun/65 uppercase tabular-nums"
-            >{`${rsvp.navigation.etape} 1 ${rsvp.navigation.sur} ${rsvp.etapes.length}`}</span
-          >
         </div>
 
-        <p
-          id="rsvp-echec"
-          hidden
-          role="alert"
-          class="mt-4 mb-0 text-body-sm text-cuivre"
-        >
-        </p>
+        {/* ───────────── Un mot ───────────── */}
+        <label class="flex flex-col gap-2">
+          <span class={label}>
+            {rsvp.champs.mot}
+            <span class="text-brun/40"> · {rsvp.champs.facultatif}</span>
+          </span>
+          <textarea
+            name="message"
+            rows="3"
+            maxlength="2000"
+            placeholder={rsvp.champs.motExemple}
+            class:list={[champ, 'resize-y']}></textarea>
+        </label>
+
+        <div class="mt-2 border-t border-brun/15 pt-9">
+          <button
+            type="submit"
+            id="rsvp-envoyer"
+            class="cursor-pointer rounded-btn bg-brun px-11 py-[17px] text-body-sm font-semibold tracking-bouton text-ivoire uppercase transition-colors duration-200 hover:bg-cuivre active:translate-y-px disabled:cursor-wait disabled:opacity-60"
+            >{rsvp.champs.envoyer}</button
+          >
+          <p
+            id="rsvp-echec"
+            hidden
+            role="alert"
+            class="mt-5 mb-0 text-body-sm text-cuivre"
+          >
+          </p>
+        </div>
       </form>
     </div>
   </div>
 </section>
 
 <script>
-  import { validerRsvp, validerEtape, lireRsvp, aDesErreurs } from '../lib/validation';
+  import { validerRsvp, lireRsvp, aDesErreurs } from '../lib/validation';
   import { appeler, classeurConfigure } from '../lib/classeur';
-  import { reseau, rsvp as texte } from '../content/site';
+  import { reseau } from '../content/site';
 
   const form = document.getElementById('rsvp-form') as HTMLFormElement | null;
   const bloc = document.getElementById('rsvp-bloc');
   const merci = document.getElementById('rsvp-merci');
   const echec = document.getElementById('rsvp-echec');
-  const precedent = document.getElementById('rsvp-precedent') as HTMLButtonElement | null;
-  const suivant = document.getElementById('rsvp-suivant') as HTMLButtonElement | null;
-  const compteur = document.getElementById('rsvp-compteur');
+  const envoyer = document.getElementById('rsvp-envoyer') as HTMLButtonElement | null;
+  const blocPresence = document.getElementById('rsvp-presence');
   const blocAccompagnant = document.getElementById('bloc-accompagnant');
 
-  if (form && bloc && merci && echec && precedent && suivant && compteur && blocAccompagnant) {
-    const panneaux = [...form.querySelectorAll<HTMLElement>('[data-panneau]')];
-    const etapes = [...document.querySelectorAll<HTMLElement>('#rsvp-etapes [data-etape]')];
-    const total = panneaux.length;
-    let etape = 0;
-
+  if (form && bloc && merci && echec && envoyer && blocPresence && blocAccompagnant) {
     const CHAMPS = ['nom', 'email', 'reponse', 'nom_accompagnant'] as const;
 
     const montre = (id: string, visible: boolean, message?: string) => {
@@ -304,64 +230,40 @@ const aide = 'text-body-sm text-brun/72';
       return Boolean(premier);
     };
 
-    /** Met l'affichage en accord avec `etape`. */
-    const rendre = (focus = false) => {
-      panneaux.forEach((p, i) => (p.hidden = i !== etape));
+    const valeur = (nom: string) =>
+      (form.elements.namedItem(nom) as RadioNodeList | null)?.value ?? '';
 
-      etapes.forEach((el, i) => {
-        const faite = i < etape;
-        const courante = i === etape;
-        el.toggleAttribute('aria-current', courante);
-        if (courante) el.setAttribute('aria-current', 'step');
-
-        const numero = el.querySelector<HTMLElement>('[data-numero]')!;
-        const onglet = el.querySelector<HTMLElement>('[data-onglet]')!;
-
-        numero.className =
-          'grid h-8 w-8 shrink-0 place-items-center rounded-btn border text-caption font-semibold tabular-nums ' +
-          (courante
-            ? 'border-brun bg-brun text-ivoire'
-            : faite
-              ? 'border-cuivre text-cuivre'
-              : 'border-brun/40 text-brun/65');
-        numero.textContent = faite ? '✓' : texte.etapes[i].numero;
-
-        onglet.className =
-          'text-caption tracking-cap uppercase ' +
-          (courante ? 'text-brun' : faite ? 'text-cuivre' : 'text-brun/65');
-      });
-
-      precedent.hidden = etape === 0;
-      suivant.textContent =
-        etape === total - 1 ? texte.champs.envoyer : texte.navigation.suivant;
-      compteur.textContent = `${texte.navigation.etape} ${etape + 1} ${texte.navigation.sur} ${total}`;
-
-      if (focus) {
-        panneaux[etape].querySelector<HTMLElement>('input, textarea')?.focus();
+    /* Accompagnant : révèle le champ du nom. */
+    const majAccompagnant = () => {
+      const avec = valeur('accompagnant') === 'plus';
+      blocAccompagnant.hidden = !avec;
+      if (!avec) {
+        (form.elements.namedItem('nom_accompagnant') as HTMLInputElement).value = '';
+        montre('err-nom_accompagnant', false);
       }
     };
 
-    /* Accompagnant : révèle le champ du nom. */
-    const avecAccompagnant = () =>
-      (form.elements.namedItem('accompagnant') as RadioNodeList).value === 'plus';
+    /* Empêché(e) : on ne demande ni accompagnant ni ville de départ. */
+    const majPresence = () => {
+      const present = valeur('reponse') !== 'non';
+      blocPresence.hidden = !present;
+      if (!present) {
+        (form.elements.namedItem('accompagnant') as RadioNodeList).value = 'seul';
+        (form.elements.namedItem('ville') as HTMLInputElement).value = '';
+        majAccompagnant();
+      }
+    };
 
     form.querySelectorAll('input[name="accompagnant"]').forEach((radio) =>
-      radio.addEventListener('change', () => {
-        const avec = avecAccompagnant();
-        blocAccompagnant.hidden = !avec;
-        if (!avec) {
-          (form.elements.namedItem('nom_accompagnant') as HTMLInputElement).value = '';
-          montre('err-nom_accompagnant', false);
-        }
-      }),
+      radio.addEventListener('change', majAccompagnant),
     );
 
-    precedent.addEventListener('click', () => {
-      if (etape > 0) {
-        etape--;
-        rendre(true);
-      }
-    });
+    form.querySelectorAll('input[name="reponse"]').forEach((radio) =>
+      radio.addEventListener('change', () => {
+        montre('err-reponse', false);
+        majPresence();
+      }),
+    );
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -370,33 +272,13 @@ const aide = 'text-body-sm text-brun/72';
       const brut = Object.fromEntries(new FormData(form).entries());
       const donnees = lireRsvp(brut);
 
-      // Étapes intermédiaires : on ne valide que les champs de l'étape.
-      if (etape < total - 1) {
-        const erreurs = validerEtape(donnees, etape);
-        if (aDesErreurs(erreurs)) return void afficheErreurs(erreurs);
-        afficheErreurs({});
-        etape++;
-        rendre(true);
-        return;
-      }
-
-      // Dernière étape : tout est contrôlé avant l'envoi.
       const erreurs = validerRsvp(donnees);
-      if (aDesErreurs(erreurs)) {
-        // L'erreur peut concerner une étape précédente : on y retourne.
-        const index = [0, 1].find((i) => aDesErreurs(validerEtape(donnees, i)));
-        if (index !== undefined) {
-          etape = index;
-          rendre();
-        }
-        afficheErreurs(erreurs);
-        return;
-      }
+      if (aDesErreurs(erreurs)) return void afficheErreurs(erreurs);
       afficheErreurs({});
 
-      suivant.disabled = true;
-      const libelle = suivant.textContent;
-      suivant.textContent = reseau.enCours;
+      envoyer.disabled = true;
+      const libelle = envoyer.textContent;
+      envoyer.textContent = reseau.enCours;
 
       // Piège à robots : on fait comme si, sans rien envoyer.
       if (String(brut.site_web ?? '')) {
@@ -431,11 +313,12 @@ const aide = 'text-body-sm text-brun/72';
         echec.textContent = reseau.echec;
         echec.hidden = false;
       } finally {
-        suivant.disabled = false;
-        suivant.textContent = libelle;
+        envoyer.disabled = false;
+        envoyer.textContent = libelle;
       }
     });
 
-    requestAnimationFrame(() => rendre());
+    majPresence();
+    majAccompagnant();
   }
 </script>

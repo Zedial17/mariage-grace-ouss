@@ -68,8 +68,7 @@ export const meta = {
 export const page404 = {
   titre: 'Page introuvable',
   code: '404',
-  texte:
-    'Ce lien ne mène nulle part — une adresse mal recopiée, sans doute. Tout se passe sur la page d’invitation.',
+  texte: 'Ce lien ne mène nulle part. Tout se passe sur la page d’invitation.',
   retour: 'Retour à l’invitation',
   liens: [
     { href: '/#jour', libelle: 'Le programme' },
@@ -115,10 +114,9 @@ export const ctaRepondre = { href: '#rsvp', libelle: 'Répondre' };
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  surtitre: '27 mars 2027 · Pantin — 1er mai 2027 · Château de Cabezac',
+  surtitre: '27 mars & 1er mai 2027',
   alt: 'Grace et Ouss',
-  texte:
-    'Nous vous convions à célébrer notre mariage : à la mairie de Pantin le 27 mars, puis au Château de Cabezac le 1er mai.',
+  texte: 'Pantin, puis le Château de Cabezac.',
   ctaPrincipal: { href: '#rsvp', libelle: 'Confirmer ma présence' },
   ctaSecondaire: { href: '#jour', libelle: 'Le programme' },
 };
@@ -168,8 +166,7 @@ const groupesProgramme: GroupeProgramme[] = [
       {
         heure: '14h00',
         titre: 'Mariage civil',
-        description:
-          "À l'hôtel de ville de Pantin. Merci d'arriver un quart d'heure en avance.",
+        description: 'Merci d’arriver à 13h45.',
       },
     ],
   },
@@ -180,17 +177,17 @@ const groupesProgramme: GroupeProgramme[] = [
       {
         heure: '16h30',
         titre: 'Cérémonie',
-        description: "Dans les vignes du château. Merci d'être installés à 16h15.",
+        description: 'Dans les vignes. Installés pour 16h15.',
       },
       {
         heure: '18h00',
         titre: "Vin d'honneur",
-        description: 'Coupes, photographies et coucher de soleil sur les vignes.',
+        description: 'Coupes et photographies, face aux vignes.',
       },
       {
         heure: '20h00',
         titre: 'Dîner & soirée',
-        description: 'Dîner assis, quelques mots, puis la piste jusque tard.',
+        description: 'Dîner assis, quelques mots, puis la piste.',
       },
     ],
   },
@@ -214,7 +211,7 @@ const chateauInfos: Repere[] = [
 const chateauReperes: Repere[] = [
   {
     label: 'Depuis Narbonne',
-    valeur: '≈ 30 min en voiture par la D607 puis la D5.',
+    valeur: '30 min par la D607 puis la D5.',
     attenue: true,
   },
   {
@@ -247,7 +244,7 @@ export const chateau = {
   titre: 'Château de Cabezac',
   sousTitre: 'Cérémonie & soirée · 1er mai 2027',
   description:
-    'Un domaine viticole du Minervois, entre garrigue et rangs de vigne. Tout s’y passe, de la cérémonie à la dernière danse.',
+    'Un domaine viticole du Minervois. De la cérémonie à la dernière danse.',
   photoAlt: 'Grace rit, la joue contre celle d’Ouss',
   infos: chateauInfos,
   reperes: chateauReperes,
@@ -257,7 +254,7 @@ export const chateau = {
 const mairieInfos: Repere[] = [
   { label: 'Adresse', valeur: '84-88 avenue du Général Leclerc\n93500 Pantin' },
   { label: 'Rendez-vous', valeur: 'Samedi 27 mars 2027\n14h00' },
-  { label: 'Transports', valeur: 'Métro 5, station Église de Pantin.', attenue: true },
+  { label: 'Transports', valeur: 'Métro 5 · Église de Pantin.', attenue: true },
 ];
 
 const mairieItineraire: LienItineraire[] = [
@@ -294,13 +291,12 @@ export const itineraire = { titre: 'Y aller' };
 export const tenue = {
   label: 'La tenue',
   titre: 'Pastel & coloré',
-  texte:
-    'Rose dragée, jaune soleil, vert amande, corail, bleu ciel, framboise. La coupe est libre — la couleur fait la fête.',
+  texte: 'La coupe est libre. La couleur fait la fête.',
   regle: {
     titre: 'Ni blanc, ni noir.',
     precision: "L'écru et le beige comptent comme du blanc.",
   },
-  note: 'Allées en gravier, et de la fraîcheur le soir.',
+  note: 'Allées en gravier, et frais le soir.',
   paletteLabel: 'La palette',
   palette: [
     '#FF98AE',
@@ -322,48 +318,23 @@ export const tenue = {
 export const rsvp = {
   label: 'Réponse',
   titre: 'Serez-vous des nôtres ?',
-  dateLimite: 'Merci de nous répondre avant le 15 mars 2027.',
-  /** Les trois temps du formulaire. L'ordre fait foi. */
-  etapes: [
-    {
-      numero: '01',
-      onglet: 'Vous',
-      titre: 'Qui êtes-vous ?',
-      sousTitre: '',
-    },
-    {
-      numero: '02',
-      onglet: 'Présence',
-      titre: 'Votre présence',
-      sousTitre: '',
-    },
-    {
-      numero: '03',
-      onglet: 'Détails',
-      titre: 'Derniers détails',
-      sousTitre: '',
-    },
-  ],
-  navigation: {
-    precedent: 'Précédent',
-    suivant: 'Suivant',
-    etape: 'Étape',
-    sur: 'sur',
-  },
+  dateLimite: 'Avant le 15 mars 2027.',
   champs: {
-    nom: 'Prénom et nom',
-    email: 'E-mail',
-    ville: 'Votre ville de départ',
-    villeAide: 'Pour la carte des invités.',
     reponse: 'Votre réponse',
     oui: 'Avec joie',
     non: 'Empêché(e)',
+    nom: 'Prénom et nom',
+    email: 'E-mail',
     accompagnant: 'Accompagnant(e)',
-    seul: 'Je viens seul(e)',
-    avecUn: 'Avec un(e) accompagnant(e)',
-    limite: 'Une personne supplémentaire au maximum.',
-    nomAccompagnant: 'Nom de votre accompagnant(e)',
-    mot: 'Allergies, régime, un mot pour nous',
+    seul: 'Seul(e)',
+    avecUn: 'À deux',
+    limite: 'Une personne au maximum.',
+    nomAccompagnant: 'Son prénom et son nom',
+    ville: 'Ville de départ',
+    villeExemple: 'Paris, Narbonne, Bruxelles…',
+    mot: 'Un mot pour nous',
+    motExemple: 'Allergies, régime, une envie…',
+    facultatif: 'facultatif',
     envoyer: 'Envoyer',
   },
   erreurs: {
@@ -374,7 +345,7 @@ export const rsvp = {
   },
   confirmation: {
     titre: 'Merci.',
-    texte: 'Votre réponse est enregistrée. Nous avons hâte de vous retrouver à Cabezac.',
+    texte: 'Votre réponse est enregistrée.',
   },
 };
 
@@ -392,7 +363,7 @@ export const livreDor = {
     precedent: 'Mot précédent',
     suivant: 'Mot suivant',
   },
-  texte: 'Un vœu, un souvenir, une phrase. Nous les relirons longtemps après la fête.',
+  texte: 'Un vœu, un souvenir, une phrase.',
   champs: {
     nom: 'Votre nom',
     message: 'Votre message',
@@ -414,21 +385,20 @@ export const livreDor = {
 export const participation = {
   label: 'Participation',
   titre: "Votre présence, d'abord",
-  // À CONFIRMER — texte à relire par les mariés.
   texte:
-    'Vous voir à Cabezac est déjà le plus beau des cadeaux. Si le cœur vous en dit, une urne vous attendra le soir du dîner.',
+    'Vous voir à Cabezac est déjà le plus beau des cadeaux. Une urne attendra le soir du dîner.',
   /** Laisser vide : le paragraphe ci-dessus se suffit. */
   precision: '',
   coffret: {
     titre: 'Un geste du cœur',
     /** Laisser vide : le titre et le bouton suffisent. */
     sousTitre: '',
-    ouvrir: 'Découvrir comment contribuer',
+    ouvrir: 'Contribuer',
     refermer: 'Refermer',
   },
   paypal: {
     titre: 'PayPal',
-    sousTitre: 'En quelques secondes, depuis partout',
+    sousTitre: '',
     lienLabel: 'Lien',
     lien: 'paypal.me/GraceONGALLA',
     href: 'https://paypal.me/GraceONGALLA',
@@ -438,9 +408,8 @@ export const participation = {
   },
   virement: {
     titre: 'Virement bancaire',
-    sousTitre: 'Nous vous envoyons le RIB en main propre',
-    texte:
-      'Nos coordonnées ne sont pas sur cette page. Laissez-nous un moyen de vous joindre.',
+    sousTitre: 'Le RIB vous arrive en main propre',
+    texte: 'Laissez-nous un moyen de vous joindre.',
     champs: {
       nom: 'Votre nom',
       contact: 'E-mail ou téléphone',
@@ -450,7 +419,7 @@ export const participation = {
       nom: 'Merci d’indiquer votre nom.',
       contact: 'Merci d’indiquer un e-mail ou un téléphone.',
     },
-    confirmation: 'Demande envoyée. Nous revenons vers vous très vite.',
+    confirmation: 'Demande envoyée. Nous revenons vers vous.',
   },
 };
 
@@ -461,11 +430,11 @@ export const participation = {
 export const convives = {
   label: 'Les convives',
   titre: "D'où vous venez",
-  texte: 'Chaque réponse ajoute une ville. Aucun nom n’y figure.',
+  texte: 'Chaque réponse ajoute une ville, jamais un nom.',
   compteurs: {
-    personnes: 'convives attendus',
-    villes: 'villes de départ',
-    pays: 'pays représentés',
+    personnes: 'convives',
+    villes: 'villes',
+    pays: 'pays',
   },
   destination: {
     nom: 'Château de Cabezac',
@@ -473,7 +442,7 @@ export const convives = {
     lat: 43.3186,
     lng: 2.8706,
   },
-  vide: 'La carte se dessinera à mesure des réponses.',
+  vide: 'En attente des premières réponses.',
   legende: 'Le losange marque Cabezac.',
   /** Libellé au survol d'un point : « Paris · 4 convives ». */
   unite: { un: 'convive', plusieurs: 'convives' },
@@ -490,17 +459,17 @@ export const faq = {
     {
       question: 'Où dormir',
       reponse:
-        'L’hôtel La Bastide Cabezac est à quelques pas, dans le même hameau. Le village compte gîtes et chambres d’hôtes ; Narbonne est à trente minutes. Le 1er mai est férié : réservez tôt.',
+        'La Bastide Cabezac, dans le hameau. Gîtes et chambres d’hôtes au village, Narbonne à trente minutes. Le 1er mai est férié : réservez tôt.',
     },
     {
       question: 'Comment venir',
       reponse:
-        'Gare de Narbonne à trente minutes, aéroports de Béziers, Carcassonne et Montpellier. La voiture reste le plus simple — pensez au covoiturage.',
+        'Gare de Narbonne à trente minutes. Aéroports de Béziers, Carcassonne, Montpellier. En voiture, pensez au covoiturage.',
     },
     {
       question: 'Les enfants',
       reponse:
-        'La mairie est ouverte à tous. À Cabezac, nous nous retrouvons entre adultes, pour profiter de la soirée jusqu’au bout.',
+        'La mairie est ouverte à tous. Cabezac se fera entre adultes.',
     },
   ],
 };

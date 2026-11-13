@@ -1,9 +1,20 @@
 ---
 import { couple, nav, navMobile, ctaRepondre } from '../content/site';
+import { valeursCompte, type Unite } from '../lib/compte';
 /* `?url` : Vite sert le fichier tel quel, sans ré-encodage — l'animation
    survit, et l'URL porte une empreinte (cache d'un an). */
 import coupleWebp from '../assets/img/couple.webp?url';
 import coupleGif from '../assets/img/couple.gif?url';
+
+/* Minuteur compact de la barre haute (mobile). Les valeurs partent du
+   build ; Countdown.astro les rafraîchit ensuite, ici comme ailleurs. */
+const valeurs = valeursCompte();
+const compteNav: { cle: Unite; lettre: string }[] = [
+  { cle: 'jours', lettre: 'j' },
+  { cle: 'heures', lettre: 'h' },
+  { cle: 'minutes', lettre: 'm' },
+  { cle: 'secondes', lettre: 's' },
+];
 ---
 
 <header
@@ -85,6 +96,31 @@ import coupleGif from '../assets/img/couple.gif?url';
     </div>
   </div>
 
+  {/* Le compte à rebours s'invite dans la barre dès que le hero est passé.
+      Mobile seulement : au-delà de 860px, le bandeau de la page suffit. */}
+  <div
+    id="nav-compte"
+    hidden
+    aria-hidden="true"
+    class="border-t border-ivoire/10 opacity-0 transition-opacity duration-500 nav:hidden"
+  >
+    <div
+      class="contenu flex items-baseline justify-center gap-[5px] px-gutter-nav py-[7px] tabular-nums"
+    >
+      {
+        compteNav.map((u, i) => (
+          <Fragment>
+            {i > 0 && <span class="px-1 text-[10px] text-ivoire/25">·</span>}
+            <span class="text-caption tracking-[.06em] text-accent" data-unite={u.cle}>
+              {valeurs[u.cle]}
+            </span>
+            <span class="text-[10px] tracking-[.14em] text-ivoire/45">{u.lettre}</span>
+          </Fragment>
+        ))
+      }
+    </div>
+  </div>
+
   {/* Panneau déroulant */}
   <nav
     id="menu-mobile"
@@ -143,6 +179,34 @@ import coupleGif from '../assets/img/couple.gif?url';
 
     addEventListener('scroll', basculer, { passive: true });
     basculer();
+  }
+
+  /* Le minuteur suit le même seuil que le couple, mais sans dépendre du
+     réglage « moins d'animations » : c'est une information, pas un décor. */
+  const navCompte = document.getElementById('nav-compte');
+
+  if (navCompte) {
+    let visible = false;
+
+    const basculeCompte = () => {
+      const passe = scrollY > 60;
+      if (passe === visible) return;
+      visible = passe;
+
+      if (passe) navCompte.hidden = false;
+      requestAnimationFrame(() => {
+        navCompte.style.opacity = passe ? '1' : '0';
+      });
+      // On attend la fin du fondu avant de le retirer du flux.
+      if (!passe) {
+        setTimeout(() => {
+          if (!visible) navCompte.hidden = true;
+        }, 500);
+      }
+    };
+
+    addEventListener('scroll', basculeCompte, { passive: true });
+    basculeCompte();
   }
 
   const burger = document.getElementById('burger');

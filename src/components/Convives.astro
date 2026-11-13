@@ -36,7 +36,7 @@ const compteurs = [
 
     {/* ───────── Compteurs ───────── */}
     <div
-      class="mt-bloc grid grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))] gap-6 border-y border-ivoire/14 py-compte"
+      class="mt-bloc grid grid-cols-3 gap-4 border-y border-ivoire/14 py-compte sm:gap-6"
     >
       {
         compteurs.map((libelle, i) => (
@@ -47,7 +47,7 @@ const compteurs = [
             >
               0
             </div>
-            <div class="text-caption tracking-compte text-accent uppercase">
+            <div class="text-[10px]/[14px] tracking-[.2em] text-accent uppercase sm:text-caption sm:tracking-compte">
               {libelle}
             </div>
           </div>
