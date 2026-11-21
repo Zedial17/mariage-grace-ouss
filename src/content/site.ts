@@ -127,11 +127,11 @@ export const hero = {
 
 export const countdown = {
   /**
-   * 1er mai 2027, 16h30, Europe/Paris — l'heure de la cérémonie.
+   * 1er mai 2027, 16h00, Europe/Paris — l'heure de la cérémonie.
    * L'heure d'été 2027 commence le 28 mars : au 1er mai la France est
    * déjà en CEST, donc +02:00.
    */
-  cible: '2027-05-01T16:30:00+02:00',
+  cible: '2027-05-01T16:00:00+02:00',
   unites: {
     jours: 'jours',
     heures: 'heures',
@@ -164,7 +164,7 @@ const groupesProgramme: GroupeProgramme[] = [
     lieu: 'Château de Cabezac',
     moments: [
       {
-        heure: '16h30',
+        heure: '16h00',
         titre: 'Cérémonie',
         description: 'Dans les vignes. Installés pour 16h15.',
       },
@@ -419,7 +419,8 @@ export const faq = {
     },
     {
       question: 'Les enfants',
-      reponse: 'Cabezac se fera entre adultes.',
+      reponse:
+        'Le mariage se déroulant au sein d’un château viticole, certains espaces comportent des installations professionnelles, notamment des cuves et des machines, qui peuvent présenter des risques pour les jeunes enfants. Cabezac se fera entre adultes.',
     },
   ],
 };
