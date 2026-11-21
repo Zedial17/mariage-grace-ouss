@@ -410,7 +410,7 @@ export const faq = {
     {
       question: 'Où dormir',
       reponse:
-        'La Bastide Cabezac, dans le hameau. Gîtes et chambres d’hôtes au village. Le 1er mai est férié : réservez tôt.',
+        'L’hôtel La Bastide Cabezac, dans le hameau. Pour les groupes, nous vous recommandons les Airbnb aux alentours. Le 1er mai est férié : réservez tôt.',
     },
     {
       question: 'Comment venir',
