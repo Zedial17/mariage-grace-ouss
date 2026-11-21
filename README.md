@@ -8,7 +8,6 @@ statiques hébergé sur GitHub Pages, et les réponses des invités partent
 directement dans un **Google Sheet partagé** — même fonctionnement que le site
 Emma.
 
-- **Mariage civil** — samedi 27 mars 2027, 14h00, Mairie de Pantin
 - **Cérémonie & soirée** — samedi 1er mai 2027, Château de Cabezac
 
 ## Démarrer
@@ -276,8 +275,8 @@ dates, adresses, horaires, liens d'itinéraire, textes, palette, FAQ, messages
 d'erreur. Rien à toucher dans les composants.
 
 Éléments encore marqués `À CONFIRMER` : texte d'invitation, horaire du vin
-d'honneur, date limite du RSVP, règle sur les enfants, texte de la participation,
-hébergements, stationnement au château.
+d'honneur, date limite du RSVP, règle sur les enfants, texte de la
+participation, hébergements.
 
 ## Contrôle qualité
 

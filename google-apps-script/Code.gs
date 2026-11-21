@@ -331,7 +331,7 @@ function demandeVirement(data) {
       '  Nom     : ' + nom + '\n' +
       '  Contact : ' + contact + '\n\n' +
       'Merci de le recontacter directement — le RIB ne figure pas sur le site.\n\n' +
-      'Grace & Ouss · 27 mars & 1er mai 2027',
+      'Grace & Ouss · 1er mai 2027',
   );
   return json({ ok: true });
 }
@@ -488,7 +488,7 @@ function notifier(nom, email, reponse, accompagnant, nomAccompagnant, message) {
         'Personnes     : ' + (vient ? (accompagnant ? 2 : 1) : 0) + '\n' +
         'Message       : ' + (message || '—') + '\n\n' +
         leClasseur().getUrl() + '\n\n' +
-        'Grace & Ouss · 27 mars & 1er mai 2027',
+        'Grace & Ouss · 1er mai 2027',
     );
   } catch (err) {
     Logger.log('Notification impossible : ' + err);

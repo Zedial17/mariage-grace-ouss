@@ -42,9 +42,9 @@ export type Repere = {
 /* ------------------------------------------------------------------ */
 
 export const meta = {
-  titre: 'Grace & Ouss · 27 mars & 1er mai 2027',
+  titre: 'Grace & Ouss · 1er mai 2027',
   description:
-    'Invitation au mariage de Grace et Ouss : mairie de Pantin le 27 mars 2027, Château de Cabezac le 1er mai 2027.',
+    'Invitation au mariage de Grace et Ouss : Château de Cabezac, le 1er mai 2027.',
   langue: 'fr',
   /** Site privé : on ne veut pas être indexé. */
   noindex: true,
@@ -114,9 +114,9 @@ export const ctaRepondre = { href: '#rsvp', libelle: 'Répondre' };
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  surtitre: '27 mars & 1er mai 2027',
+  surtitre: '1er mai 2027',
   alt: 'Grace et Ouss',
-  texte: 'Pantin, puis le Château de Cabezac.',
+  texte: 'Le Château de Cabezac, dans le Minervois.',
   ctaPrincipal: { href: '#rsvp', libelle: 'Confirmer ma présence' },
   ctaSecondaire: { href: '#jour', libelle: 'Le programme' },
 };
@@ -127,11 +127,11 @@ export const hero = {
 
 export const countdown = {
   /**
-   * 27 mars 2027, 14h00, Europe/Paris.
-   * Le passage à l'heure d'été 2027 tombe le 28 mars : ce jour-là la
-   * France est encore en CET, donc +01:00.
+   * 1er mai 2027, 16h30, Europe/Paris — l'heure de la cérémonie.
+   * L'heure d'été 2027 commence le 28 mars : au 1er mai la France est
+   * déjà en CEST, donc +02:00.
    */
-  cible: '2027-03-27T14:00:00+01:00',
+  cible: '2027-05-01T16:30:00+02:00',
   unites: {
     jours: 'jours',
     heures: 'heures',
@@ -160,17 +160,6 @@ export const invitation = {
 
 const groupesProgramme: GroupeProgramme[] = [
   {
-    date: 'Samedi 27 mars 2027',
-    lieu: 'Mairie de Pantin',
-    moments: [
-      {
-        heure: '14h00',
-        titre: 'Mariage civil',
-        description: 'Merci d’arriver à 13h45.',
-      },
-    ],
-  },
-  {
     date: 'Samedi 1er mai 2027',
     lieu: 'Château de Cabezac',
     moments: [
@@ -195,7 +184,7 @@ const groupesProgramme: GroupeProgramme[] = [
 
 export const programme = {
   label: 'Le programme',
-  titre: 'Deux dates, un même oui',
+  titre: 'Notre oui, heure par heure',
   filigrane: 'Le jour J',
   groupes: groupesProgramme,
 };
@@ -207,19 +196,6 @@ export const programme = {
 const chateauInfos: Repere[] = [
   { label: 'Adresse', valeur: '23 Hameau de Cabezac\n11120 Bize-Minervois' },
   { label: 'Accueil', valeur: 'Samedi 1er mai 2027\nà partir de 16h00' },
-];
-
-const chateauReperes: Repere[] = [
-  {
-    label: 'Depuis Narbonne',
-    valeur: '30 min par la D607 puis la D5.',
-    attenue: true,
-  },
-  {
-    label: 'Stationnement',
-    valeur: '25 places sur place,\n30 autres à une minute à pied.',
-    attenue: true,
-  },
 ];
 
 const chateauItineraire: LienItineraire[] = [
@@ -245,43 +221,10 @@ export const chateau = {
   titre: 'Château de Cabezac',
   filigrane: 'Cabezac',
   sousTitre: 'Cérémonie & soirée · 1er mai 2027',
-  description:
-    'Un domaine viticole du Minervois. De la cérémonie à la dernière danse.',
+  description: 'Un domaine viticole du Minervois.',
   photoAlt: 'Grace rit, la joue contre celle d’Ouss',
   infos: chateauInfos,
-  reperes: chateauReperes,
   itineraire: chateauItineraire,
-};
-
-const mairieInfos: Repere[] = [
-  { label: 'Adresse', valeur: '84-88 avenue du Général Leclerc\n93500 Pantin' },
-  { label: 'Rendez-vous', valeur: 'Samedi 27 mars 2027\n14h00' },
-  { label: 'Transports', valeur: 'Métro 5 · Église de Pantin.', attenue: true },
-];
-
-const mairieItineraire: LienItineraire[] = [
-  {
-    type: 'google',
-    libelle: 'Google Maps',
-    href: 'https://maps.google.com/?q=Mairie+de+Pantin+84+avenue+du+G%C3%A9n%C3%A9ral+Leclerc+93500+Pantin',
-  },
-  {
-    type: 'waze',
-    libelle: 'Waze',
-    href: 'https://waze.com/ul?q=Mairie%20de%20Pantin%2093500%20Pantin&navigate=yes',
-  },
-  {
-    type: 'apple',
-    libelle: 'Plans (Apple)',
-    href: 'https://maps.apple.com/?q=Mairie%20de%20Pantin%2084%20avenue%20du%20G%C3%A9n%C3%A9ral%20Leclerc%2093500%20Pantin',
-  },
-];
-
-export const mairie = {
-  label: 'Mariage civil',
-  titre: 'Mairie de Pantin',
-  infos: mairieInfos,
-  itineraire: mairieItineraire,
 };
 
 export const itineraire = { titre: 'Y aller' };
@@ -335,7 +278,7 @@ export const rsvp = {
     limite: 'Une personne au maximum.',
     nomAccompagnant: 'Son prénom et son nom',
     ville: 'Ville de départ',
-    villeExemple: 'Paris, Narbonne, Bruxelles…',
+    villeExemple: 'Paris, Bruxelles…',
     mot: 'Un mot pour nous',
     motExemple: 'Allergies, régime, une envie…',
     facultatif: 'facultatif',
@@ -467,17 +410,16 @@ export const faq = {
     {
       question: 'Où dormir',
       reponse:
-        'La Bastide Cabezac, dans le hameau. Gîtes et chambres d’hôtes au village, Narbonne à trente minutes. Le 1er mai est férié : réservez tôt.',
+        'La Bastide Cabezac, dans le hameau. Gîtes et chambres d’hôtes au village. Le 1er mai est férié : réservez tôt.',
     },
     {
       question: 'Comment venir',
       reponse:
-        'Gare de Narbonne à trente minutes. Aéroports de Béziers, Carcassonne, Montpellier. En voiture, pensez au covoiturage.',
+        'Aéroports de Béziers, Carcassonne, Montpellier. En voiture, pensez au covoiturage.',
     },
     {
       question: 'Les enfants',
-      reponse:
-        'La mairie est ouverte à tous. Cabezac se fera entre adultes.',
+      reponse: 'Cabezac se fera entre adultes.',
     },
   ],
 };
@@ -487,7 +429,7 @@ export const faq = {
 /* ------------------------------------------------------------------ */
 
 export const footer = {
-  dates: '27 · 03 · 2027 — Pantin  ·  01 · 05 · 2027 — Bize-Minervois',
+  dates: '01 · 05 · 2027 — Bize-Minervois',
   credit: 'Photographies : Diana Le Photography',
 };
 
