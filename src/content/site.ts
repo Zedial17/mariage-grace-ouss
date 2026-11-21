@@ -352,8 +352,8 @@ export const participation = {
   },
   paypal: {
     titre: 'PayPal',
-    lien: 'paypal.me/GraceONGALLA',
-    href: 'https://paypal.me/GraceONGALLA',
+    lien: 'bit.ly/4knXeo9',
+    href: 'https://bit.ly/4knXeo9',
     copier: 'Copier',
     copie: 'Copié',
   },

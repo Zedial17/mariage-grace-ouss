@@ -183,7 +183,7 @@ alimente la carte.
 
 Un coffret au trait s'ouvre sur deux façons de contribuer :
 
-- **PayPal** — `paypal.me/GraceONGALLA`, copie en un clic et lien direct.
+- **PayPal** — `bit.ly/4knXeo9`, copie en un clic et lien direct.
 - **Virement bancaire** — le RIB **ne figure pas sur le site**. L'invité laisse
   un moyen de le joindre, et vous recevez un e-mail. Rien n'est écrit dans le
   classeur.
