@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import soieAvif from '../assets/img/soie.avif';
+import damasAvif from '../assets/img/damas.avif';
 import { meta, couple } from '../content/site';
 
 interface Props {
@@ -64,9 +65,24 @@ const imagePartage = new URL(chemin(meta.partage.image), origine);
     <meta name="theme-color" content="#2E1D15" />
     <meta name="apple-mobile-web-app-title" content={couple.logo} />
 
-    {/* La texture de fond passe par le pipeline d'assets : son URL porte une
-        empreinte, donc un cache d'un an. */}
-    <link rel="preload" as="image" href={soieAvif.src} type="image/avif" />
+    {/* Les textures de fond passent par le pipeline d'assets : leur URL porte
+        une empreinte, donc un cache d'un an. Chacune n'est annoncée qu'à
+        l'écran qui s'en sert — inutile de faire payer la soie au téléphone,
+        ni le damas à l'ordinateur. La bascule suit celle de global.css. */}
+    <link
+      rel="preload"
+      as="image"
+      href={soieAvif.src}
+      type="image/avif"
+      media="(min-width: 821px)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={damasAvif.src}
+      type="image/avif"
+      media="(max-width: 820px)"
+    />
 
     {/* Posé avant le premier rendu, sinon les blocs apparaîtraient puis
         disparaîtraient. Sans JavaScript, ou si le visiteur demande moins

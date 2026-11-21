@@ -191,11 +191,56 @@
       );
   }
 
-  /* iOS ne gère pas background-attachment: fixed correctement. */
+  /* ───────── Fond du mobile ─────────
+     Sur grand écran la soie tendue suffit. Sur téléphone elle s'arrêtait
+     au premier défilement et laissait le reste de la page en brun plat :
+     un fond fade. Un damas gaufré prend sa place, tenu derrière la page.
+
+     Pas de background-attachment: fixed — iOS le rend mal. C'est un calque
+     fixe à part, posé sous le contenu (z-index négatif), qui reste donc
+     immobile pendant que la page défile, sur tous les téléphones.
+
+     Le voile sombre par-dessus est le vrai réglage : il écrase le contraste
+     du relief juste assez pour que l'ivoire, les filets à 12 % et les
+     filigranes restent lisibles, sans éteindre le motif. */
   @media (max-width: 820px) {
     body {
-      background-attachment: scroll, scroll;
-      background-size: cover, auto 120vh;
+      background-image: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-color: var(--color-brun);
+      background-image:
+        radial-gradient(
+          120% 82% at 50% 36%,
+          rgba(19, 11, 6, 0.70) 0%,
+          rgba(19, 11, 6, 0.88) 100%
+        ),
+        url("../assets/img/damas.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Damas en AVIF puis WebP quand le navigateur sait les lire — même
+       cascade que la soie plus haut, sans @supports. */
+    body::before {
+      background-image:
+        radial-gradient(
+          120% 82% at 50% 36%,
+          rgba(19, 11, 6, 0.70) 0%,
+          rgba(19, 11, 6, 0.88) 100%
+        ),
+        image-set(
+          url("../assets/img/damas.avif") type("image/avif"),
+          url("../assets/img/damas.webp") type("image/webp"),
+          url("../assets/img/damas.jpg") type("image/jpeg")
+        );
     }
   }
 
@@ -307,6 +352,33 @@
   input::placeholder,
   textarea::placeholder {
     color: --alpha(var(--color-ivoire) / 40%);
+  }
+
+  /* ───────── Rattrapages de lisibilité sur le damas ─────────
+     Le fond du mobile est désormais une matière, pas un aplat : ce qui
+     était posé en très faible opacité s'y noyait. Ces trois réglages
+     rendent juste ce qu'il faut de densité, rien de plus.
+
+     Le bloc est ici, après les règles qu'il corrige — une media query ne
+     pèse rien dans la cascade, seul l'ordre tranche. */
+  @media (max-width: 820px) {
+    /* Les indications de saisie. (Le formulaire RSVP, lui, est sur ivoire
+       et fixe déjà sa propre couleur.) */
+    input::placeholder,
+    textarea::placeholder {
+      color: --alpha(var(--color-ivoire) / 52%);
+    }
+
+    /* La carte des convives : à 22 %, les côtes se confondaient avec les
+       feuillages du damas. Voir Convives.astro. */
+    #carte-terres {
+      stroke-opacity: 0.42;
+      stroke-width: 1.1;
+    }
+
+    #carte-traits {
+      stroke-opacity: 0.48;
+    }
   }
 
   summary {

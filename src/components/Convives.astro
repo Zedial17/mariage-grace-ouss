@@ -70,7 +70,11 @@ const compteurs = [
         data-arrivee-x={arrivee[0]}
         data-arrivee-y={arrivee[1]}
       >
+        {/* L'identifiant sert à global.css : sur le damas du mobile, ce
+            tracé est repris en plus franc pour ne pas se perdre dans les
+            reliefs. */}
         <path
+          id="carte-terres"
           d={TERRES}
           fill="none"
           stroke="#F2E6DC"
